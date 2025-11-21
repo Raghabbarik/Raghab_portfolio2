@@ -1,5 +1,6 @@
 import { skills } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 export default function SkillsSection() {
   return (
@@ -17,17 +18,16 @@ export default function SkillsSection() {
           {skills.map((skill) => (
             <Card
               key={skill.name}
-              className="group transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2 text-center"
+              className="group transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2 p-6"
             >
-              <CardHeader className="flex flex-col items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  <skill.icon className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors" />
-                </div>
-                <CardTitle>{skill.name}</CardTitle>
+              <CardHeader className="p-0 flex flex-row items-center gap-4 space-y-0">
+                  <skill.icon className="w-8 h-8 text-primary" />
+                <CardTitle className="text-lg font-semibold">{skill.name}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Proficiency: {skill.level}%
+              <CardContent className="p-0 mt-4 space-y-2">
+                <Progress value={skill.level} className="h-2" />
+                <p className="text-right text-sm text-muted-foreground">
+                  {skill.level}%
                 </p>
               </CardContent>
             </Card>
