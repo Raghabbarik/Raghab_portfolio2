@@ -28,7 +28,7 @@ export default function PortfolioSection() {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl gap-8 py-12">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-2 gap-8 py-12">
           {projects.map((project) => {
             const projectImage = PlaceHolderImages.find(
               (img) => img.id === project.imageUrl
@@ -36,49 +36,47 @@ export default function PortfolioSection() {
             return (
               <Card
                 key={project.id}
-                className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-transparent hover:border-primary/20"
+                className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-border/20 flex flex-col"
               >
-                <div className="grid md:grid-cols-2">
-                  <div className="relative group aspect-video md:aspect-auto">
-                    {projectImage && (
-                      <Image
-                        src={projectImage.imageUrl}
-                        alt={project.title}
-                        data-ai-hint={projectImage.imageHint}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                <div className="relative group aspect-video">
+                  {projectImage && (
+                    <Image
+                      src={projectImage.imageUrl}
+                      alt={project.title}
+                      data-ai-hint={projectImage.imageHint}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
+                </div>
+                <div className="flex flex-col flex-1 p-6">
+                  <CardHeader className="p-0">
+                    <CardTitle className="text-2xl font-bold">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription className="pt-2">
+                      {project.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 mt-4">
+                    <h3 className="font-semibold mb-2">Technologies Used:</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech) => (
+                        <Badge key={tech} variant="secondary">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-0 mt-6">
+                    {project.liveDemoUrl && (
+                      <Button asChild>
+                        <Link href={project.liveDemoUrl}>
+                          View Project <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
                     )}
-                  </div>
-                  <div className="flex flex-col p-6">
-                    <CardHeader className="p-0">
-                      <CardTitle className="text-2xl font-bold">
-                        {project.title}
-                      </CardTitle>
-                      <CardDescription className="pt-2">
-                        {project.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1 p-0 mt-4">
-                      <h3 className="font-semibold mb-2">Technologies Used:</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech) => (
-                          <Badge key={tech} variant="secondary">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="p-0 mt-6">
-                      {project.liveDemoUrl && (
-                        <Button asChild>
-                          <Link href={project.liveDemoUrl}>
-                            View Project <ArrowRight className="ml-2 h-4 w-4" />
-                          </Link>
-                        </Button>
-                      )}
-                    </CardFooter>
-                  </div>
+                  </CardFooter>
                 </div>
               </Card>
             );
