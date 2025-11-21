@@ -5,14 +5,7 @@ import { Menu, Mountain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
-
-const navLinks = [
-  { href: "#", label: "About" },
-  { href: "#", label: "Skills" },
-  { href: "#", label: "Services" },
-  { href: "#", label: "Portfolio" },
-  { href: "#", label: "Contact" },
-];
+import { navLinks } from "@/lib/data";
 
 
 export default function Header() {
