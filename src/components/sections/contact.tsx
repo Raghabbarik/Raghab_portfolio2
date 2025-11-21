@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { contactDetails } from "@/lib/data";
+import { getIcon } from "@/lib/get-icon";
 import { ContactForm } from "@/components/contact-form";
 
 export default function ContactSection() {
@@ -21,21 +22,24 @@ export default function ContactSection() {
               </p>
             </div>
             <div className="space-y-4">
-              {contactDetails.map((detail, index) => (
-                <div key={index} className="flex items-center gap-4">
-                  <detail.icon className="h-6 w-6 text-primary" />
-                  <Link
-                    href={detail.href}
-                    target={
-                      detail.href.startsWith("http") ? "_blank" : undefined
-                    }
-                    rel="noopener noreferrer"
-                    className="text-lg text-muted-foreground transition-colors hover:text-primary"
-                  >
-                    {detail.text}
-                  </Link>
-                </div>
-              ))}
+              {contactDetails.map((detail) => {
+                const Icon = getIcon(detail.iconName);
+                return (
+                  <div key={detail.id} className="flex items-center gap-4">
+                    <Icon className="h-6 w-6 text-primary" />
+                    <Link
+                      href={detail.href}
+                      target={
+                        detail.href.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel="noopener noreferrer"
+                      className="text-lg text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      {detail.text}
+                    </Link>
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div className="space-y-4">

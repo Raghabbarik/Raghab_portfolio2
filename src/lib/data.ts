@@ -1,4 +1,4 @@
-import type { NavLink, Service, Skill, Project } from "@/lib/definitions";
+import type { NavLink, Service, Skill, Project, About, ContactDetail } from "@/lib/definitions";
 import {
   Code,
   PenTool,
@@ -12,7 +12,10 @@ import {
   Palette,
   Server,
   Globe,
+  Briefcase,
+  GraduationCap
 } from "lucide-react";
+import { getIcon } from "@/lib/get-icon";
 
 export const navLinks: NavLink[] = [
   { href: "#about", label: "About" },
@@ -65,22 +68,39 @@ export const projects: Project[] = [
   },
 ];
 
-export const contactDetails = [
+export const about: About = {
+  tagline: "About Me",
+  title: "A little bit about me",
+  description: "My name is Raghab Barik. I am a full-stack web developer and UI/UX designer currently pursuing my B.Tech (2nd year) at Nalanda Institute of Technology, Bhubaneswar. Alongside my studies, I also work with Stoup as a website developer.",
+  education: {
+      degree: "B.Tech, 2nd Year",
+      institution: "Nalanda Institute of Technology, Bhubaneswar"
+  },
+  experience: {
+      role: "Website Developer",
+      company: "at Stoup"
+  }
+}
+
+export const contactDetails: ContactDetail[] = [
   {
-    icon: Mail,
+    id: "email",
+    iconName: "Mail",
     text: "rraghabbarik@gmail.com",
     href: "mailto:rraghabbarik@gmail.com",
   },
-  { icon: Phone, text: "7205376243", href: "tel:7205376243" },
+  { id: "phone", iconName: "Phone", text: "7205376243", href: "tel:7205376243" },
   {
-    icon: Instagram,
+    id: "instagram",
+    iconName: "Instagram",
     text: "@mr_raghab_786",
     href: "https://www.instagram.com/mr_raghab_786",
   },
   {
-    icon: Linkedin,
+    id: "linkedin",
+    iconName: "Linkedin",
     text: "Raghab Barik",
     href: "https://www.linkedin.com/in/raghab-barik-raghab-barik-b44692337",
   },
-  { icon: MapPin, text: "Chandaka, Bhubaneswar", href: "#" },
+  { id: "map-pin", iconName: "MapPin", text: "Chandaka, Bhubaneswar", href: "#" },
 ];

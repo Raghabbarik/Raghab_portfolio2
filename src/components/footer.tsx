@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { contactDetails } from "@/lib/data";
+import { getIcon } from "@/lib/get-icon";
 
 export default function Footer() {
   return (
@@ -11,21 +12,24 @@ export default function Footer() {
         <div className="flex items-center gap-4">
           {contactDetails
             .filter((detail) =>
-              ["Instagram", "Linkedin"].includes(detail.icon.displayName || "")
+              ["Instagram", "Linkedin"].includes(detail.iconName)
             )
-            .map((detail) => (
-              <Link
-                key={detail.href}
-                href={detail.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-primary"
-                prefetch={false}
-              >
-                <detail.icon className="h-5 w-5" />
-                <span className="sr-only">{detail.icon.displayName}</span>
-              </Link>
-            ))}
+            .map((detail) => {
+              const Icon = getIcon(detail.iconName);
+              return (
+                <Link
+                  key={detail.id}
+                  href={detail.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground transition-colors hover:text-primary"
+                  prefetch={false}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="sr-only">{detail.iconName}</span>
+                </Link>
+              )
+            })}
         </div>
       </div>
     </footer>

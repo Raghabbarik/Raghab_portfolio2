@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export type NavLink = {
   href: string;
   label: string;
@@ -23,4 +25,29 @@ export type Project = {
   imageUrl: string;
   imageHint: string;
   liveDemoUrl?: string;
+};
+
+export type About = {
+    tagline: string;
+    title: string;
+    description: string;
+    education: {
+        degree: string;
+        institution: string;
+    };
+    experience: {
+        role: string;
+        company: string;
+    };
+};
+
+export type ContactDetail = {
+  id: string;
+  iconName: string;
+  text: string;
+  href: string;
+}
+
+export type IconMap = {
+  [key: string]: LucideIcon;
 };

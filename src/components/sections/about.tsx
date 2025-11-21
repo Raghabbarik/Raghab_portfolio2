@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { about } from "@/lib/data";
 import { Briefcase, GraduationCap } from "lucide-react";
 
 export default function AboutSection() {
@@ -27,15 +28,12 @@ export default function AboutSection() {
         </div>
         <div className="space-y-6">
           <div className="space-y-3">
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">About Me</div>
+            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">{about.tagline}</div>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              A little bit about me
+              {about.title}
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-lg/relaxed">
-              My name is Raghab Barik. I am a full-stack web developer and UI/UX
-              designer currently pursuing my B.Tech (2nd year) at Nalanda
-              Institute of Technology, Bhubaneswar. Alongside my studies, I also
-              work with Stoup as a website developer.
+              {about.description}
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2">
@@ -46,10 +44,10 @@ export default function AboutSection() {
               </CardHeader>
               <CardContent className="space-y-1">
                 <p className="font-semibold">
-                  B.Tech, 2nd Year
+                  {about.education.degree}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Nalanda Institute of Technology, Bhubaneswar
+                  {about.education.institution}
                 </p>
               </CardContent>
             </Card>
@@ -59,8 +57,8 @@ export default function AboutSection() {
                 <CardTitle>Professional Highlight</CardTitle>
               </CardHeader>
               <CardContent className="space-y-1">
-                <p className="font-semibold">Website Developer</p>
-                 <p className="text-sm text-muted-foreground">at Stoup</p>
+                <p className="font-semibold">{about.experience.role}</p>
+                 <p className="text-sm text-muted-foreground">{about.experience.company}</p>
               </CardContent>
             </Card>
           </div>
