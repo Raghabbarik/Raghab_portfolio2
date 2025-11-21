@@ -21,10 +21,12 @@ export default function ServicesSection() {
           {services.map((service) => (
             <Card
               key={service.title}
-              className="transition-all duration-300 hover:shadow-lg hover:border-primary/50"
+              className="group transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2"
             >
               <CardHeader className="flex flex-row items-center gap-4">
-                <service.icon className="w-8 h-8 text-primary" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <service.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+                </div>
                 <CardTitle>{service.title}</CardTitle>
               </CardHeader>
               <CardContent>

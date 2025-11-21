@@ -37,7 +37,7 @@ export default function AboutSection() {
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2">
-            <Card>
+            <Card className="transition-all duration-300 hover:bg-muted/50 hover:shadow-lg hover:-translate-y-2 hover:shadow-primary/20">
               <CardHeader className="flex flex-row items-center gap-4">
                 <GraduationCap className="w-8 h-8 text-primary" />
                 <CardTitle>Education</CardTitle>
@@ -51,7 +51,7 @@ export default function AboutSection() {
                 </p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="transition-all duration-300 hover:bg-muted/50 hover:shadow-lg hover:-translate-y-2 hover:shadow-primary/20">
               <CardHeader className="flex flex-row items-center gap-4">
                 <Briefcase className="w-8 h-8 text-primary" />
                 <CardTitle>Professional Highlight</CardTitle>

@@ -36,7 +36,7 @@ export default function PortfolioSection() {
             return (
               <Card
                 key={project.id}
-                className="overflow-hidden transition-shadow duration-300 hover:shadow-xl hover:shadow-primary/10"
+                className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-transparent hover:border-primary/20"
               >
                 <div className="grid md:grid-cols-2">
                   <div className="relative group aspect-video md:aspect-auto">
