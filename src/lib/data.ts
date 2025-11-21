@@ -66,6 +66,15 @@ export const projects: Project[] = [
     imageHint: "adventure website",
     liveDemoUrl: "#",
   },
+  {
+    id: "new-project",
+    title: "New Awesome Project",
+    description: "This is a new project I've been working on. It uses modern technologies to deliver a great user experience.",
+    technologies: ["React", "Vite", "Mantine"],
+    imageUrl: "new-project",
+    imageHint: "tech product",
+    liveDemoUrl: "#"
+  },
 ];
 
 export const about: About = {
