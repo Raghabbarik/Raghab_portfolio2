@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,32 +9,62 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PortfolioTable } from "@/components/admin/portfolio-table";
-import { ProjectFormDialog } from "@/components/admin/project-form-dialog";
-import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { projects as initialProjects } from "@/lib/data";
+import { ProjectForm } from "@/components/admin/project-form";
+import type { Project } from "@/lib/definitions";
 
 function ProjectsTab() {
+    const [projects, setProjects] = useState<Project[]>(initialProjects);
+    
+    // In a real app, you would have API calls to update the backend
+    const handleSave = (project: Project) => {
+        setProjects(prev => prev.map(p => p.id === project.id ? project : p));
+        console.log("Saving project:", project);
+    }
+    
+    const handleDelete = (projectId: string) => {
+        setProjects(prev => prev.filter(p => p.id !== projectId));
+        console.log("Deleting project:", projectId);
+    }
+    
+    const handleAdd = () => {
+        const newProject: Project = {
+            id: `new-project-${Date.now()}`,
+            title: "New Project",
+            description: "",
+            technologies: [],
+            imageUrl: "new-project-placeholder",
+            imageHint: "new project"
+        };
+        setProjects(prev => [...prev, newProject]);
+    }
+
     return (
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
+        <div className="space-y-8">
+            <div className="flex items-center justify-between">
                 <div>
-                    <CardTitle>Projects</CardTitle>
-                    <CardDescription>Add, edit, or remove projects from your portfolio.</CardDescription>
+                    <h2 className="text-2xl font-bold">Projects</h2>
+                    <p className="text-muted-foreground">Add, edit, or remove projects from your portfolio.</p>
                 </div>
-                <ProjectFormDialog>
-                    <Button size="sm" className="h-8 gap-1">
-                        <PlusCircle className="h-3.5 w-3.5" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                            Add Project
-                        </span>
-                    </Button>
-                </ProjectFormDialog>
-            </CardHeader>
-            <CardContent>
-                <PortfolioTable />
-            </CardContent>
-        </Card>
+                 <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
+                    <PlusCircle className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Add Project
+                    </span>
+                </Button>
+            </div>
+
+            {projects.map(project => (
+                <ProjectForm 
+                    key={project.id} 
+                    project={project} 
+                    onSave={handleSave} 
+                    onDelete={handleDelete}
+                />
+            ))}
+        </div>
     );
 }
 
