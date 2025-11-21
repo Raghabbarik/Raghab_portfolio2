@@ -21,6 +21,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription
 } from "@/components/ui/card";
 import {
   AlertDialog,
@@ -43,6 +44,7 @@ import {
 import type { Service } from "@/lib/definitions";
 import { iconNames, getIcon } from "@/lib/get-icon";
 import { Trash2 } from "lucide-react";
+import React, { useEffect } from "react";
 
 const formSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -50,7 +52,6 @@ const formSchema = z.object({
   icon: z.string().min(1, { message: "Icon is required." }),
 });
 
-// We need to transform the data to fit the form
 type ServiceFormData = {
   title: string;
   description: string;
@@ -64,98 +65,126 @@ interface ServiceFormProps {
 }
 
 export function ServiceForm({ service, onSave, onDelete }: ServiceFormProps) {
-  const { toast } = useToast();
-
+  const [isEditing, setIsEditing] = React.useState(service.title.startsWith('New Service'));
+  
   const form = useForm<ServiceFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
         title: service.title,
         description: service.description,
-        icon: service.icon.displayName || "",
+        icon: service.icon?.displayName || "PlusCircle",
     },
   });
 
-  async function onSubmit(values: ServiceFormData) {
+  useEffect(() => {
+    if (!isEditing) {
+      form.reset({
+          title: service.title,
+          description: service.description,
+          icon: service.icon?.displayName || "PlusCircle",
+      });
+    }
+  }, [service, form, isEditing]);
+
+  const onSubmit = (values: ServiceFormData) => {
     const serviceToSave: Service = {
         ...values,
         icon: getIcon(values.icon),
     };
     onSave(serviceToSave);
-    
-    toast({
-      title: "Service Saved!",
-      description: `The service "${values.title}" has been updated.`,
-    });
-  }
+    setIsEditing(false);
+  };
+  
+  const handleCancel = () => {
+    if (service.title.startsWith('New Service')) {
+      onDelete(service.title);
+    } else {
+      form.reset({
+        title: service.title,
+        description: service.description,
+        icon: service.icon?.displayName || "PlusCircle",
+      });
+      setIsEditing(false);
+    }
+  };
 
   return (
-    <Card>
+    <Card className="flex flex-col">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-grow">
           <CardHeader className="flex flex-row items-start justify-between">
-            <div>
-              <CardTitle>Edit Service</CardTitle>
+             <div>
+              <CardTitle>{isEditing ? "Edit Service" : service.title}</CardTitle>
+              {!isEditing && <CardDescription className="truncate">{service.description}</CardDescription>}
             </div>
-            <DeleteServiceAlert 
-                service={service} 
-                onDelete={() => onDelete(service.title)} 
-            />
+            <div className="flex items-center gap-2">
+                {!isEditing && (
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>Edit</Button>
+                )}
+                <DeleteServiceAlert 
+                    service={service} 
+                    onDelete={() => onDelete(service.title)} 
+                />
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4 pt-0">
-             <FormField
+          {isEditing && (
+            <>
+                <CardContent className="space-y-4 flex-grow">
+                <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                            <Input placeholder="Service Title" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
                 control={form.control}
-                name="title"
+                name="description"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
-                        <Input placeholder="Service Title" {...field} />
+                        <Textarea placeholder="Describe the service" {...field} className="min-h-[100px]" />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}
                 />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Describe the service" {...field} className="min-h-[100px]" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-                control={form.control}
-                name="icon"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Icon</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select an icon" />
-                            </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                            {iconNames.map(name => (
-                                <SelectItem key={name} value={name}>{name}</SelectItem>
-                            ))}
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
-                    </FormItem>
-                )}
-                />
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
-            </Button>
-          </CardFooter>
+                <FormField
+                    control={form.control}
+                    name="icon"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Icon</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select an icon" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                {iconNames.map(name => (
+                                    <SelectItem key={name} value={name}>{name}</SelectItem>
+                                ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+            </CardContent>
+            <CardFooter className="gap-2">
+                <Button type="submit">Save</Button>
+                <Button type="button" variant="ghost" onClick={handleCancel}>Cancel</Button>
+            </CardFooter>
+          </>
+          )}
         </form>
       </Form>
     </Card>

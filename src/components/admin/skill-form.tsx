@@ -44,6 +44,7 @@ import {
 import type { Skill } from "@/lib/definitions";
 import { iconNames, getIcon } from "@/lib/get-icon";
 import { Trash2 } from "lucide-react";
+import React, { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -51,7 +52,6 @@ const formSchema = z.object({
   icon: z.string().min(1, { message: "Icon is required." }),
 });
 
-// We need to transform the data to fit the form
 type SkillFormData = {
   name: string;
   level: number;
@@ -65,16 +65,26 @@ interface SkillFormProps {
 }
 
 export function SkillForm({ skill, onSave, onDelete }: SkillFormProps) {
-  const { toast } = useToast();
+    const [isEditing, setIsEditing] = React.useState(skill.name.startsWith('New Skill'));
 
   const form = useForm<SkillFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
         name: skill.name,
         level: skill.level,
-        icon: skill.icon.displayName || "",
+        icon: skill.icon?.displayName || "PlusCircle",
     },
   });
+
+   useEffect(() => {
+    if (!isEditing) {
+        form.reset({
+            name: skill.name,
+            level: skill.level,
+            icon: skill.icon?.displayName || "PlusCircle",
+        });
+    }
+  }, [skill, form, isEditing]);
 
   async function onSubmit(values: SkillFormData) {
     const skillToSave: Skill = {
@@ -82,86 +92,103 @@ export function SkillForm({ skill, onSave, onDelete }: SkillFormProps) {
         icon: getIcon(values.icon),
     };
     onSave(skillToSave);
-    
-    toast({
-      title: "Skill Saved!",
-      description: `The skill "${values.name}" has been updated.`,
-    });
+    setIsEditing(false);
   }
 
+  const handleCancel = () => {
+    if (skill.name.startsWith('New Skill')) {
+        onDelete(skill.name);
+    } else {
+        form.reset({
+            name: skill.name,
+            level: skill.level,
+            icon: skill.icon?.displayName || "PlusCircle",
+        });
+        setIsEditing(false);
+    }
+  };
+
   return (
-    <Card>
+    <Card className="flex flex-col">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-grow">
           <CardHeader className="flex flex-row items-start justify-between">
             <div>
-              <CardTitle>Edit Skill</CardTitle>
+              <CardTitle className="text-base">{isEditing ? "Edit Skill" : skill.name}</CardTitle>
             </div>
-            <DeleteSkillAlert 
-                skill={skill} 
-                onDelete={() => onDelete(skill.name)} 
-            />
+             <div className="flex items-center gap-2">
+                {!isEditing && (
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>Edit</Button>
+                )}
+                 <DeleteSkillAlert 
+                    skill={skill} 
+                    onDelete={() => onDelete(skill.name)} 
+                />
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4 pt-0">
-             <FormField
+          {isEditing && (
+            <>
+            <CardContent className="space-y-4 flex-grow">
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                            <Input placeholder="Skill Name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
                 control={form.control}
-                name="name"
+                name="level"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Proficiency Level: {field.value}%</FormLabel>
                     <FormControl>
-                        <Input placeholder="Skill Name" {...field} />
+                        <Slider 
+                            defaultValue={[field.value]} 
+                            onValueChange={(value) => field.onChange(value[0])}
+                            max={100} 
+                            step={1} 
+                        />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}
                 />
-            <FormField
-              control={form.control}
-              name="level"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Proficiency Level: {field.value}%</FormLabel>
-                  <FormControl>
-                    <Slider 
-                        defaultValue={[field.value]} 
-                        onValueChange={(value) => field.onChange(value[0])}
-                        max={100} 
-                        step={1} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="icon"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Icon</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select an icon" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {iconNames.map(name => (
-                        <SelectItem key={name} value={name}>{name}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
-            </Button>
-          </CardFooter>
+                <FormField
+                control={form.control}
+                name="icon"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Icon</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select an icon" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        {iconNames.map(name => (
+                            <SelectItem key={name} value={name}>{name}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </CardContent>
+            <CardFooter className="gap-2">
+                <Button type="submit">Save</Button>
+                <Button type="button" variant="ghost" onClick={handleCancel}>Cancel</Button>
+            </CardFooter>
+            </>
+          )}
         </form>
       </Form>
     </Card>

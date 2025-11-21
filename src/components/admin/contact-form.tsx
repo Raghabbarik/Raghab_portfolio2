@@ -42,6 +42,7 @@ import {
 import type { ContactDetail } from "@/lib/definitions";
 import { iconNames } from "@/lib/get-icon";
 import { Trash2 } from "lucide-react";
+import React, { useEffect } from "react";
 
 
 const formSchema = z.object({
@@ -61,88 +62,103 @@ interface ContactFormProps {
 
 export function ContactForm({ contact, onSave, onDelete }: ContactFormProps) {
   const { toast } = useToast();
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: contact,
   });
 
-  async function onSubmit(values: ContactFormData) {
+  // Keep form in sync with external changes
+  useEffect(() => {
+    form.reset(contact);
+  }, [contact, form]);
+  
+
+  const onSubmit = (values: ContactFormData) => {
     onSave(values);
-    toast({
-      title: "Contact Detail Saved!",
-      description: `The contact detail "${values.text}" has been updated.`,
-    });
-  }
+    setIsEditing(false);
+  };
+  
+  const handleCancel = () => {
+    form.reset(contact); // Reset to original values
+    setIsEditing(false);
+  };
 
   return (
     <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardHeader className="flex flex-row items-start justify-between">
-            <div>
-              <CardTitle>Edit Contact Detail</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-lg">{contact.text}</CardTitle>
+            <div className="flex items-center gap-2">
+                {!isEditing && (
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>Edit</Button>
+                )}
+                 <DeleteContactAlert 
+                    contact={contact} 
+                    onDelete={() => onDelete(contact.id)} 
+                />
             </div>
-             <DeleteContactAlert 
-                contact={contact} 
-                onDelete={() => onDelete(contact.id)} 
-            />
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-0">
-             <FormField
+          {isEditing && (
+            <>
+                <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                    control={form.control}
+                    name="iconName"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Icon</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select an icon" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                {iconNames.map(name => (
+                                    <SelectItem key={name} value={name}>{name}</SelectItem>
+                                ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
                 control={form.control}
-                name="iconName"
+                name="text"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Icon</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select an icon" />
-                            </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                            {iconNames.map(name => (
-                                <SelectItem key={name} value={name}>{name}</SelectItem>
-                            ))}
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
+                    <FormLabel>Display Text</FormLabel>
+                    <FormControl>
+                        <Input placeholder="your.email@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
                     </FormItem>
                 )}
-            />
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Display Text</FormLabel>
-                  <FormControl>
-                    <Input placeholder="your.email@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="href"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Link (href)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="mailto:your.email@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
-            </Button>
-          </CardFooter>
+                />
+                <FormField
+                control={form.control}
+                name="href"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Link (href)</FormLabel>
+                    <FormControl>
+                        <Input placeholder="mailto:your.email@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </CardContent>
+            <CardFooter className="gap-2">
+                <Button type="submit">Save</Button>
+                <Button type="button" variant="ghost" onClick={handleCancel}>Cancel</Button>
+            </CardFooter>
+           </>
+          )}
         </form>
       </Form>
     </Card>

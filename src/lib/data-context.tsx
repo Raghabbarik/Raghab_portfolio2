@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import type { Project, Skill, Service, About, ContactDetail } from '@/lib/definitions';
 import {
   projects as initialProjects,
@@ -22,6 +22,7 @@ interface DataContextType {
   setAbout: React.Dispatch<React.SetStateAction<About>>;
   contactDetails: ContactDetail[];
   setContactDetails: React.Dispatch<React.SetStateAction<ContactDetail[]>>;
+  saveAllData: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -32,6 +33,17 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [services, setServices] = useState<Service[]>(initialServices);
   const [about, setAbout] = useState<About>(initialAbout);
   const [contactDetails, setContactDetails] = useState<ContactDetail[]>(initialContactDetails);
+
+  const saveAllData = useCallback(async () => {
+    // In a real app, this would be an API call to your backend to save the data.
+    // Here, we'll simulate it with a timeout and log to the console.
+    console.log("Saving all data...", { projects, skills, services, about, contactDetails });
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log("Data saved successfully!");
+    // You could also save to localStorage for persistence in this demo
+    localStorage.setItem('portfolio-data', JSON.stringify({ projects, skills, services, about, contactDetails }));
+  }, [projects, skills, services, about, contactDetails]);
+
 
   return (
     <DataContext.Provider
@@ -46,6 +58,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setAbout,
         contactDetails,
         setContactDetails,
+        saveAllData,
       }}
     >
       {children}

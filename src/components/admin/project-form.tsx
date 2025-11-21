@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { Project } from "@/lib/definitions";
 import { Trash2 } from "lucide-react";
+import React, { useEffect } from "react";
 
 const formSchema = z.object({
   id: z.string(),
@@ -56,7 +57,7 @@ interface ProjectFormProps {
 }
 
 export function ProjectForm({ project, onSave, onDelete }: ProjectFormProps) {
-  const { toast } = useToast();
+  const [isEditing, setIsEditing] = React.useState(project.id.startsWith('new-project'));
 
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(formSchema),
@@ -71,117 +72,149 @@ export function ProjectForm({ project, onSave, onDelete }: ProjectFormProps) {
     },
   });
 
-  async function onSubmit(values: ProjectFormData) {
+  // Keep form in sync with external changes if not editing
+  useEffect(() => {
+    if (!isEditing) {
+      form.reset({
+        id: project.id,
+        title: project.title,
+        description: project.description,
+        technologies: project.technologies.join(", "),
+        liveDemoUrl: project.liveDemoUrl,
+        imageUrl: project.imageUrl,
+        imageHint: project.imageHint,
+      });
+    }
+  }, [project, form, isEditing]);
+
+  const onSubmit = (values: ProjectFormData) => {
     const projectToSave: Project = {
         ...values,
         technologies: values.technologies.split(",").map(t => t.trim()),
     };
     onSave(projectToSave);
-    
-    toast({
-      title: "Project Saved!",
-      description: `The project "${values.title}" has been updated.`,
-    });
-  }
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    if (project.id.startsWith('new-project')) {
+      onDelete(project.id);
+    } else {
+      form.reset({
+        ...project,
+        technologies: project.technologies.join(", "),
+      });
+      setIsEditing(false);
+    }
+  };
 
   return (
-    <Card>
+    <Card className="flex flex-col">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-grow">
           <CardHeader className="flex flex-row items-start justify-between">
             <div>
-              <CardTitle>Edit Project</CardTitle>
+              <CardTitle>{isEditing ? "Edit Project" : project.title}</CardTitle>
+              {!isEditing && <CardDescription className="truncate">{project.description}</CardDescription>}
             </div>
-            <DeleteProjectAlert 
-                project={project} 
-                onDelete={() => onDelete(project.id)} 
-            />
-          </CardHeader>
-          <CardContent className="space-y-4 pt-0">
-             <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                        <Input placeholder="Project Title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
+            <div className="flex items-center gap-2">
+                {!isEditing && (
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>Edit</Button>
                 )}
+                 <DeleteProjectAlert 
+                    project={project} 
+                    onDelete={() => onDelete(project.id)} 
                 />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Describe your project" {...field} className="min-h-[100px]" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="technologies"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tags (comma-separated)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="React, Next.js, Tailwind CSS" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://images.unsplash.com/..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="imageHint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image Hint</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. 'adventure website'" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="liveDemoUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Live Demo URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
-            </Button>
-          </CardFooter>
+            </div>
+          </CardHeader>
+          {isEditing && (
+              <>
+                <CardContent className="space-y-4 flex-grow">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Title</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Project Title" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                            <Textarea placeholder="Describe your project" {...field} className="min-h-[100px]" />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="technologies"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Tags (comma-separated)</FormLabel>
+                        <FormControl>
+                            <Input placeholder="React, Next.js, Tailwind CSS" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="imageUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Image URL</FormLabel>
+                        <FormControl>
+                            <Input placeholder="https://images.unsplash.com/..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="imageHint"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Image Hint</FormLabel>
+                        <FormControl>
+                            <Input placeholder="e.g. 'adventure website'" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="liveDemoUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Live Demo URL</FormLabel>
+                        <FormControl>
+                            <Input placeholder="https://example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                </CardContent>
+                <CardFooter className="gap-2">
+                    <Button type="submit">Save</Button>
+                    <Button type="button" variant="ghost" onClick={handleCancel}>Cancel</Button>
+                </CardFooter>
+            </>
+          )}
         </form>
       </Form>
     </Card>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -22,7 +23,9 @@ import type {
     Skill,
 } from "@/lib/definitions";
 import { useData } from "@/lib/data-context";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Save, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 function ProjectsTab() {
   const { projects, setProjects } = useData();
@@ -46,7 +49,7 @@ function ProjectsTab() {
       imageUrl: "new-project-placeholder",
       imageHint: "new project",
     };
-    setProjects((prev) => [...prev, newProject]);
+    setProjects((prev) => [newProject, ...prev]);
   };
 
   return (
@@ -66,14 +69,16 @@ function ProjectsTab() {
         </Button>
       </div>
 
-      {projects.map((project) => (
-        <ProjectForm
-          key={project.id}
-          project={project}
-          onSave={handleSave}
-          onDelete={handleDelete}
-        />
-      ))}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectForm
+            key={project.id}
+            project={project}
+            onSave={handleSave}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -91,11 +96,11 @@ function SkillsTab() {
 
   const handleAdd = () => {
     const newSkill: Skill = {
-      name: `New Skill ${Date.now()}`,
+      name: `New Skill ${skills.length + 1}`,
       level: 50,
       icon: PlusCircle,
     };
-    setSkills((prev) => [...prev, newSkill]);
+    setSkills((prev) => [newSkill, ...prev]);
   };
 
   return (
@@ -115,14 +120,16 @@ function SkillsTab() {
         </Button>
       </div>
 
-      {skills.map((skill) => (
-        <SkillForm
-          key={skill.name}
-          skill={skill}
-          onSave={handleSave}
-          onDelete={handleDelete}
-        />
-      ))}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {skills.map((skill) => (
+          <SkillForm
+            key={skill.name}
+            skill={skill}
+            onSave={handleSave}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -142,11 +149,11 @@ function ServicesTab() {
 
   const handleAdd = () => {
     const newService: Service = {
-      title: `New Service ${Date.now()}`,
+      title: `New Service ${services.length + 1}`,
       description: "",
       icon: PlusCircle,
     };
-    setServices((prev) => [...prev, newService]);
+    setServices((prev) => [newService, ...prev]);
   };
 
   return (
@@ -164,14 +171,16 @@ function ServicesTab() {
         </Button>
       </div>
 
-      {services.map((service) => (
-        <ServiceForm
-          key={service.title}
-          service={service}
-          onSave={handleSave}
-          onDelete={handleDelete}
-        />
-      ))}
+       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {services.map((service) => (
+          <ServiceForm
+            key={service.title}
+            service={service}
+            onSave={handleSave}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -216,7 +225,7 @@ function SettingsTab() {
       text: "new.contact@example.com",
       href: "mailto:new.contact@example.com",
     };
-    setContactDetails((prev) => [...prev, newContact]);
+    setContactDetails((prev) => [newContact, ...prev]);
   };
 
   return (
@@ -235,38 +244,82 @@ function SettingsTab() {
           </span>
         </Button>
       </div>
-      {contactDetails.map((contact) => (
-        <AdminContactForm
-          key={contact.id}
-          contact={contact}
-          onSave={handleSave}
-          onDelete={handleDelete}
-        />
-      ))}
+      <div className="space-y-4">
+        {contactDetails.map((contact) => (
+          <AdminContactForm
+            key={contact.id}
+            contact={contact}
+            onSave={handleSave}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function DashboardPage() {
+  const { toast } = useToast();
+  const [isSaving, setIsSaving] = useState(false);
+  const { saveAllData } = useData();
+
+  const handleSaveAll = async () => {
+    setIsSaving(true);
+    try {
+      await saveAllData();
+      toast({
+        title: "Success!",
+        description: "All your changes have been saved.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Could not save changes.",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+
   return (
     <div className="flex flex-col gap-4">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          Admin Dashboard
-        </h1>
-        <p className="text-muted-foreground md:text-xl/relaxed">
-          Manage your portfolio content here.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            Admin Dashboard
+          </h1>
+          <p className="text-muted-foreground md:text-xl/relaxed">
+            Manage your portfolio content here.
+          </p>
+        </div>
+        <Button onClick={handleSaveAll} disabled={isSaving}>
+          {isSaving ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="mr-2 h-4 w-4" />
+              Save All Changes
+            </>
+          )}
+        </Button>
       </div>
 
       <Tabs defaultValue="projects" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="skills">Skills</TabsTrigger>
-          <TabsTrigger value="services">Services</TabsTrigger>
-          <TabsTrigger value="about">About</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full">
+            <TabsList className="grid w-max grid-flow-col gap-4">
+              <TabsTrigger value="projects">Projects</TabsTrigger>
+              <TabsTrigger value="skills">Skills</TabsTrigger>
+              <TabsTrigger value="services">Services</TabsTrigger>
+              <TabsTrigger value="about">About</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+            </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
         <TabsContent value="projects" className="mt-4">
           <ProjectsTab />
         </TabsContent>
