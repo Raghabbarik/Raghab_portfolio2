@@ -17,7 +17,7 @@ export default function ServicesSection() {
             your digital ideas to life.
           </p>
         </div>
-        <div className="mx-auto grid max-w-5xl items-start gap-8 py-12 sm:grid-cols-2 md:gap-12 lg:grid-cols-2">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 py-12 sm:grid-cols-2 md:gap-12">
           {services.map((service) => (
             <Card
               key={service.title}
