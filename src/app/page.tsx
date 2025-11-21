@@ -10,7 +10,6 @@ import Footer from "@/components/footer";
 export default function Home() {
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
-      <Header />
       <main className="flex-1">
         <HeroSection />
         <AboutSection />
@@ -20,6 +19,7 @@ export default function Home() {
         <ContactSection />
       </main>
       <Footer />
+      <Header />
     </div>
   );
 }
