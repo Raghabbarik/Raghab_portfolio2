@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { ArrowDown } from "lucide-react";
+import { Hand } from "lucide-react";
 
 export default function HeroSection() {
   const profilePic = PlaceHolderImages.find(
@@ -10,51 +10,52 @@ export default function HeroSection() {
   );
 
   return (
-    <section
-      id="hero"
-      className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center text-center overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-transparent z-10" />
-      <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-      <div className="absolute -bottom-1/2 left-1/2 -translate-x-1/2 w-[200%] h-[100%] bg-[radial-gradient(circle_at_center,_hsl(var(--primary))_0%,_transparent_30%)] opacity-20" />
+    <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-background z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] opacity-60 z-20" />
 
-      <div className="container relative z-20 flex flex-col items-center gap-6 px-4 md:px-6">
-        {profilePic && (
-          <Image
-            src={profilePic.imageUrl}
-            alt={profilePic.description}
-            data-ai-hint={profilePic.imageHint}
-            width={128}
-            height={128}
-            className="rounded-full border-4 border-card shadow-lg aspect-square object-cover"
-            priority
-          />
-        )}
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline">
-            Raghab Barik
-          </h1>
-          <p className="text-lg md:text-xl text-primary font-medium">
-            Full-Stack Web Developer | UI/UX Designer | Template Designer
-          </p>
-        </div>
-        <p className="max-w-[700px] text-muted-foreground md:text-lg">
-          Crafting modern digital experiences with clean design and powerful
-          functionality.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button asChild size="lg">
-            <Link href="#portfolio">View My Work</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link href="#contact">Hire Me</Link>
-          </Button>
-        </div>
-      </div>
-      <div className="absolute bottom-8 z-20">
-        <Link href="#about" aria-label="Scroll to about section">
-          <ArrowDown className="h-8 w-8 text-muted-foreground animate-bounce" />
-        </Link>
+      <div className="container relative z-30 px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6">
+                <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
+                    <Hand className="h-5 w-5 text-primary animate-bounce"/>
+                    <span>Hey, I'm Raghab</span>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Full-Stack</span>
+                    <br />
+                    Developer
+                </h1>
+                <p className="max-w-md text-muted-foreground md:text-lg">
+                    Crafting modern digital experiences with clean design and powerful functionality.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild size="lg" className="bg-primary/90 hover:bg-primary">
+                        <Link href="#contact">Get In Touch</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="bg-transparent border-primary/50 hover:bg-primary/10 hover:text-primary-foreground">
+                        <Link href="#portfolio">Browse Projects</Link>
+                    </Button>
+                </div>
+              </div>
+              <div className="relative flex justify-center items-center">
+                {profilePic && (
+                    <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/50 to-purple-600/50 blur-2xl animate-pulse" />
+                        <Image
+                            src={profilePic.imageUrl}
+                            alt={profilePic.description}
+                            data-ai-hint={profilePic.imageHint}
+                            width={400}
+                            height={400}
+                            className="relative rounded-full border-4 border-primary/20 shadow-2xl aspect-square object-cover"
+                            priority
+                            style={{ filter: 'grayscale(100%)' }}
+                        />
+                    </div>
+                )}
+              </div>
+          </div>
       </div>
     </section>
   );
