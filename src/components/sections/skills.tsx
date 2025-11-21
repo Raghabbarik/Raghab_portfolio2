@@ -14,22 +14,24 @@ export default function SkillsSection() {
             <div className="mx-auto w-[100px] h-1.5 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full" />
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 py-12 sm:grid-cols-2 md:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 py-12 sm:grid-cols-2">
           {skills.map((skill) => (
             <Card
               key={skill.name}
               className="group transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2 p-6"
             >
-              <CardHeader className="p-0 flex flex-row items-center gap-4 space-y-0">
-                  <skill.icon className="w-8 h-8 text-primary" />
-                <CardTitle className="text-lg font-semibold">{skill.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 mt-4 space-y-2">
+              <CardHeader className="p-0 flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-4">
+                    <skill.icon className="w-8 h-8 text-primary" />
+                    <CardTitle className="text-lg font-semibold">{skill.name}</CardTitle>
+                  </div>
+                   <p className="text-sm text-muted-foreground font-semibold">
+                    {skill.level}%
+                  </p>
+                </div>
                 <Progress value={skill.level} className="h-2" />
-                <p className="text-right text-sm text-muted-foreground">
-                  {skill.level}%
-                </p>
-              </CardContent>
+              </CardHeader>
             </Card>
           ))}
         </div>
