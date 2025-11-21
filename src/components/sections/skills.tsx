@@ -1,6 +1,5 @@
 import { skills } from "@/lib/data";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function SkillsSection() {
   return (
@@ -14,25 +13,22 @@ export default function SkillsSection() {
             <div className="mx-auto w-[100px] h-1.5 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full" />
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 sm:grid-cols-2">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 py-12 sm:grid-cols-2 md:grid-cols-4">
           {skills.map((skill) => (
             <Card
               key={skill.name}
-              className="p-6 transition-all duration-300 border-border/20 hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-2 hover:border-primary/30"
+              className="group transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2 text-center"
             >
-              <CardHeader className="flex flex-row items-center justify-between p-0 pb-4">
-                <div className="flex items-center gap-4">
-                  <skill.icon className="w-8 h-8 text-primary" />
-                  <h3 className="text-lg font-semibold">{skill.name}</h3>
+              <CardHeader className="flex flex-col items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <skill.icon className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
+                <CardTitle>{skill.name}</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="flex items-center gap-4">
-                  <Progress value={skill.level} className="h-2 flex-1" />
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {skill.level}%
-                  </span>
-                </div>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Proficiency: {skill.level}%
+                </p>
               </CardContent>
             </Card>
           ))}
