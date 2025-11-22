@@ -76,7 +76,7 @@ function DockItem({
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`relative inline-flex cursor-pointer items-center justify-center rounded-full bg-primary border-border/20 border-2 shadow-lg ${className}`}
+      className={`relative inline-flex cursor-pointer items-center justify-center rounded-full bg-primary border-border/20 border-2 shadow-lg cursor-target ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -178,13 +178,4 @@ export default function Dock({
             spring={spring}
             distance={distance}
             magnification={magnification}
-            baseItemSize={baseItemSize}
-          >
-            <DockIcon>{item.icon}</DockIcon>
-            <DockLabel>{item.label}</DockLabel>
-          </DockItem>
-        ))}
-      </motion.div>
-    </motion.div>
-  );
-}
+            baseItemSize={baseItemSiz...

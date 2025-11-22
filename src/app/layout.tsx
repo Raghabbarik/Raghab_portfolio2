@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import "./utils.css";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { DataProvider } from "@/lib/data-context";
+import TargetCursor from "@/components/target-cursor";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -36,10 +39,11 @@ export default function RootLayout({
         )}
       >
         <DataProvider>
+          <TargetCursor 
+            spinDuration={2}
+            hideDefaultCursor={true}
+            parallaxOn={true}
+          />
           {children}
           <Toaster />
         </DataProvider>
-      </body>
-    </html>
-  );
-}
