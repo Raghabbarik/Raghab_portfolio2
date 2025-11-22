@@ -17,6 +17,18 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 
+function isValidHttpUrl(string: string | undefined) {
+  if (!string) return false;
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
+
 export default function PortfolioSection() {
   const { projects, isDataLoaded } = useData();
 
@@ -58,7 +70,7 @@ export default function PortfolioSection() {
         </div>
         <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-2 gap-8 py-12">
           {projects.map((project) => {
-            const hasValidImage = project.imageUrl && project.imageUrl.length > 0;
+            const hasValidImage = isValidHttpUrl(project.imageUrl);
             return (
               <Card
                 key={project.id}
