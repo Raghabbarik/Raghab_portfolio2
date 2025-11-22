@@ -1,4 +1,14 @@
-import { LoginForm } from "@/components/admin/login-form";
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const LoginForm = dynamic(() => import('@/components/admin/login-form').then(mod => mod.LoginForm), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full max-w-sm">
+      <Skeleton className="h-[450px] w-full" />
+    </div>
+  )
+});
 
 export default function AdminLoginPage() {
   return (
