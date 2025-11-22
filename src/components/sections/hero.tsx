@@ -7,10 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Hand } from "lucide-react";
 import BallpitBackground from "@/components/ballpit-background";
 import { useData } from "@/lib/data-context";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function HeroSection() {
   const { about } = useData();
   const firstName = about.description.split(" ")[2] || "Raghab";
+
+  const profileImage = PlaceHolderImages.find(
+    (img) => img.id === about.profileImageUrl
+  );
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
@@ -42,11 +47,11 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="relative flex justify-center items-center">
-                {about.profileImageUrl && (
+                {profileImage && (
                     <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
                         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/50 to-purple-600/50 blur-2xl animate-pulse" />
                         <Image
-                            src={about.profileImageUrl}
+                            src={profileImage.imageUrl}
                             alt="Profile Picture"
                             data-ai-hint={about.profileImageHint}
                             width={400}

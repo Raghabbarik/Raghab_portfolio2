@@ -43,7 +43,7 @@ const formSchema = z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters." }),
   technologies: z.string().min(1, { message: "Please add at least one technology." }),
   liveDemoUrl: z.string().url().optional().or(z.literal('')),
-  imageUrl: z.string().min(1, { message: "Image URL is required." }),
+  imageUrl: z.string().min(1, { message: "Image ID is required." }),
   imageHint: z.string().min(1, { message: "Image hint is required." })
 });
 

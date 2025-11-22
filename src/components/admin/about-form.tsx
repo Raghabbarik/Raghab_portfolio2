@@ -35,9 +35,9 @@ const formSchema = z.object({
     role: z.string().min(1, "Role is required."),
     company: z.string().min(1, "Company is required."),
   }),
-  profileImageUrl: z.string().url("Please enter a valid URL."),
+  profileImageUrl: z.string().min(1, "Image ID is required."),
   profileImageHint: z.string().min(1, "Profile image hint is required."),
-  aboutImageUrl: z.string().url("Please enter a valid URL."),
+  aboutImageUrl: z.string().min(1, "Image ID is required."),
   aboutImageHint: z.string().min(1, "About image hint is required."),
 });
 
@@ -115,9 +115,9 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
                     name="profileImageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Profile Image URL</FormLabel>
+                        <FormLabel>Profile Image Placeholder ID</FormLabel>
                         <FormControl>
-                          <Input placeholder="https://..." {...field} />
+                          <Input placeholder="e.g. 'profile-picture'" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -141,9 +141,9 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
                     name="aboutImageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>About Section Image URL</FormLabel>
+                        <FormLabel>About Section Image Placeholder ID</FormLabel>
                         <FormControl>
-                          <Input placeholder="https://..." {...field} />
+                          <Input placeholder="e.g. 'about-image'" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
