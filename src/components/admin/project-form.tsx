@@ -41,13 +41,8 @@ export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: project.id,
-      title: project.title,
-      description: project.description,
+      ...project,
       technologies: project.technologies.join(", "),
-      imageUrl: project.imageUrl,
-      imageHint: project.imageHint,
-      liveDemoUrl: project.liveDemoUrl,
     },
   });
 
@@ -157,5 +152,3 @@ export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
       </Form>
   );
 }
-
-    
