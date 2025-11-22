@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -74,7 +73,6 @@ export default function HeroSection() {
                         fill
                         className="object-cover"
                         priority
-                        style={{ filter: 'grayscale(100%)' }}
                       />
                     </div>
                   </div>
