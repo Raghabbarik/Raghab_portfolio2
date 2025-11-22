@@ -56,7 +56,7 @@ interface ProjectFormProps {
 }
 
 export function ProjectForm({ project, onSave, onDelete }: ProjectFormProps) {
-  const [isEditing, setIsEditing] = React.useState(project.id.startsWith('new-project'));
+  const [isEditing, setIsEditing] = React.useState(project.id.startsWith('new-project-'));
 
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(formSchema),
@@ -79,7 +79,6 @@ export function ProjectForm({ project, onSave, onDelete }: ProjectFormProps) {
   const onSubmit = (values: ProjectFormData) => {
     const projectToSave: Project = {
         ...values,
-        id: values.id.startsWith('new-project-') ? values.title.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now() : values.id,
         technologies: values.technologies.split(",").map(t => t.trim()),
     };
     onSave(projectToSave);

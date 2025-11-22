@@ -88,7 +88,6 @@ export function SkillForm({ skill, onSave, onDelete }: SkillFormProps) {
   async function onSubmit(values: SkillFormData) {
     const skillToSave: Skill = {
       ...values,
-      id: values.id.startsWith('new-skill-') ? values.name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now() : values.id,
       icon: getIcon(values.icon),
     };
     onSave(skillToSave);

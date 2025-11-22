@@ -88,7 +88,6 @@ export function ServiceForm({ service, onSave, onDelete }: ServiceFormProps) {
   const onSubmit = (values: ServiceFormData) => {
     const serviceToSave: Service = {
         ...values,
-        id: values.id.startsWith('new-service-') ? values.title.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now() : values.id,
         icon: getIcon(values.icon),
     };
     onSave(serviceToSave);
