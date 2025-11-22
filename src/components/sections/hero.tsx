@@ -61,7 +61,7 @@ export default function HeroSection() {
                     />
                     <TextType
                       text={["Web Developer"]}
-                      className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600"
+                      className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 md:-ml-8"
                       typingSpeed={100}
                       pauseDuration={Infinity}
                       initialDelay={1500}
