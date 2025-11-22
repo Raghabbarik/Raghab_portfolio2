@@ -61,18 +61,7 @@ export const services: Service[] = [
   },
 ];
 
-export const projects: Project[] = [
-  {
-    id: "wonderlight-adventure",
-    title: "Wonderlight Adventure — Startup Website",
-    description:
-      "A modern website developed for the Wonderlight Adventure startup. My design approach focused on creating an immersive and visually appealing experience that captures the spirit of adventure. The site is fully responsive, ensuring a seamless experience across all devices.",
-    technologies: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
-    imageUrl: "https://images.unsplash.com/photo-1728781634584-24f709295ae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhZHZlbnR1cmUlMjB3ZWJzaXRlfGVufDB8fHx8MTc2MzcyNTI0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-    imageHint: "adventure website",
-    liveDemoUrl: "#",
-  },
-];
+export const projects: Project[] = [];
 
 export const about: About = {
   tagline: "About Me",
