@@ -67,7 +67,7 @@ export function ProjectCardPreview({ project }: ProjectCardPreviewProps) {
           </div>
         </CardContent>
         <CardFooter className="p-0 mt-6">
-          {project.liveDemoUrl ? (
+          {project.liveDemoUrl && project.liveDemoUrl.length > 0 ? (
             <Button asChild>
               <Link
                 href={project.liveDemoUrl}
@@ -87,3 +87,4 @@ export function ProjectCardPreview({ project }: ProjectCardPreviewProps) {
     </Card>
   );
 }
+
