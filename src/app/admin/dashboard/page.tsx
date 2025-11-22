@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -23,44 +24,96 @@ import type {
     Skill,
 } from "@/lib/definitions";
 import { useData } from "@/lib/data-context";
-import { PlusCircle, Save, Loader2 } from "lucide-react";
+import { PlusCircle, Save, Loader2, Trash2, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ProjectCardPreview } from "@/components/admin/project-card-preview";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
+
+function AdminProjectCard({ project, onEdit, onDelete }: { project: Project; onEdit: () => void; onDelete: () => void; }) {
+    return (
+        <div className="relative group">
+            <ProjectCardPreview project={project} />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                 <Button variant="outline" size="sm" onClick={onEdit}>
+                    <Edit className="mr-2 h-4 w-4" /> Edit
+                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm">
+                            <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete the project "{project.title}".
+                        </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            onClick={onDelete}
+                        >
+                            Delete
+                        </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </div>
+        </div>
+    );
+}
 
 function ProjectsTab() {
   const { projects, setProjects } = useData();
   const { toast } = useToast();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
-    if (!selectedProject && projects.length > 0) {
-      setSelectedProject(projects[0]);
-    } else if (selectedProject) {
-        const updatedSelected = projects.find(p => p.id === selectedProject.id);
-        setSelectedProject(updatedSelected || (projects.length > 0 ? projects[0] : null));
+    if (!isDialogOpen) {
+        setEditingProject(null);
     }
-  }, [projects, selectedProject]);
+  }, [isDialogOpen]);
 
   const handleSave = (updatedProject: Project) => {
-    setProjects((prev) =>
-      prev.map((p) => (p.id === updatedProject.id ? updatedProject : p))
-    );
-     toast({
+    setProjects((prev) => {
+        const exists = prev.some(p => p.id === updatedProject.id);
+        if (exists) {
+            return prev.map((p) => (p.id === updatedProject.id ? updatedProject : p));
+        }
+        return [updatedProject, ...prev];
+    });
+    setIsDialogOpen(false);
+    toast({
       title: "Project Saved!",
-      description: `The project "${updatedProject.title}" has been updated.`,
+      description: `The project "${updatedProject.title}" has been saved.`,
     });
   };
 
   const handleDelete = (projectId: string) => {
-    setProjects((prev) => {
-        const newProjects = prev.filter((p) => p.id !== projectId);
-         if (selectedProject?.id === projectId) {
-            setSelectedProject(newProjects.length > 0 ? newProjects[0] : null);
-        }
-        return newProjects;
-    });
+    setProjects((prev) => prev.filter((p) => p.id !== projectId));
     toast({
       variant: "destructive",
       title: "Project Deleted",
@@ -73,21 +126,23 @@ function ProjectsTab() {
       id: `new-project-${Date.now()}`,
       title: "New Project",
       description: "A brief description of your awesome new project.",
-      technologies: ["Next.js", "TypeScript"],
-      imageUrl: "new-project",
-      imageHint: "tech project",
+      technologies: [],
+      imageUrl: "",
+      imageHint: "",
       liveDemoUrl: "",
     };
-    setProjects((prev) => [newProject, ...prev]);
-    setSelectedProject(newProject);
-    toast({
-        title: "New Project Added",
-        description: "You can now edit the new project's details.",
-    });
+    setEditingProject(newProject);
+    setIsDialogOpen(true);
   };
-
-  const handleProjectSelect = (project: Project) => {
-      setSelectedProject(project);
+  
+  const handleEdit = (project: Project) => {
+      setEditingProject(project);
+      setIsDialogOpen(true);
+  }
+  
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    setEditingProject(null);
   }
 
   return (
@@ -99,43 +154,40 @@ function ProjectsTab() {
             Add, edit, or remove projects from your portfolio.
           </p>
         </div>
-        <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
-          <PlusCircle className="h-3.5 w-3.5" />
-          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Add Project
-          </span>
+         <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
+            <PlusCircle className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add Project
+            </span>
         </Button>
       </div>
 
-       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-         <ScrollArea className="h-[60vh]">
-            <div className="space-y-6 pr-4">
+       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project) => (
-                <ProjectForm
-                    key={project.id}
-                    project={project}
-                    onSave={handleSave}
-                    onDelete={handleDelete}
-                    onSelect={() => handleProjectSelect(project)}
-                    isSelected={selectedProject?.id === project.id}
-                />
+                    <AdminProjectCard 
+                        key={project.id} 
+                        project={project}
+                        onEdit={() => handleEdit(project)}
+                        onDelete={() => handleDelete(project.id)}
+                    />
                 ))}
             </div>
-         </ScrollArea>
-        
-        <div className="hidden lg:block">
-            <h3 className="text-lg font-semibold mb-4 text-muted-foreground">Live Preview</h3>
-            <div className="sticky top-24">
-                {selectedProject ? (
-                    <ProjectCardPreview project={selectedProject} />
-                ) : (
-                    <Card className="flex items-center justify-center h-96 border-dashed">
-                        <p className="text-muted-foreground">Select a project to preview</p>
-                    </Card>
-                )}
-            </div>
-        </div>
-      </div>
+            {editingProject && (
+                <DialogContent className="max-w-3xl">
+                    <DialogHeader>
+                        <DialogTitle>{editingProject.id.startsWith('new-') ? 'Add New Project' : 'Edit Project'}</DialogTitle>
+                    </DialogHeader>
+                    <div className="max-h-[70vh] overflow-y-auto p-1 pr-4">
+                        <ProjectForm
+                            project={editingProject}
+                            onSave={handleSave}
+                            onCancel={handleDialogClose}
+                        />
+                    </div>
+                </DialogContent>
+            )}
+       </Dialog>
     </div>
   );
 }
@@ -447,3 +499,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
