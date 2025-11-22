@@ -9,9 +9,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useData } from "@/lib/data-context";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Briefcase, GraduationCap } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
+
+function isValidHttpUrl(string: string | undefined) {
+  if (!string) return false;
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
 
 export default function AboutSection() {
   const { about, isDataLoaded } = useData();
@@ -30,23 +41,25 @@ export default function AboutSection() {
       </section>
     )
   }
-
-  const aboutImage = PlaceHolderImages.find(
-    (img) => img.id === about.aboutImageUrl
-  );
+  
+  const hasValidImage = isValidHttpUrl(about.aboutImageUrl);
 
   return (
     <section id="about" className="w-full py-16 md:py-24 lg:py-32 bg-card">
       <div className="container grid items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20">
         <div className="relative h-full min-h-[400px] lg:min-h-[500px]">
-          {aboutImage && (
+          {hasValidImage ? (
             <Image
-              src={aboutImage.imageUrl}
+              src={about.aboutImageUrl}
               alt="About me image"
               data-ai-hint={about.aboutImageHint}
               fill
               className="rounded-lg object-cover shadow-lg"
             />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-muted rounded-lg">
+                <p className="text-muted-foreground">No image available</p>
+            </div>
           )}
         </div>
         <div className="space-y-6">

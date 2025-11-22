@@ -38,7 +38,7 @@ const formSchema = z.object({
   }),
   profileImageUrl: z.string().url("Please enter a valid URL."),
   profileImageHint: z.string().min(1, "Profile image hint is required."),
-  aboutImageUrl: z.string().min(1, "Image ID is required."),
+  aboutImageUrl: z.string().url("Please enter a valid URL."),
   aboutImageHint: z.string().min(1, "About image hint is required."),
 });
 
@@ -142,9 +142,9 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
                     name="aboutImageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>About Section Image Placeholder ID</FormLabel>
+                        <FormLabel>About Section Image URL</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. 'about-image'" {...field} />
+                          <Input placeholder="https://images.unsplash.com/..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

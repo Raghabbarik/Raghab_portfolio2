@@ -73,7 +73,7 @@ export const about: About = {
   },
   profileImageUrl: "https://images.unsplash.com/photo-1607031542107-f6f46b5d54e9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjM3MDc5ODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
   profileImageHint: "man portrait",
-  aboutImageUrl: "about-image",
+  aboutImageUrl: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjb2RlJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzYzNjQ5NTEyfDA&ixlib=rb-4.1.0&q=80&w=1080",
   aboutImageHint: "code abstract",
 }
 
