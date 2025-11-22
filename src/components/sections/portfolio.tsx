@@ -40,7 +40,7 @@ export default function PortfolioSection() {
                 className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-border/20 flex flex-col"
               >
                 <div className="relative group aspect-video bg-muted">
-                 {project.imageUrl ? (
+                 {project.imageUrl && project.imageUrl.length > 0 ? (
                     <Image
                       src={project.imageUrl}
                       alt={project.title}
