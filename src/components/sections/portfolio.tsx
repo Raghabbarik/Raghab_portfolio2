@@ -18,6 +18,11 @@ import { ArrowRight } from "lucide-react";
 
 export default function PortfolioSection() {
   const { projects } = useData();
+
+  const getProjectImage = (imageUrl: string) => {
+    return PlaceHolderImages.find((img) => img.id === imageUrl);
+  };
+  
   return (
     <section id="portfolio" className="w-full py-16 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
@@ -32,10 +37,8 @@ export default function PortfolioSection() {
           </div>
         </div>
         <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-2 gap-8 py-12">
-          {projects.map((project) => {
-            const projectImage = PlaceHolderImages.find(
-              (img) => img.id === project.imageUrl
-            );
+          {projects.filter(p => getProjectImage(p.imageUrl)).map((project) => {
+            const projectImage = getProjectImage(project.imageUrl);
             return (
               <Card
                 key={project.id}
