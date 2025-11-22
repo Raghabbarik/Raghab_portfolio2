@@ -58,13 +58,14 @@ export default function PortfolioSection() {
         </div>
         <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-2 gap-8 py-12">
           {projects.map((project) => {
+            const hasValidImage = project.imageUrl && project.imageUrl.length > 0;
             return (
               <Card
                 key={project.id}
                 className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-border/20 flex flex-col"
               >
                 <div className="relative group aspect-video bg-muted">
-                 {project.imageUrl && project.imageUrl.length > 0 ? (
+                 {hasValidImage ? (
                     <Image
                       src={project.imageUrl}
                       alt={project.title}
