@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,7 +46,7 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // This is a mock login. In a real app, you'd authenticate against a server.
-    if (values.email === "admin@example.com" && values.password === "admin") {
+    if (values.email === "rraghabbarik@gmail.com" && values.password === "admin") {
       toast({
         title: "Login Successful",
         description: "Redirecting to your dashboard...",
@@ -82,7 +83,7 @@ export function LoginForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="admin@example.com" {...field} />
+                    <Input placeholder="your.email@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
