@@ -24,11 +24,56 @@ type ShuffleProps = {
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+// ScrambleTextPlugin for GSAP
+const ScrambleTextPlugin = {
+  name: "scrambleText",
+  version: "3.12.5",
+  init(target: any, config: any) {
+    this.target = target;
+    this.vars = config;
+    this.chars = config.chars || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    this.speed = config.speed || 1;
+    this.originalText = target.textContent;
+    this.text = config.text || this.originalText;
+    this.tweenLength = config.tweenLength !== false && this.originalText.length !== this.text.length;
+    this.progress = 0;
+    this.scrambling = false;
+  },
+
+  render(progress: number, data: any) {
+    const { target, text, originalText, chars, speed, tweenLength } = data.vars;
+    let newText = "";
+    const originalLength = originalText.length;
+    const newLength = text.length;
+
+    let l = originalLength;
+    if (tweenLength) {
+      l = Math.round(originalLength + (newLength - originalLength) * progress);
+    }
+    
+    let p = originalLength * progress * speed;
+
+    if(progress === 1) {
+        newText = text;
+    } else {
+        for (let i = 0; i < l; i++) {
+            if (i < p) {
+                newText += text[i] || "";
+            } else {
+                newText += chars[Math.floor(Math.random() * chars.length)];
+            }
+        }
+    }
+    data.target.textContent = newText;
+  }
+};
+
+
 const Shuffle = memo(
   ({
     text,
     className = "",
-    shuffleDirection = "left",
+    shuffleDirection = "right",
     duration = 0.5,
     animationMode = "chars",
     shuffleTimes = 1,
@@ -52,13 +97,15 @@ const Shuffle = memo(
       if (!el) return [];
       switch (animationMode) {
         case "chars":
-          return el.querySelectorAll(".char");
+          return Array.from(el.querySelectorAll(".char"));
         case "words":
-          return el.querySelectorAll(".word");
+          return Array.from(el.querySelectorAll(".word"));
         case "lines":
-          return el.querySelectorAll(".line");
+          return Array.from(el.querySelectorAll(".line"));
         case "evenodd":
-            return el.querySelectorAll(".char:nth-of-type(even), .char:nth-of-type(odd)");
+            const even = Array.from(el.querySelectorAll(".char:nth-of-type(2n)"));
+            const odd = Array.from(el.querySelectorAll(".char:nth-of-type(2n+1)"));
+            return [odd, even];
         default:
           return [el];
       }
@@ -75,10 +122,10 @@ const Shuffle = memo(
             let result = '';
             inputText.split(' ').forEach(word => {
                 result += '<span class="word-wrapper" style="display:inline-block;">';
-                result += word.split('').map(char => `<span class="char-wrapper" style="display:inline-block; overflow:hidden;"><span class="char">${char}</span></span>`).join('');
+                result += word.split('').map(char => `<span class="char-wrapper" style="display:inline-block; overflow:hidden;"><span class="char">${char === ' ' ? '&nbsp;' : char}</span></span>`).join('');
                 result += '</span>&nbsp;';
             });
-            return result;
+            return result.slice(0, -6);
         }
         return `<span class="all-wrapper" style="display:inline-block; overflow:hidden;"><span class="all">${inputText}</span></span>`;
     }
@@ -93,44 +140,43 @@ const Shuffle = memo(
         return;
       }
       
-      const originalTexts = Array.from(targets).map(
-        (el) => el.textContent || ""
-      );
-
       const tl = gsap.timeline({
         onComplete: () => {
           isAnimating.current = false;
         },
         delay: delay
       });
+      
+      const staggerValue = typeof stagger === 'number' ? stagger : stagger.each;
 
-      targets.forEach((target, index) => {
-        const el = target as HTMLElement;
-        const originalText = originalTexts[index];
-        if (!originalText) return;
+      targets.flat().forEach((target, index) => {
+          const el = target as HTMLElement;
+          const originalText = el.textContent || "";
+          if (!originalText) return;
+          
+          el.textContent = "";
 
-        tl.to(el, {
-            duration: duration,
-            scrambleText: {
-                text: originalText,
-                chars: CHARS,
-                revealDelay: 0,
-                speed: 0.3,
-                rightToLeft: shuffleDirection === 'right',
-            },
-            ease: ease,
-        }, staggerValue > 0 ? index * staggerValue : 0);
+          tl.to(el, {
+              duration: duration,
+              scrambleText: {
+                  text: originalText,
+                  chars: CHARS,
+                  speed: 1,
+                  rightToLeft: shuffleDirection === 'right',
+              },
+              ease: ease,
+          }, staggerValue > 0 ? index * staggerValue : 0);
       });
     };
-
-    const staggerValue = typeof stagger === 'number' ? stagger : stagger.each;
 
     useEffect(() => {
         if (rootRef.current) {
             gsap.registerPlugin(ScrambleTextPlugin);
             rootRef.current.innerHTML = splitText(text);
+            // Assign ref for useInView
+            ref(rootRef.current);
         }
-    }, [text, animationMode]);
+    }, [text, animationMode, ref]);
 
     useEffect(() => {
       const prefersReducedMotion =
@@ -165,126 +211,3 @@ Shuffle.displayName = "Shuffle";
 
 export default Shuffle;
 
-// ScrambleTextPlugin for GSAP - (c) 2024 GreenSock, Inc. | https://gsap.com
-// Please see license agreement at https://gsap.com/pricing/
-class ScrambleTextPlugin {
-  static version = "3.12.5";
-  static name = "scrambleText";
-  id = "scrambleText";
-  _props = "_scrambleText";
-  _time = 0;
-  _slice:any;
-  _random: any;
-  chars: string;
-  speed: number;
-  newClass: string;
-  revealDelay: number;
-  tweenLength: boolean;
-  rightToLeft: boolean;
-
-  constructor(
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    speed = 1,
-    newClass = "",
-    revealDelay = 0,
-    tweenLength = false,
-    rightToLeft = false
-  ) {
-    this.chars = chars;
-    this.speed = speed;
-    this.newClass = newClass;
-    this.revealDelay = revealDelay;
-    this.tweenLength = tweenLength;
-    this.rightToLeft = rightToLeft;
-  }
-
-  init(target:any, value:any, tween:any) {
-    this._prop = tween.p;
-    this._target = target;
-    let text = target.innerText,
-        isString = typeof(value) === "string",
-        val = isString ? {text: value} : value,
-        newText = val.text || text,
-        l = text.length,
-        newL = newText.length;
-    this._dill = "          ";
-    this._original = text;
-    this._originalLength = l;
-    this._newText = newText;
-    this._newLength = newL;
-    this._chars = val.chars || this.chars;
-    this._speed = (val.speed || this.speed) * 0.016;
-    this._reveal = val.revealDelay || this.revealDelay;
-    this._right = val.rightToLeft || this.rightToLeft;
-    this._tweenLength = !!(val.tweenLength !== false && l !== newL);
-    this._diff = newL - l;
-    if (this.newClass && target.classList) {
-        this._newClass = target.classList.contains(this.newClass) ? "" : this.newClass;
-        if (this._newClass) {
-            target.classList.add(this._newClass);
-        }
-    }
-    this._vars = val;
-    this._props = this._prop.split(",");
-    this._animate = this.animate.bind(this);
-    tween.add(this._animate, 0, this._props);
-  }
-  
-  kill(tween:any) {
-    tween.remove(this._animate);
-    if (this._newClass) {
-        this._target.classList.remove(this._newClass);
-    }
-  }
-
-  animate(progress:number, data:any) {
-    let text = this._original,
-        newText = this._newText,
-        l = this._originalLength,
-        newL = this._newLength,
-        charSet = this._chars,
-        reveal = this._reveal * progress,
-        speed = this._speed,
-        right = this._right,
-        p, i, str;
-
-    if (progress === 1) {
-        str = newText;
-    } else {
-        if (this._tweenLength) {
-            l = Math.round(l + this._diff * progress);
-        }
-        if (right) {
-            p = l - l * progress * speed;
-            p = p < 0 ? 0 : p;
-        } else {
-            p = l * progress * speed;
-        }
-        i = Math.floor(p);
-        str = "";
-        for (let j=0; j<l; j++) {
-            if (right) {
-                if (j >= l - i) {
-                    str = (newText.length > j ? newText[j] : this._dill[j] || " ") + str;
-                } else if (j >= l - p) {
-                    str = charSet[Math.floor(Math.random() * charSet.length)] + str;
-                } else {
-                    str = (text.length > j ? text[j] : this._dill[j] || " ") + str;
-                }
-            } else {
-                if (j < i) {
-                    str += newText.length > j ? newText[j] : this._dill[j] || " ";
-                } else if (j < p) {
-                    str += charSet[Math.floor(Math.random() * charSet.length)];
-                } else {
-                    str += text.length > j ? text[j] : this._dill[j] || " ";
-                }
-            }
-        }
-    }
-    
-    for (i = 0; i < this._props.length; i++) {
-        data[this._props[i]] = str;
-    }
-  }
-}
