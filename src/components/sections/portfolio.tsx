@@ -39,8 +39,8 @@ export default function PortfolioSection() {
                 key={project.id}
                 className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-border/20 flex flex-col"
               >
-                <div className="relative group aspect-video">
-                 {project.imageUrl && (
+                <div className="relative group aspect-video bg-muted">
+                 {project.imageUrl ? (
                     <Image
                       src={project.imageUrl}
                       alt={project.title}
@@ -48,6 +48,10 @@ export default function PortfolioSection() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <p className="text-muted-foreground text-sm">No image available</p>
+                    </div>
                   )}
                 </div>
                 <div className="flex flex-col flex-1 p-6">
