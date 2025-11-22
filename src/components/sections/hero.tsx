@@ -8,9 +8,19 @@ import { Hand } from "lucide-react";
 import BallpitBackground from "@/components/ballpit-background";
 import { useData } from "@/lib/data-context";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Skeleton } from "../ui/skeleton";
 
 export default function HeroSection() {
-  const { about } = useData();
+  const { about, isDataLoaded } = useData();
+  
+  if (!isDataLoaded) {
+    return (
+      <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        <Skeleton className="h-full w-full" />
+      </section>
+    );
+  }
+
   const firstName = about.description.split(" ")[2] || "Raghab";
 
   const profileImage = PlaceHolderImages.find(

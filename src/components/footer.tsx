@@ -1,11 +1,28 @@
+
 "use client";
 
 import Link from "next/link";
 import { useData } from "@/lib/data-context";
 import { getIcon } from "@/lib/get-icon";
+import { Skeleton } from "./ui/skeleton";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
-  const { contactDetails } = useData();
+  const { contactDetails, isDataLoaded } = useData();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted || !isDataLoaded) {
+    return (
+      <footer className="w-full bg-card py-6">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row md:px-6">
+           <Skeleton className="h-5 w-1/3" />
+           <Skeleton className="h-5 w-1/4" />
+        </div>
+      </footer>
+    )
+  }
+
   return (
     <footer className="w-full bg-card py-6">
       <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row md:px-6">

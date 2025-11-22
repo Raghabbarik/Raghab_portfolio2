@@ -1,11 +1,25 @@
+"use client";
+
 import Header from "@/components/header";
-import HeroSection from "@/components/sections/hero";
-import AboutSection from "@/components/sections/about";
-import SkillsSection from "@/components/sections/skills";
-import ServicesSection from "@/components/sections/services";
-import PortfolioSection from "@/components/sections/portfolio";
-import ContactSection from "@/components/sections/contact";
 import Footer from "@/components/footer";
+import dynamic from 'next/dynamic';
+import { Skeleton } from "@/components/ui/skeleton";
+
+const sectionClasses = "w-full py-16 md:py-24 lg:py-32";
+const SectionSkeleton = () => (
+  <section className={sectionClasses}>
+    <div className="container px-4 md:px-6">
+      <Skeleton className="h-[400px] w-full" />
+    </div>
+  </section>
+);
+
+const HeroSection = dynamic(() => import('@/components/sections/hero'), { ssr: false, loading: () => <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden"><Skeleton className="h-full w-full" /></section> });
+const AboutSection = dynamic(() => import('@/components/sections/about'), { ssr: false, loading: () => <SectionSkeleton /> });
+const SkillsSection = dynamic(() => import('@/components/sections/skills'), { ssr: false, loading: () => <SectionSkeleton /> });
+const ServicesSection = dynamic(() => import('@/components/sections/services'), { ssr: false, loading: () => <SectionSkeleton /> });
+const PortfolioSection = dynamic(() => import('@/components/sections/portfolio'), { ssr: false, loading: () => <SectionSkeleton /> });
+const ContactSection = dynamic(() => import('@/components/sections/contact'), { ssr: false, loading: () => <SectionSkeleton /> });
 
 export default function Home() {
   return (

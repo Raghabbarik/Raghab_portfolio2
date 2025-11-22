@@ -1,12 +1,37 @@
+
 "use client";
 
 import Link from "next/link";
 import { useData } from "@/lib/data-context";
 import { getIcon } from "@/lib/get-icon";
 import { ContactForm } from "@/components/contact-form";
+import { Skeleton } from "../ui/skeleton";
 
 export default function ContactSection() {
-  const { contactDetails } = useData();
+  const { contactDetails, isDataLoaded } = useData();
+
+  if (!isDataLoaded) {
+     return (
+      <section id="contact" className="w-full py-16 md:py-24 lg:py-32 bg-card">
+        <div className="container px-4 md:px-6">
+           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+              <div className="space-y-6">
+                <Skeleton className="h-10 w-1/2" />
+                <Skeleton className="h-6 w-full" />
+                <div className="space-y-4">
+                  <Skeleton className="h-8 w-2/3" />
+                  <Skeleton className="h-8 w-2/3" />
+                </div>
+              </div>
+              <div>
+                <Skeleton className="h-96 w-full" />
+              </div>
+           </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section
       id="contact"

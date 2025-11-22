@@ -1,11 +1,32 @@
+
 "use client";
 
 import { useData } from "@/lib/data-context";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "../ui/skeleton";
 
 export default function SkillsSection() {
-  const { skills } = useData();
+  const { skills, isDataLoaded } = useData();
+
+  if (!isDataLoaded) {
+     return (
+       <section id="skills" className="w-full py-16 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <Skeleton className="h-10 w-1/3" />
+            </div>
+            <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 py-12 sm:grid-cols-2">
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+            </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section id="skills" className="w-full py-16 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
