@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,7 +34,7 @@ const formSchema = z.object({
   }),
   experience: z.object({
     role: z.string().min(1, "Role is required."),
-    company: z-string().min(1, "Company is required."),
+    company: z.string().min(1, "Company is required."),
   }),
   profileImageUrl: z.string().url("Please enter a valid URL."),
   profileImageHint: z.string().min(1, "Profile image hint is required."),
