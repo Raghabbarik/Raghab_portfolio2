@@ -41,6 +41,10 @@ export type About = {
         role: string;
         company: string;
     };
+    profileImageUrl: string;
+    profileImageHint: string;
+    aboutImageUrl: string;
+    aboutImageHint: string;
 };
 
 export type ContactDetail = {

@@ -34,7 +34,11 @@ const formSchema = z.object({
   experience: z.object({
     role: z.string().min(1, "Role is required."),
     company: z.string().min(1, "Company is required."),
-  })
+  }),
+  profileImageUrl: z.string().url("Please enter a valid URL."),
+  profileImageHint: z.string().min(1, "Profile image hint is required."),
+  aboutImageUrl: z.string().url("Please enter a valid URL."),
+  aboutImageHint: z.string().min(1, "About image hint is required."),
 });
 
 type AboutFormData = z.infer<typeof formSchema>;
@@ -102,65 +106,123 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
                 </FormItem>
               )}
             />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="font-semibold">Education</h3>
-                 <FormField
-                  control={form.control}
-                  name="education.degree"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Degree</FormLabel>
-                      <FormControl>
-                        <Input placeholder="B.Tech, 2nd Year" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                 <FormField
-                  control={form.control}
-                  name="education.institution"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Institution</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nalanda Institute of Technology" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="space-y-4 rounded-lg border p-4">
-                 <h3 className="font-semibold">Experience</h3>
-                 <FormField
-                  control={form.control}
-                  name="experience.role"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Role</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Website Developer" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                 <FormField
-                  control={form.control}
-                  name="experience.company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company</FormLabel>
-                      <FormControl>
-                        <Input placeholder="at Stoup" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+               <div className="space-y-4 rounded-lg border p-4">
+                  <h3 className="font-semibold">Images</h3>
+                   <FormField
+                    control={form.control}
+                    name="profileImageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Profile Image URL</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="profileImageHint"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Profile Image AI Hint</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. 'man portrait'" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="aboutImageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>About Section Image URL</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="aboutImageHint"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>About Image AI Hint</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. 'code abstract'" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="space-y-4">
+                    <div className="space-y-4 rounded-lg border p-4">
+                        <h3 className="font-semibold">Education</h3>
+                        <FormField
+                        control={form.control}
+                        name="education.degree"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Degree</FormLabel>
+                            <FormControl>
+                                <Input placeholder="B.Tech, 2nd Year" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <FormField
+                        control={form.control}
+                        name="education.institution"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Institution</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Nalanda Institute of Technology" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    </div>
+                    <div className="space-y-4 rounded-lg border p-4">
+                        <h3 className="font-semibold">Experience</h3>
+                        <FormField
+                        control={form.control}
+                        name="experience.role"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Role</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Website Developer" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <FormField
+                        control={form.control}
+                        name="experience.company"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Company</FormLabel>
+                            <FormControl>
+                                <Input placeholder="at Stoup" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    </div>
+                </div>
             </div>
           </CardContent>
           <CardFooter>

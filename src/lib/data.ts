@@ -16,6 +16,11 @@ import {
   GraduationCap
 } from "lucide-react";
 import { getIcon } from "@/lib/get-icon";
+import { PlaceHolderImages } from "./placeholder-images";
+
+const profilePic = PlaceHolderImages.find(img => img.id === 'profile-picture');
+const aboutImagePlaceholder = PlaceHolderImages.find(img => img.id === 'about-image');
+
 
 export const navLinks: NavLink[] = [
   { href: "#about", label: "About" },
@@ -92,7 +97,11 @@ export const about: About = {
   experience: {
       role: "Website Developer",
       company: "at Stoup"
-  }
+  },
+  profileImageUrl: profilePic?.imageUrl || "",
+  profileImageHint: profilePic?.imageHint || "man portrait",
+  aboutImageUrl: aboutImagePlaceholder?.imageUrl || "",
+  aboutImageHint: aboutImagePlaceholder?.imageHint || "code abstract",
 }
 
 export const contactDetails: ContactDetail[] = [

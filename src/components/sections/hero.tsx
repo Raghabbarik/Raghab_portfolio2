@@ -4,16 +4,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Hand } from "lucide-react";
 import BallpitBackground from "@/components/ballpit-background";
 import { useData } from "@/lib/data-context";
 
 export default function HeroSection() {
-  const profilePic = PlaceHolderImages.find(
-    (img) => img.id === "profile-picture"
-  );
-
   const { about } = useData();
   const firstName = about.description.split(" ")[2] || "Raghab";
 
@@ -47,13 +42,13 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="relative flex justify-center items-center">
-                {profilePic && (
+                {about.profileImageUrl && (
                     <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
                         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/50 to-purple-600/50 blur-2xl animate-pulse" />
                         <Image
-                            src={profilePic.imageUrl}
-                            alt={profilePic.description}
-                            data-ai-hint={profilePic.imageHint}
+                            src={about.profileImageUrl}
+                            alt="Profile Picture"
+                            data-ai-hint={about.profileImageHint}
                             width={400}
                             height={400}
                             className="relative rounded-full border-4 border-primary/20 shadow-2xl aspect-square object-cover"
