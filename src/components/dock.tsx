@@ -178,4 +178,13 @@ export default function Dock({
             spring={spring}
             distance={distance}
             magnification={magnification}
-            baseItemSize={baseItemSiz...
+            baseItemSize={baseItemSize}
+          >
+            <DockIcon>{item.icon}</DockIcon>
+            <DockLabel>{item.label}</DockLabel>
+          </DockItem>
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+}
