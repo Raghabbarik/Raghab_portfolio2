@@ -10,6 +10,7 @@ interface TextTypeProps {
   showCursor?: boolean;
   cursorCharacter?: string;
   className?: string;
+  initialDelay?: number;
 }
 
 const TextType: React.FC<TextTypeProps> = ({
@@ -19,15 +20,26 @@ const TextType: React.FC<TextTypeProps> = ({
   showCursor = true,
   cursorCharacter = '|',
   className = '',
+  initialDelay = 0,
 }) => {
   const [currentText, setCurrentText] = useState('');
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isReady, setIsReady] = useState(initialDelay === 0);
   const texts = Array.isArray(text) ? text : [text];
 
   useEffect(() => {
-    if (!texts.length) return;
+    if (initialDelay > 0) {
+      const delayTimeout = setTimeout(() => {
+        setIsReady(true);
+      }, initialDelay);
+      return () => clearTimeout(delayTimeout);
+    }
+  }, [initialDelay]);
+
+  useEffect(() => {
+    if (!isReady || !texts.length) return;
 
     const handleTyping = () => {
       const currentString = texts[textIndex];
@@ -48,8 +60,10 @@ const TextType: React.FC<TextTypeProps> = ({
           setCurrentText(currentString.substring(0, charIndex + 1));
           setCharIndex(charIndex + 1);
         } else {
-          // Finished typing, pause and then start deleting
-          setTimeout(() => setIsDeleting(true), pauseDuration);
+          // Finished typing, pause and then start deleting if loop is desired
+          if (texts.length > 1 || pauseDuration !== Infinity) {
+            setTimeout(() => setIsDeleting(true), pauseDuration);
+          }
         }
       }
     };
@@ -57,7 +71,7 @@ const TextType: React.FC<TextTypeProps> = ({
     const typingTimeout = setTimeout(handleTyping, isDeleting ? typingSpeed / 2 : typingSpeed);
 
     return () => clearTimeout(typingTimeout);
-  }, [charIndex, isDeleting, textIndex, texts, typingSpeed, pauseDuration]);
+  }, [charIndex, isDeleting, textIndex, texts, typingSpeed, pauseDuration, isReady]);
 
   return (
     <span className={className}>
