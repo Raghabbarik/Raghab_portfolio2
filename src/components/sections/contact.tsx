@@ -41,7 +41,7 @@ export default function ContactSection() {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 Get in Touch
               </h2>
               <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
