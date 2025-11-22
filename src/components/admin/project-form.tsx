@@ -79,7 +79,7 @@ export function ProjectForm({ project, onSave, onDelete }: ProjectFormProps) {
   const onSubmit = (values: ProjectFormData) => {
     const projectToSave: Project = {
         ...values,
-        technologies: values.technologies.split(",").map(t => t.trim()),
+        technologies: values.technologies.split(",").map(t => t.trim()).filter(t => t),
     };
     onSave(projectToSave);
     setIsEditing(false);

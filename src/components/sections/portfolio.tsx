@@ -49,7 +49,7 @@ export default function PortfolioSection() {
                     <Image
                       src={projectImage.imageUrl}
                       alt={project.title}
-                      data-ai-hint={projectImage.imageHint}
+                      data-ai-hint={project.imageHint}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
@@ -77,7 +77,7 @@ export default function PortfolioSection() {
                   <CardFooter className="p-0 mt-6">
                     {project.liveDemoUrl && (
                       <Button asChild>
-                        <Link href={project.liveDemoUrl}>
+                        <Link href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">
                           View Project <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
