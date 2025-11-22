@@ -46,6 +46,12 @@ const nextConfig: NextConfig = {
         hostname: 'instasize.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
