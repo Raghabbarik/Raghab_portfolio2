@@ -4,7 +4,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useData } from "@/lib/data-context";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import {
   Card,
   CardContent,
@@ -20,10 +19,6 @@ import { ArrowRight } from "lucide-react";
 export default function PortfolioSection() {
   const { projects } = useData();
 
-  const getProjectImage = (imageUrl: string) => {
-    return PlaceHolderImages.find((img) => img.id === imageUrl);
-  };
-  
   return (
     <section id="portfolio" className="w-full py-16 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
@@ -39,22 +34,21 @@ export default function PortfolioSection() {
         </div>
         <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-2 gap-8 py-12">
           {projects.map((project) => {
-            const projectImage = getProjectImage(project.imageUrl);
-            if (!projectImage) return null; // Don't render if there's no matching image
-
             return (
               <Card
                 key={project.id}
                 className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 border border-border/20 flex flex-col"
               >
                 <div className="relative group aspect-video">
-                  <Image
-                    src={projectImage.imageUrl}
-                    alt={project.title}
-                    data-ai-hint={project.imageHint}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                 {project.imageUrl && (
+                    <Image
+                      src={project.imageUrl}
+                      alt={project.title}
+                      data-ai-hint={project.imageHint}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
                 </div>
                 <div className="flex flex-col flex-1 p-6">
                   <CardHeader className="p-0">

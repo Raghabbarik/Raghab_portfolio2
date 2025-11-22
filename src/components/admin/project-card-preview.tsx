@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import type { Project } from "@/lib/definitions";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useData } from "@/lib/data-context";
 
 interface ProjectCardPreviewProps {
@@ -32,16 +31,12 @@ export function ProjectCardPreview({ project }: ProjectCardPreviewProps) {
     );
   }
 
-  const projectImage = PlaceHolderImages.find(
-    (img) => img.id === project.imageUrl
-  );
-
   return (
     <Card className="overflow-hidden border border-border/20 flex flex-col">
       <div className="relative group aspect-video bg-muted">
-        {projectImage ? (
+        {project.imageUrl ? (
           <Image
-            src={projectImage.imageUrl}
+            src={project.imageUrl}
             alt={project.title}
             data-ai-hint={project.imageHint}
             fill

@@ -25,7 +25,7 @@ const formSchema = z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters." }),
   technologies: z.string().min(1, { message: "Please add at least one technology." }),
   liveDemoUrl: z.string().url().optional().or(z.literal('')),
-  imageUrl: z.string().min(1, { message: "Image ID is required." }),
+  imageUrl: z.string().url({ message: "Please enter a valid URL." }).min(1, { message: "Image URL is required." }),
   imageHint: z.string().min(1, { message: "Image hint is required." })
 });
 
@@ -110,9 +110,9 @@ export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
             name="imageUrl"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Image Placeholder ID</FormLabel>
+                <FormLabel>Image URL</FormLabel>
                 <FormControl>
-                    <Input placeholder="e.g., 'wonderlight-project'" {...field} />
+                    <Input placeholder="https://images.unsplash.com/..." {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -152,5 +152,3 @@ export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
       </Form>
   );
 }
-
-    

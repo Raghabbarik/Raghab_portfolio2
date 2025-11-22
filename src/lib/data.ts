@@ -68,7 +68,7 @@ export const projects: Project[] = [
     description:
       "A modern website developed for the Wonderlight Adventure startup. My design approach focused on creating an immersive and visually appealing experience that captures the spirit of adventure. The site is fully responsive, ensuring a seamless experience across all devices.",
     technologies: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
-    imageUrl: "wonderlight-project",
+    imageUrl: "https://images.unsplash.com/photo-1728781634584-24f709295ae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhZHZlbnR1cmUlMjB3ZWJzaXRlfGVufDB8fHx8MTc2MzcyNTI0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
     imageHint: "adventure website",
     liveDemoUrl: "#",
   },
@@ -77,7 +77,7 @@ export const projects: Project[] = [
     title: "New Awesome Project",
     description: "This is a new project I've been working on. It uses modern technologies to deliver a great user experience.",
     technologies: ["React", "Vite", "Mantine"],
-    imageUrl: "new-project",
+    imageUrl: "https://images.unsplash.com/photo-1639789976408-3fd60d7896f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0ZWNoJTIwcHJvZHVjdHxlbnwwfHx8fDE3NjM3MzA0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
     imageHint: "tech product",
     liveDemoUrl: "#"
   },
