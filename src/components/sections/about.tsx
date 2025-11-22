@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -24,21 +24,7 @@ function isValidHttpUrl(string: string | undefined) {
 }
 
 function AboutSectionContent() {
-  const { about, isDataLoaded } = useData();
-
-  if (!isDataLoaded) {
-    return (
-      <div className="container grid items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20">
-        <Skeleton className="h-[500px] w-full" />
-        <div className="space-y-6">
-          <Skeleton className="h-8 w-1/3" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-24 w-full" />
-        </div>
-      </div>
-    );
-  }
-
+  const { about } = useData();
   const hasValidImage = isValidHttpUrl(about.aboutImageUrl);
 
   return (
@@ -101,14 +87,16 @@ function AboutSectionContent() {
 
 
 export default function AboutSection() {
-    const [isClient, setIsClient] = React.useState(false);
-    React.useEffect(() => {
+    const { isDataLoaded } = useData();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
         setIsClient(true);
     }, []);
 
-    return (
-        <section id="about" className="w-full py-16 md:py-24 lg:py-32 bg-card">
-            {isClient ? <AboutSectionContent /> : (
+    if (!isClient || !isDataLoaded) {
+        return (
+            <section id="about" className="w-full py-16 md:py-24 lg:py-32 bg-card">
                  <div className="container grid items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20">
                     <Skeleton className="h-[500px] w-full" />
                     <div className="space-y-6">
@@ -117,7 +105,14 @@ export default function AboutSection() {
                         <Skeleton className="h-24 w-full" />
                     </div>
                 </div>
-            )}
+            </section>
+        );
+    }
+
+    return (
+        <section id="about" className="w-full py-16 md:py-24 lg:py-32 bg-card">
+            <AboutSectionContent />
         </section>
     );
 }
+
