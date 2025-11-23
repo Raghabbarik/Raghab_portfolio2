@@ -2,7 +2,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
-import { doc, setDoc, Firestore } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import type { Project, Skill, Service, About, ContactDetail } from '@/lib/definitions';
 import {
   projects as initialProjects,
@@ -53,16 +53,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const { storage, firestore, user } = useFirebase();
   const { toast } = useToast();
 
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
-  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(initialSkills));
-  const [services, setServices] = useState<Service[]>(rehydrateServices(initialServices));
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
   const [about, setAbout] = useState<About>(initialAbout);
-  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(initialContactDetails);
+  const [contactDetails, setContactDetails] = useState<ContactDetail[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   
   useEffect(() => {
-    // Data is initialized from local files and not fetched from Firestore on load
-    // to bypass the persistent public read permission errors.
+    // Initialize data from local files.
     setProjects(initialProjects);
     setSkills(rehydrateSkills(initialSkills));
     setServices(rehydrateServices(initialServices));
@@ -120,15 +119,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
     
-    // Using .catch() for permission error handling.
     setDoc(docRef, dataToSave, { merge: true }).then(() => {
        toast({
         title: "Success!",
         description: "All your changes have been saved successfully.",
       });
     }).catch(async (serverError) => {
-        // This block handles permission errors by creating a detailed error object
-        // for the developer error overlay, which is crucial for debugging.
         if (serverError.code === 'permission-denied') {
             const permissionError = new FirestorePermissionError({
                 path: docRef.path,
@@ -137,7 +133,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
             });
             errorEmitter.emit('permission-error', permissionError);
         } else {
-            // For any other type of server error, show a generic failure message.
             console.error("Firestore save failed:", serverError);
             toast({
                 variant: "destructive",
