@@ -51,7 +51,6 @@ const rehydrateServices = (savedServices: any[]): Service[] => {
 
 const fetcher = async (firestore: Firestore | null, docPath: string): Promise<any> => {
   if (!firestore) {
-    console.log("Firestore not available, returning null.");
     return null;
   }
   const docRef = doc(firestore, docPath);
@@ -60,7 +59,6 @@ const fetcher = async (firestore: Firestore | null, docPath: string): Promise<an
     if (docSnap.exists()) {
       return docSnap.data();
     }
-    console.log("No such document!");
     return null; // No document found
   } catch (error) {
     console.error("Firebase fetcher failed:", error);
@@ -75,7 +73,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const { mutate } = useSWRConfig();
   const { toast } = useToast();
 
-  const { data: remoteData, error: remoteError, isLoading } = useSWR(
+  const { data: remoteData, isLoading } = useSWR(
     firestore ? `portfolioContent/${PORTFOLIO_DOC_ID}` : null,
     (path) => fetcher(firestore, path),
     { 
@@ -92,29 +90,19 @@ export function DataProvider({ children }: { children: ReactNode }) {
       contactDetails: initialContactDetails,
   };
   
-  const dataToUse = remoteData || initialData;
-
-  const [projects, setProjects] = useState<Project[]>(dataToUse.projects);
-  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(dataToUse.skills));
-  const [services, setServices] = useState<Service[]>(rehydrateServices(dataToUse.services));
-  const [about, setAbout] = useState<About>(dataToUse.about);
-  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(dataToUse.contactDetails);
+  const [projects, setProjects] = useState<Project[]>(initialData.projects);
+  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(initialData.skills));
+  const [services, setServices] = useState<Service[]>(rehydrateServices(initialData.services));
+  const [about, setAbout] = useState<About>(initialData.about);
+  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(initialData.contactDetails);
   
   useEffect(() => {
-    if (remoteData) {
-        setProjects(remoteData.projects || []);
-        setSkills(rehydrateSkills(remoteData.skills || []));
-        setServices(rehydrateServices(remoteData.services || []));
-        setAbout(remoteData.about || initialAbout);
-        setContactDetails(remoteData.contactDetails || []);
-    } else {
-        // Fallback to initial data if remoteData is null/undefined
-        setProjects(initialData.projects);
-        setSkills(rehydrateSkills(initialData.skills));
-        setServices(rehydrateServices(initialData.services));
-        setAbout(initialData.about);
-        setContactDetails(initialData.contactDetails);
-    }
+    const dataToUse = remoteData || initialData;
+    setProjects(dataToUse.projects || []);
+    setSkills(rehydrateSkills(dataToUse.skills || []));
+    setServices(rehydrateServices(dataToUse.services || []));
+    setAbout(dataToUse.about || initialAbout);
+    setContactDetails(dataToUse.contactDetails || []);
   }, [remoteData]);
   
   const isDataLoaded = !isLoading;
