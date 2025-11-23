@@ -54,6 +54,7 @@ function DockItem({
   const isHovered = useMotionValue(0);
 
   const mousePos = useTransform(mouseX, val => {
+    if (val === Infinity) return 0;
     const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - rect.x - rect.width / 2;
   });
@@ -150,16 +151,25 @@ export default function Dock({
     mouseX.set(Infinity);
   };
   
+  const handleTouchStart = (e: React.TouchEvent) => {
+    mouseX.set(e.touches[0].pageX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    mouseX.set(e.touches[0].pageX);
+  };
+  
   const containerClasses = "fixed bottom-4 left-1/2 -translate-x-1/2 z-50";
-
   const dockClasses = "flex items-end gap-4 rounded-2xl border-border/20 border-2 bg-card/80 backdrop-blur-md p-2 shadow-2xl";
-
 
   return (
     <div className={containerClasses}>
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleMouseLeave}
         className={`${className} ${dockClasses}`}
         role="toolbar"
         aria-label="Application dock"

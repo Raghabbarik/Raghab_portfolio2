@@ -40,13 +40,13 @@ export default function HeroSection() {
   const hasValidImage = isValidHttpUrl(about.profileImageUrl);
 
   return (
-    <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
         <BallpitBackground className="absolute inset-0 z-10" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] opacity-60 z-20" />
 
       <div className="container relative z-30 px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6">
+              <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 order-2 md:order-1">
                 <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
                     <span>Hey, I'm {firstName}</span>
@@ -66,10 +66,10 @@ export default function HeroSection() {
                     </Button>
                 </div>
               </div>
-              <div className="relative flex justify-center items-center">
+              <div className="relative flex justify-center items-center order-1 md:order-2">
                 {hasValidImage ? (
-                  <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
-                    <div className="absolute inset-[-50px] rounded-full bg-gradient-to-r from-blue-500/30 to-purple-600/30 blur-3xl animate-pulse" />
+                  <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px]">
+                    <div className="absolute inset-[-25px] md:inset-[-50px] rounded-full bg-gradient-to-r from-blue-500/30 to-purple-600/30 blur-3xl animate-pulse" />
                     <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-primary/20 shadow-2xl">
                       <Image
                         src={about.profileImageUrl}
@@ -82,7 +82,7 @@ export default function HeroSection() {
                     </div>
                   </div>
                 ) : (
-                   <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] flex items-center justify-center bg-muted rounded-full border-4 border-dashed border-primary/20">
+                   <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] flex items-center justify-center bg-muted rounded-full border-4 border-dashed border-primary/20">
                      <p className="text-muted-foreground text-center">Invalid or<br/>No Image URL</p>
                    </div>
                 )}
