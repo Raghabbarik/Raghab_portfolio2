@@ -34,12 +34,10 @@ type DockItemProps = {
   children: React.ReactNode;
   onClick?: () => void;
   mouseX: MotionValue<number>;
-  mouseY: MotionValue<number>;
   spring: SpringOptions;
   distance: number;
   baseItemSize: number;
   magnification: number;
-  isMobile: boolean;
 };
 
 function DockItem({
@@ -47,22 +45,17 @@ function DockItem({
   className = '',
   onClick,
   mouseX,
-  mouseY,
   spring,
   distance,
   magnification,
-  baseItemSize,
-  isMobile
+  baseItemSize
 }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isHovered = useMotionValue(0);
 
-  const mousePos = useTransform(() => {
-    const rect = ref.current?.getBoundingClientRect() ?? { x: 0, y: 0, width: 0, height: 0 };
-    if (isMobile) {
-      return mouseX.get() - rect.x - rect.width / 2;
-    }
-    return mouseY.get() - rect.y - rect.height / 2;
+  const mousePos = useTransform(mouseX, val => {
+    const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - rect.x - rect.width / 2;
   });
 
   const targetSize = useTransform(mousePos, [-distance, 0, distance], [baseItemSize, magnification, baseItemSize]);
@@ -98,10 +91,9 @@ type DockLabelProps = {
   className?: string;
   children: React.ReactNode;
   isHovered?: MotionValue<number>;
-  isMobile: boolean;
 };
 
-function DockLabel({ children, className = '', isHovered, isMobile }: DockLabelProps) {
+function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -112,21 +104,16 @@ function DockLabel({ children, className = '', isHovered, isMobile }: DockLabelP
     return () => unsubscribe();
   }, [isHovered]);
 
-  const yOffset = isMobile ? -10 : 10;
-  const positionClasses = isMobile ? 'bottom-full left-1/2 mb-2' : '-bottom-6 left-1/2';
-
-
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: yOffset }}
-          exit={{ opacity: 0, y: 0 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.2 }}
-          className={`${className} absolute ${positionClasses} w-fit whitespace-pre rounded-md border border-border/50 bg-card px-2 py-0.5 text-xs text-foreground`}
+          className={`${className} absolute -bottom-10 w-fit whitespace-pre rounded-md border border-border/50 bg-card px-2 py-0.5 text-xs text-foreground`}
           role="tooltip"
-          style={{ x: '-50%' }}
         >
           {children}
         </motion.div>
@@ -154,31 +141,26 @@ export default function Dock({
   baseItemSize = 50
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
-  const mouseY = useMotionValue(Infinity);
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const handleMouseMove = (e: React.MouseEvent) => {
     mouseX.set(e.pageX);
-    mouseY.set(e.pageY);
   };
 
   const handleMouseLeave = () => {
     mouseX.set(Infinity);
-    mouseY.set(Infinity);
   };
   
-  const mobileContainerClasses = "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-end";
-  const desktopContainerClasses = "fixed top-4 right-4 z-50 flex flex-col items-end";
+  const containerClasses = "fixed bottom-4 left-1/2 -translate-x-1/2 z-50";
 
-  const mobileDockClasses = "flex items-end gap-4 rounded-2xl border-border/20 border-2 bg-card/80 backdrop-blur-md p-2 shadow-2xl";
-  const desktopDockClasses = "flex flex-col items-end gap-4 rounded-2xl border-border/20 border-2 bg-card/80 backdrop-blur-md p-2 shadow-2xl";
+  const dockClasses = "flex items-end gap-4 rounded-2xl border-border/20 border-2 bg-card/80 backdrop-blur-md p-2 shadow-2xl";
+
 
   return (
-    <div className={isMobile ? mobileContainerClasses : desktopContainerClasses}>
+    <div className={containerClasses}>
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`${className} ${isMobile ? mobileDockClasses : desktopDockClasses}`}
+        className={`${className} ${dockClasses}`}
         role="toolbar"
         aria-label="Application dock"
       >
@@ -188,15 +170,13 @@ export default function Dock({
             onClick={item.onClick}
             className={item.className}
             mouseX={mouseX}
-            mouseY={mouseY}
             spring={spring}
             distance={distance}
             magnification={magnification}
             baseItemSize={baseItemSize}
-            isMobile={isMobile}
           >
             <DockIcon>{item.icon}</DockIcon>
-            <DockLabel isMobile={isMobile}>{item.label}</DockLabel>
+            <DockLabel>{item.label}</DockLabel>
           </DockItem>
         ))}
       </motion.div>
