@@ -2,6 +2,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import type { Project, Skill, Service, About, ContactDetail } from '@/lib/definitions';
 import {
   projects as initialProjects,
@@ -35,7 +36,6 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
-// Helper to rehydrate icons which are not stored in JSON
 const rehydrateSkills = (savedSkills: any[]): Skill[] => {
   return savedSkills.map(skill => ({ ...skill, icon: getIcon(skill.icon) || getIcon(skill.name) }));
 };
@@ -44,6 +44,7 @@ const rehydrateServices = (savedServices: any[]): Service[] => {
   return savedServices.map(service => ({ ...service, icon: getIcon(service.icon) || getIcon(service.title) }));
 };
 
+const PORTFOLIO_DOC_ID = 'main-content';
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
@@ -53,29 +54,43 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [contactDetails, setContactDetails] = useState<ContactDetail[]>(initialContactDetails);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   
-  const { storage } = useFirebase();
+  const { storage, firestore, user } = useFirebase();
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
-    try {
-      const savedData = localStorage.getItem('portfolio-data');
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        if (parsedData.projects) setProjects(parsedData.projects);
-        if (parsedData.skills) setSkills(rehydrateSkills(parsedData.skills));
-        if (parsedData.services) setServices(rehydrateServices(parsedData.services));
-        if (parsedData.about) setAbout(parsedData.about);
-        if (parsedData.contactDetails) setContactDetails(parsedData.contactDetails);
+    const loadData = async () => {
+      if (firestore && user) {
+        try {
+          const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            console.log("Data loaded from Firestore:", data);
+            if (data.projects) setProjects(data.projects);
+            if (data.skills) setSkills(rehydrateSkills(data.skills));
+            if (data.services) setServices(rehydrateServices(data.services));
+            if (data.about) setAbout(data.about);
+            if (data.contactDetails) setContactDetails(data.contactDetails);
+          } else {
+            console.log("No such document! Initializing with default data.");
+            // If no data in Firestore, use initial data from lib/data.ts
+            setSkills(initialSkills);
+            setServices(initialServices);
+          }
+        } catch (error) {
+          console.error("Failed to load data from Firestore", error);
+          toast({ variant: 'destructive', title: 'Error', description: 'Could not load portfolio data.' });
+        } finally {
+          setIsDataLoaded(true);
+        }
       }
-    } catch (error) {
-      console.error("Failed to load data from localStorage", error);
-    } finally {
-        setIsDataLoaded(true);
-    }
-  }, []);
-  
+    };
+    loadData();
+  }, [firestore, user, toast]);
+
   const uploadFile = useCallback(async (file: File, path: string) => {
     if (!storage) {
         toast({
@@ -109,25 +124,28 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, [storage, toast]);
 
   const saveAllData = useCallback(async () => {
+    if (!firestore) {
+      toast({ variant: 'destructive', title: 'Error', description: 'Database not available.' });
+      throw new Error("Firestore is not initialized.");
+    }
     const dataToSave = {
         projects,
-        skills: skills.map(({ icon, ...rest }) => ({...rest, icon: (icon as any)?.displayName})), 
-        services: services.map(({ icon, ...rest }) => ({...rest, icon: (icon as any)?.displayName})),
+        skills: skills.map(({ icon, ...rest }) => ({...rest, icon: (icon as any)?.displayName || 'Code'})), 
+        services: services.map(({ icon, ...rest }) => ({...rest, icon: (icon as any)?.displayName || 'Monitor'})),
         about,
         contactDetails
     };
 
-    console.log("Saving all data...", dataToSave);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    console.log("Saving all data to Firestore...", dataToSave);
     try {
-      localStorage.setItem('portfolio-data', JSON.stringify(dataToSave));
-      console.log("Data saved successfully!");
+      const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
+      await setDoc(docRef, dataToSave, { merge: true });
+      console.log("Data saved successfully to Firestore!");
     } catch (error) {
-      console.error("Failed to save data to localStorage", error);
+      console.error("Failed to save data to Firestore", error);
       throw error;
     }
-  }, [projects, skills, services, about, contactDetails]);
+  }, [projects, skills, services, about, contactDetails, firestore, toast]);
 
   return (
     <DataContext.Provider
@@ -161,5 +179,3 @@ export function useData() {
   }
   return context;
 }
-
-    

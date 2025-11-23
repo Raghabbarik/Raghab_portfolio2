@@ -3,14 +3,17 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { FirebaseApp, initializeApp, getApps } from 'firebase/app';
-import { Auth, getAuth } from 'firebase/auth';
+import { Auth, getAuth, signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
+import { Firestore, getFirestore } from 'firebase/firestore';
 import { firebaseConfig } from './config';
 
 interface FirebaseContextType {
     app: FirebaseApp | null;
     auth: Auth | null;
     storage: FirebaseStorage | null;
+    firestore: Firestore | null;
+    user: User | null;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
@@ -20,6 +23,8 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
         app: null,
         auth: null,
         storage: null,
+        firestore: null,
+        user: null
     });
 
     useEffect(() => {
@@ -28,7 +33,17 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
             const app = apps.length > 0 ? apps[0] : initializeApp(firebaseConfig);
             const auth = getAuth(app);
             const storage = getStorage(app);
-            setFirebase({ app, auth, storage });
+            const firestore = getFirestore(app);
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    setFirebase({ app, auth, storage, firestore, user });
+                } else {
+                    signInAnonymously(auth).catch((error) => {
+                        console.error("Anonymous sign-in failed:", error);
+                    });
+                }
+            });
         }
     }, []);
 
@@ -46,5 +61,3 @@ export function useFirebase() {
     }
     return context;
 }
-
-    

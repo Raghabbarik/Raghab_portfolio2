@@ -1,0 +1,106 @@
+
+{
+  "entities": {
+    "Skill": {
+      "title": "Skill",
+      "description": "Represents a skill with its proficiency level.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "level": { "type": "number" },
+        "icon": { "type": "string" }
+      },
+      "required": ["id", "name", "level", "icon"]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "Represents a service offered.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "icon"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Represents a portfolio project.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "technologies": { "type": "array", "items": { "type": "string" } },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "liveDemoUrl": { "type": "string", "format": "uri" }
+      },
+      "required": ["id", "title", "description", "technologies", "imageHint"]
+    },
+    "About": {
+      "title": "About",
+      "description": "Content for the about section.",
+      "type": "object",
+      "properties": {
+        "tagline": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "education": {
+          "type": "object",
+          "properties": {
+            "degree": { "type": "string" },
+            "institution": { "type": "string" }
+          }
+        },
+        "experience": {
+          "type": "object",
+          "properties": {
+            "role": { "type": "string" },
+            "company": { "type": "string" }
+          }
+        },
+        "profileImageUrl": { "type": "string", "format": "uri" },
+        "profileImageHint": { "type": "string" },
+        "aboutImageUrl": { "type": "string", "format": "uri" },
+        "aboutImageHint": { "type": "string" }
+      },
+      "required": ["tagline", "title", "description", "education", "experience", "profileImageUrl", "profileImageHint", "aboutImageUrl", "aboutImageHint"]
+    },
+    "ContactDetail": {
+      "title": "Contact Detail",
+      "description": "Represents a single piece of contact information.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "iconName": { "type": "string" },
+        "text": { "type": "string" },
+        "href": { "type": "string" }
+      },
+      "required": ["id", "iconName", "text", "href"]
+    },
+    "PortfolioContent": {
+      "title": "Portfolio Content",
+      "description": "A single document containing all content for the portfolio.",
+      "type": "object",
+      "properties": {
+        "projects": { "type": "array", "items": { "$ref": "#/entities/Project" } },
+        "skills": { "type": "array", "items": { "$ref": "#/entities/Skill" } },
+        "services": { "type": "array", "items": { "$ref": "#/entities/Service" } },
+        "about": { "$ref": "#/entities/About" },
+        "contactDetails": { "type": "array", "items": { "$ref": "#/entities/ContactDetail" } }
+      }
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/portfolioContent/{docId}": {
+      "schema": { "$ref": "#/entities/PortfolioContent" },
+      "description": "Stores all the content for the portfolio website in a single document."
+    }
+  }
+}
