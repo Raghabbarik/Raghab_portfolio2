@@ -7,6 +7,7 @@ import { Auth, getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { Firestore, getFirestore } from 'firebase/firestore';
 import { firebaseConfig } from './config';
+import FirebaseErrorListener from '@/components/FirebaseErrorListener';
 
 interface FirebaseContextType {
     app: FirebaseApp | null;
@@ -28,27 +29,35 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
     });
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const apps = getApps();
-            const app = apps.length > 0 ? apps[0] : initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const storage = getStorage(app);
-            const firestore = getFirestore(app);
-
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-                setFirebase({ app, auth, storage, firestore, user });
-            });
-            
-            if (!firebase.app) {
-              setFirebase({ app, auth, storage, firestore, user: auth.currentUser });
-            }
-
-            return () => unsubscribe();
+        let app: FirebaseApp;
+        const apps = getApps();
+        if (apps.length > 0) {
+            app = apps[0];
+        } else {
+            app = initializeApp(firebaseConfig);
         }
-    }, [firebase.app]);
+
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+        const firestore = getFirestore(app);
+
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setFirebase({ app, auth, storage, firestore, user });
+        });
+
+        // Set initial state
+        if (!firebase.app) {
+          setFirebase({ app, auth, storage, firestore, user: auth.currentUser });
+        }
+        
+        return () => unsubscribe();
+    }, []);
 
     return (
         <FirebaseContext.Provider value={firebase}>
+            <Suspense>
+              <FirebaseErrorListener />
+            </Suspense>
             {children}
         </FirebaseContext.Provider>
     );

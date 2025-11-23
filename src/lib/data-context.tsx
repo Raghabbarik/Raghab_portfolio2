@@ -82,27 +82,26 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   );
 
-  const initialData = {
-      projects: initialProjects,
-      skills: initialSkills,
-      services: initialServices,
-      about: initialAbout,
-      contactDetails: initialContactDetails,
-  };
-  
-  const [projects, setProjects] = useState<Project[]>(initialData.projects);
-  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(initialData.skills));
-  const [services, setServices] = useState<Service[]>(rehydrateServices(initialData.services));
-  const [about, setAbout] = useState<About>(initialData.about);
-  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(initialData.contactDetails);
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(initialSkills));
+  const [services, setServices] = useState<Service[]>(rehydrateServices(initialServices));
+  const [about, setAbout] = useState<About>(initialAbout);
+  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(initialContactDetails);
   
   useEffect(() => {
-    const dataToUse = remoteData || initialData;
-    setProjects(dataToUse.projects || []);
-    setSkills(rehydrateSkills(dataToUse.skills || []));
-    setServices(rehydrateServices(dataToUse.services || []));
-    setAbout(dataToUse.about || initialAbout);
-    setContactDetails(dataToUse.contactDetails || []);
+    if (remoteData) {
+      setProjects(remoteData.projects || []);
+      setSkills(rehydrateSkills(remoteData.skills || []));
+      setServices(rehydrateServices(remoteData.services || []));
+      setAbout(remoteData.about || initialAbout);
+      setContactDetails(remoteData.contactDetails || []);
+    } else {
+      setProjects(initialProjects);
+      setSkills(rehydrateSkills(initialSkills));
+      setServices(rehydrateServices(initialServices));
+      setAbout(initialAbout);
+      setContactDetails(initialContactDetails);
+    }
   }, [remoteData]);
   
   const isDataLoaded = !isLoading;
