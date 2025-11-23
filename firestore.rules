@@ -4,11 +4,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Allow public read access for portfolio content
+    // Allow public read access to all documents in the portfolioContent collection.
+    // Restrict all write operations (create, update, delete) to authenticated users.
     match /portfolioContent/{docId} {
-      allow get: if true;
-      allow list: if true;
-      // Restrict writes to authenticated users (admins)
+      allow read: if true;
       allow write: if request.auth != null;
     }
   }
