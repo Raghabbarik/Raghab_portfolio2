@@ -74,13 +74,21 @@ export function LoginForm() {
         });
         await new Promise(resolve => setTimeout(resolve, 1000));
         router.push("/admin/dashboard");
-    } catch (error) {
+    } catch (error: any) {
         console.error("Anonymous sign-in failed", error);
-        toast({
-            variant: "destructive",
-            title: "Firebase Login Failed",
-            description: "Could not sign in. Please check console for details.",
-        });
+        if (error.code === 'auth/operation-not-allowed') {
+             toast({
+                variant: "destructive",
+                title: "Firebase Login Failed",
+                description: "Anonymous sign-in is not enabled in your Firebase console.",
+            });
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Firebase Login Failed",
+                description: "Could not sign in. Please check console for details.",
+            });
+        }
     }
   }
 
