@@ -26,6 +26,8 @@ import {
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Mountain } from "lucide-react";
 import Link from "next/link";
+import { useFirebase } from "@/firebase/provider";
+import { signInAnonymously } from "firebase/auth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -33,6 +35,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const { auth } = useFirebase();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -45,20 +48,39 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // This is a mock login. In a real app, you'd authenticate against a server.
-    if (values.email === "rraghabbarik@gmail.com" && values.password === "Raghab@2006") {
-      toast({
-        title: "Login Successful",
-        description: "Redirecting to your dashboard...",
-      });
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      router.push("/admin/dashboard");
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: "Invalid email or password.",
-      });
+    if (values.email !== "rraghabbarik@gmail.com" || values.password !== "Raghab@2006") {
+        toast({
+            variant: "destructive",
+            title: "Login Failed",
+            description: "Invalid email or password.",
+        });
+        return;
+    }
+
+    if (!auth) {
+         toast({
+            variant: "destructive",
+            title: "Authentication service not ready",
+            description: "Please try again in a moment.",
+        });
+        return;
+    }
+    
+    try {
+        await signInAnonymously(auth);
+        toast({
+            title: "Login Successful",
+            description: "Redirecting to your dashboard...",
+        });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        router.push("/admin/dashboard");
+    } catch (error) {
+        console.error("Anonymous sign-in failed", error);
+        toast({
+            variant: "destructive",
+            title: "Firebase Login Failed",
+            description: "Could not sign in. Please check console for details.",
+        });
     }
   }
 

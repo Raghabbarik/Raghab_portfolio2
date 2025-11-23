@@ -44,11 +44,6 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setFirebase({ app, auth, storage, firestore, user });
         });
-
-        // Set initial state
-        if (!firebase.app) {
-          setFirebase({ app, auth, storage, firestore, user: auth.currentUser });
-        }
         
         return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
