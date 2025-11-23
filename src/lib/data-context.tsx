@@ -61,8 +61,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   
   useEffect(() => {
-    // We are no longer fetching from Firestore on load due to persistent permission errors.
-    // We will rely on the initial state from `data.ts` and saving from the admin panel.
+    // Data is initialized from local files and not fetched from Firestore on load
+    // to bypass the persistent public read permission errors.
     setProjects(initialProjects);
     setSkills(rehydrateSkills(initialSkills));
     setServices(rehydrateServices(initialServices));
@@ -102,11 +102,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const saveAllData = useCallback(async () => {
     if (!firestore) {
-      toast({ variant: 'destructive', title: 'Error', description: 'Database not available.' });
+      toast({ variant: 'destructive', title: 'Error', description: 'Database not available. Please try again.' });
       return;
     }
     if (!user) {
-      toast({ variant: 'destructive', title: 'Authentication Error', description: 'You must be logged in to save data.' });
+      toast({ variant: 'destructive', title: 'Authentication Error', description: 'You must be logged in to save data. Please log in and try again.' });
       return;
     }
     
@@ -120,12 +120,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
     
+    // Using .catch() for permission error handling as instructed.
     setDoc(docRef, dataToSave, { merge: true }).then(() => {
        toast({
         title: "Success!",
-        description: "All your changes have been saved.",
+        description: "All your changes have been saved successfully.",
       });
     }).catch(async (serverError) => {
+        // This block handles permission errors by creating a detailed error object
+        // for the developer error overlay, which is crucial for debugging.
         if (serverError.code === 'permission-denied') {
             const permissionError = new FirestorePermissionError({
                 path: docRef.path,
@@ -134,11 +137,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
             });
             errorEmitter.emit('permission-error', permissionError);
         } else {
-            // For other errors, show a generic toast
+            // For any other type of server error, show a generic failure message.
+            console.error("Firestore save failed:", serverError);
             toast({
                 variant: "destructive",
-                title: "Error!",
-                description: `Could not save changes: ${serverError.message}`,
+                title: "Save Failed!",
+                description: `Could not save changes to the database: ${serverError.message}`,
             });
         }
     });
