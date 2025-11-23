@@ -51,12 +51,13 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
         }
         
         return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <FirebaseContext.Provider value={firebase}>
             <Suspense>
-              <FirebaseErrorListener />
+              {process.env.NODE_ENV === 'development' && <FirebaseErrorListener />}
             </Suspense>
             {children}
         </FirebaseContext.Provider>
