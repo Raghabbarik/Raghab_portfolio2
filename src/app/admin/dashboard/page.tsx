@@ -122,8 +122,9 @@ function ProjectsTab() {
   };
 
   const handleAdd = () => {
+    // Generate ID client-side to avoid hydration mismatch
     const newProject: Project = {
-      id: `new-project-${Date.now()}`,
+      id: `new-project-${new Date().getTime()}`,
       title: "New Project",
       description: "A brief description of your awesome new project.",
       technologies: [],
@@ -218,7 +219,7 @@ function SkillsTab() {
 
   const handleAdd = () => {
     const newSkill: Skill = {
-      id: `new-skill-${Date.now()}`,
+      id: `new-skill-${new Date().getTime()}`,
       name: `New Skill`,
       level: 50,
       icon: PlusCircle,
@@ -286,7 +287,7 @@ function ServicesTab() {
 
   const handleAdd = () => {
     const newService: Service = {
-      id: `new-service-${Date.now()}`,
+      id: `new-service-${new Date().getTime()}`,
       title: `New Service`,
       description: "",
       icon: PlusCircle,
@@ -377,7 +378,7 @@ function SettingsTab() {
 
   const handleAdd = () => {
     const newContact: ContactDetail = {
-      id: `new-contact-${Date.now()}`,
+      id: `new-contact-${new Date().getTime()}`,
       iconName: "Mail",
       text: "new.contact@example.com",
       href: "mailto:new.contact@example.com",
@@ -491,3 +492,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
