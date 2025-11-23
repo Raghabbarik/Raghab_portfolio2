@@ -17,10 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { Project } from "@/lib/definitions";
 import React from "react";
-import { useData } from "@/lib/data-context";
-import { Progress } from "@/components/ui/progress";
-import { Upload, XCircle } from "lucide-react";
-import Image from "next/image";
+import { ImageUploadField } from "./image-upload-field";
+
 
 const formSchema = z.object({
   id: z.string(),
@@ -48,72 +46,6 @@ interface ProjectFormProps {
   onCancel: () => void;
 }
 
-const ImageUploadField = ({ form }: { form: any }) => {
-    const { uploadFile, uploadProgress, isUploading } = useData();
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    const imageUrl = form.watch("imageUrl");
-
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const uploadedUrl = await uploadFile(file, `projects/${Date.now()}_${file.name}`);
-            if (uploadedUrl) {
-                form.setValue("imageUrl", uploadedUrl, { shouldValidate: true });
-            }
-        }
-    };
-
-    const handleRemoveImage = () => {
-        form.setValue("imageUrl", "", { shouldValidate: true });
-    }
-
-    return (
-        <FormItem>
-            <FormLabel>Project Image</FormLabel>
-            {imageUrl ? (
-                 <div className="relative group w-full h-48 rounded-md overflow-hidden border">
-                    <Image src={imageUrl} alt="Project Image" fill className="object-cover" />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            size="icon"
-                            onClick={handleRemoveImage}
-                        >
-                            <XCircle className="h-5 w-5" />
-                        </Button>
-                    </div>
-                </div>
-            ) : (
-                <div 
-                    className="w-full h-48 rounded-md border-2 border-dashed flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50"
-                    onClick={() => inputRef.current?.click()}
-                >
-                    {isUploading ? (
-                        <>
-                            <p className="text-sm text-muted-foreground mb-2">Uploading...</p>
-                            <Progress value={uploadProgress} className="w-3/4" />
-                        </>
-                    ) : (
-                        <>
-                            <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                            <p className="text-sm text-muted-foreground">Click or drag to upload</p>
-                        </>
-                    )}
-                </div>
-            )}
-             <input
-                type="file"
-                ref={inputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                accept="image/*"
-                disabled={isUploading}
-            />
-            <FormMessage />
-        </FormItem>
-    );
-};
 
 export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
 
@@ -183,7 +115,7 @@ export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
             control={form.control}
             name="imageUrl"
             render={() => (
-                <ImageUploadField form={form} />
+                <ImageUploadField name="imageUrl" label="Project Image" folder="projects" />
             )}
             />
             <FormField
@@ -220,5 +152,3 @@ export function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
       </Form>
   );
 }
-
-    

@@ -32,9 +32,7 @@ interface DataContextType {
   setContactDetails: React.Dispatch<React.SetStateAction<ContactDetail[]>>;
   saveAllData: () => Promise<void>;
   isDataLoaded: boolean;
-  uploadFile: (file: File, path: string) => Promise<string | null>;
-  isUploading: boolean;
-  uploadProgress: number;
+  uploadFile: (file: File, path: string, onProgress: (progress: number) => void) => Promise<string | null>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -42,10 +40,12 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 const PORTFOLIO_DOC_ID = 'main-content';
 
 const rehydrateSkills = (savedSkills: any[]): Skill[] => {
+  if (!savedSkills) return [];
   return savedSkills.map(skill => ({ ...skill, icon: getIcon(skill.icon) || getIcon(skill.name) }));
 };
 
 const rehydrateServices = (savedServices: any[]): Service[] => {
+  if (!savedServices) return [];
   return savedServices.map(service => ({ ...service, icon: getIcon(service.icon) || getIcon(service.title) }));
 };
 
@@ -119,10 +119,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   
   const isDataLoaded = !isLoading;
   
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
-  const uploadFile = useCallback(async (file: File, path: string) => {
+  const uploadFile = useCallback(async (file: File, path: string, onProgress: (progress: number) => void) => {
     if (!storage) {
         toast({
             variant: "destructive",
@@ -131,10 +128,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
         });
         return null;
     }
-    setIsUploading(true);
-    setUploadProgress(0);
+
     try {
-        const url = await uploadFileToStorage(storage, path, file, setUploadProgress);
+        const url = await uploadFileToStorage(storage, path, file, onProgress);
         toast({
             title: "Upload Successful",
             description: "Your image has been uploaded.",
@@ -148,9 +144,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
             description: "Could not upload the image. Please try again.",
         });
         return null;
-    } finally {
-        setIsUploading(false);
-        setUploadProgress(0);
     }
   }, [storage, toast]);
 
@@ -176,6 +169,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
     
     setDoc(docRef, dataToSave, { merge: true }).then(() => {
        mutate(`portfolioContent/${PORTFOLIO_DOC_ID}`);
+       toast({
+        title: "Success!",
+        description: "All your changes have been saved.",
+      });
     }).catch(async (serverError) => {
         if (serverError.code === 'permission-denied') {
             const permissionError = new FirestorePermissionError({
@@ -212,8 +209,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
         saveAllData,
         isDataLoaded,
         uploadFile,
-        isUploading,
-        uploadProgress
       }}
     >
       {children}

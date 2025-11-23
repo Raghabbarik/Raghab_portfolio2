@@ -419,7 +419,6 @@ function SettingsTab() {
 }
 
 export default function DashboardPage() {
-  const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const { saveAllData } = useData();
 
@@ -427,16 +426,8 @@ export default function DashboardPage() {
     setIsSaving(true);
     try {
       await saveAllData();
-      toast({
-        title: "Success!",
-        description: "All your changes have been saved.",
-      });
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error!",
-        description: "Could not save changes.",
-      });
+       // Errors are handled via toast within the saveAllData function
     } finally {
       setIsSaving(false);
     }
