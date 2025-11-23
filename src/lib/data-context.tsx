@@ -2,7 +2,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import type { Project, Skill, Service, About, ContactDetail } from '@/lib/definitions';
 import {
   projects as initialProjects,
@@ -61,14 +61,52 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   
   useEffect(() => {
-    // Initialize data from local files.
-    setProjects(initialProjects);
-    setSkills(rehydrateSkills(initialSkills));
-    setServices(rehydrateServices(initialServices));
-    setAbout(initialAbout);
-    setContactDetails(initialContactDetails);
-    setIsDataLoaded(true);
-  }, []);
+    const loadData = async () => {
+        if (!firestore) {
+            // Firestore not ready yet, load local data as fallback
+            setProjects(initialProjects);
+            setSkills(rehydrateSkills(initialSkills));
+            setServices(rehydrateServices(initialServices));
+            setAbout(initialAbout);
+            setContactDetails(initialContactDetails);
+            setIsDataLoaded(true);
+            return;
+        }
+
+        const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
+        try {
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                setProjects(data.projects || initialProjects);
+                setSkills(rehydrateSkills(data.skills) || rehydrateSkills(initialSkills));
+                setServices(rehydrateServices(data.services) || rehydrateServices(initialServices));
+                setAbout(data.about || initialAbout);
+                setContactDetails(data.contactDetails || initialContactDetails);
+            } else {
+                // Doc doesn't exist, use initial data
+                setProjects(initialProjects);
+                setSkills(rehydrateSkills(initialSkills));
+                setServices(rehydrateServices(initialServices));
+                setAbout(initialAbout);
+                setContactDetails(initialContactDetails);
+            }
+        } catch (error) {
+            console.error("Error fetching data from Firestore:", error);
+            // On error, fall back to local data
+            setProjects(initialProjects);
+            setSkills(rehydrateSkills(initialSkills));
+            setServices(rehydrateServices(initialServices));
+            setAbout(initialAbout);
+            setContactDetails(initialContactDetails);
+        } finally {
+            setIsDataLoaded(true);
+        }
+    };
+
+    loadData();
+  }, [firestore]);
   
   
   const uploadFile = useCallback(async (file: File, path: string, onProgress: (progress: number) => void) => {
@@ -125,6 +163,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         description: "All your changes have been saved successfully.",
       });
     }).catch(async (serverError) => {
+        // The error will be thrown and caught by the FirebaseErrorListener
+        // which will display the rich error overlay in development.
         if (serverError.code === 'permission-denied') {
             const permissionError = new FirestorePermissionError({
                 path: docRef.path,
