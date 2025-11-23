@@ -6,6 +6,7 @@ import { FirebaseApp, initializeApp, getApps } from 'firebase/app';
 import { Auth, getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { Firestore, getFirestore } from 'firebase/firestore';
+import { getAnalytics, isSupported } from "firebase/analytics";
 import { firebaseConfig } from './config';
 import FirebaseErrorListener from '@/components/FirebaseErrorListener';
 
@@ -35,6 +36,14 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
             app = apps[0];
         } else {
             app = initializeApp(firebaseConfig);
+        }
+
+        if (typeof window !== 'undefined') {
+            isSupported().then(supported => {
+                if (supported) {
+                    getAnalytics(app);
+                }
+            });
         }
 
         const auth = getAuth(app);
