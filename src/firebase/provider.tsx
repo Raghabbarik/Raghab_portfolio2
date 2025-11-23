@@ -7,7 +7,6 @@ import { Auth, getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { Firestore, getFirestore } from 'firebase/firestore';
 import { firebaseConfig } from './config';
-import FirebaseErrorListener from '@/components/FirebaseErrorListener';
 
 interface FirebaseContextType {
     app: FirebaseApp | null;
@@ -40,7 +39,6 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
                 setFirebase({ app, auth, storage, firestore, user });
             });
             
-            // Set initial state without a user but with services initialized
             if (!firebase.app) {
               setFirebase({ app, auth, storage, firestore, user: auth.currentUser });
             }
@@ -51,11 +49,6 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
 
     return (
         <FirebaseContext.Provider value={firebase}>
-            {process.env.NODE_ENV === 'development' && (
-                <Suspense fallback={null}>
-                    <FirebaseErrorListener />
-                </Suspense>
-            )}
             {children}
         </FirebaseContext.Provider>
     );

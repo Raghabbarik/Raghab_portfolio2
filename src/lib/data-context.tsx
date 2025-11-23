@@ -1,9 +1,9 @@
 
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, Firestore } from 'firebase/firestore';
 import type { Project, Skill, Service, About, ContactDetail } from '@/lib/definitions';
 import {
   projects as initialProjects,
@@ -49,26 +49,23 @@ const rehydrateServices = (savedServices: any[]): Service[] => {
   return savedServices.map(service => ({ ...service, icon: getIcon(service.icon) || getIcon(service.title) }));
 };
 
-const fetcher = async (firestore: any, docPath: string) => {
-  if (!firestore) return null;
+const fetcher = async (firestore: Firestore | null, docPath: string): Promise<any> => {
+  if (!firestore) {
+    console.log("Firestore not available, returning null.");
+    return null;
+  }
   const docRef = doc(firestore, docPath);
   try {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
     }
+    console.log("No such document!");
+    return null; // No document found
+  } catch (error) {
+    console.error("Firebase fetcher failed:", error);
+    // Don't throw, just return null to avoid crashing the app on permission errors for public users
     return null;
-  } catch (error: any) {
-    if (error.code === 'permission-denied') {
-      const permissionError = new FirestorePermissionError({
-        path: docRef.path,
-        operation: 'get',
-      });
-      errorEmitter.emit('permission-error', permissionError);
-    } else {
-      console.error("Fetcher failed:", error);
-    }
-    throw error;
   }
 };
 
@@ -78,10 +75,13 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const { mutate } = useSWRConfig();
   const { toast } = useToast();
 
-  const { data: remoteData, error: remoteError } = useSWR(
+  const { data: remoteData, error: remoteError, isLoading } = useSWR(
     firestore ? `portfolioContent/${PORTFOLIO_DOC_ID}` : null,
     (path) => fetcher(firestore, path),
-    { revalidateOnFocus: false }
+    { 
+      revalidateOnFocus: false,
+      shouldRetryOnError: false, // Don't retry on permission errors
+    }
   );
 
   const initialData = {
@@ -91,26 +91,33 @@ export function DataProvider({ children }: { children: ReactNode }) {
       about: initialAbout,
       contactDetails: initialContactDetails,
   };
+  
+  const dataToUse = remoteData || initialData;
 
-  const data = remoteData || initialData;
-
-  const [projects, setProjects] = useState<Project[]>(data.projects);
-  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(data.skills));
-  const [services, setServices] = useState<Service[]>(rehydrateServices(data.services));
-  const [about, setAbout] = useState<About>(data.about);
-  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(data.contactDetails);
-
-  React.useEffect(() => {
+  const [projects, setProjects] = useState<Project[]>(dataToUse.projects);
+  const [skills, setSkills] = useState<Skill[]>(rehydrateSkills(dataToUse.skills));
+  const [services, setServices] = useState<Service[]>(rehydrateServices(dataToUse.services));
+  const [about, setAbout] = useState<About>(dataToUse.about);
+  const [contactDetails, setContactDetails] = useState<ContactDetail[]>(dataToUse.contactDetails);
+  
+  useEffect(() => {
     if (remoteData) {
         setProjects(remoteData.projects || []);
         setSkills(rehydrateSkills(remoteData.skills || []));
         setServices(rehydrateServices(remoteData.services || []));
         setAbout(remoteData.about || initialAbout);
         setContactDetails(remoteData.contactDetails || []);
+    } else {
+        // Fallback to initial data if remoteData is null/undefined
+        setProjects(initialData.projects);
+        setSkills(rehydrateSkills(initialData.skills));
+        setServices(rehydrateServices(initialData.services));
+        setAbout(initialData.about);
+        setContactDetails(initialData.contactDetails);
     }
   }, [remoteData]);
   
-  const isDataLoaded = remoteData !== undefined || remoteError !== undefined;
+  const isDataLoaded = !isLoading;
   
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -167,7 +174,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
     
-    setDoc(docRef, dataToSave, { merge: true }).catch(async (serverError) => {
+    setDoc(docRef, dataToSave, { merge: true }).then(() => {
+       mutate(`portfolioContent/${PORTFOLIO_DOC_ID}`);
+    }).catch(async (serverError) => {
         if (serverError.code === 'permission-denied') {
             const permissionError = new FirestorePermissionError({
                 path: docRef.path,
@@ -184,8 +193,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
             });
         }
     });
-
-    mutate(`portfolioContent/${PORTFOLIO_DOC_ID}`);
 
   }, [projects, skills, services, about, contactDetails, firestore, toast, user, mutate]);
 
