@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { useFormContext }_ from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { Progress } from "@/components/ui/progress";
 import { Upload, XCircle } from "lucide-react";
 import Image from "next/image";
