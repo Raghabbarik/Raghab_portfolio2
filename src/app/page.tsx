@@ -1,3 +1,4 @@
+
 "use client";
 
 import Footer from "@/components/footer";
@@ -32,8 +33,8 @@ export default function Home() {
                     <HeroSection />
                     <AboutSection />
                     <SkillsSection />
-                    <ClientsSection />
                     <ServicesSection />
+                    <ClientsSection />
                     <PortfolioSection />
                     <ContactSection />
                 </>
