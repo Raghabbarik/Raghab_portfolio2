@@ -8,7 +8,12 @@ import { Hand } from "lucide-react";
 import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState } from "react";
-import Hyperspeed from "../hyperspeed-background";
+import dynamic from "next/dynamic";
+
+const Hyperspeed = dynamic(() => import('../hyperspeed-background'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 w-full h-full bg-background" />
+});
 
 
 function isValidHttpUrl(string: string | undefined) {
