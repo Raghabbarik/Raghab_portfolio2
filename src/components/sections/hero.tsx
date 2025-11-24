@@ -40,8 +40,7 @@ export default function HeroSection() {
   const hasValidImage = isValidHttpUrl(about.profileImageUrl);
 
   return (
-    <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-10 bg-background" />
+    <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
         <ParticleBackground />
 
       <div className="container relative z-30 px-4 md:px-6">
