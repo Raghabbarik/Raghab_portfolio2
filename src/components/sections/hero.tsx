@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import TextType from "../ui/text-type";
 
-const Hyperspeed = dynamic(() => import('../hyperspeed-background'), {
+const Ballpit = dynamic(() => import('../ballpit-background'), {
   ssr: false,
   loading: () => <div className="absolute inset-0 w-full h-full bg-background" />
 });
@@ -48,7 +48,7 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-transparent">
-       <Hyperspeed />
+       <Ballpit className="absolute top-0 left-0 w-full h-full -z-10" />
       <div className="container relative z-10 px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 order-2 md:order-1">
