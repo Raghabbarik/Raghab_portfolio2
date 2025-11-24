@@ -39,12 +39,12 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 const PORTFOLIO_DOC_ID = 'main-content';
 
 const rehydrateSkills = (savedSkills: any[]): Skill[] => {
-  if (!savedSkills) return [];
+  if (!Array.isArray(savedSkills)) return [];
   return savedSkills.map(skill => ({ ...skill, icon: getIcon(skill.icon) || getIcon(skill.name) }));
 };
 
 const rehydrateServices = (savedServices: any[]): Service[] => {
-  if (!savedServices) return [];
+    if (!Array.isArray(savedServices)) return [];
   return savedServices.map(service => ({ ...service, icon: getIcon(service.icon) || getIcon(service.title) }));
 };
 
@@ -62,8 +62,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
   
   useEffect(() => {
     const loadData = async () => {
+        setIsDataLoaded(false);
         if (!firestore) {
-            // Firestore not ready yet, load local data as fallback
+            console.warn("Firestore not ready, loading initial local data.");
             setProjects(initialProjects);
             setSkills(rehydrateSkills(initialSkills));
             setServices(rehydrateServices(initialServices));
@@ -78,6 +79,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
+                console.log("Loading data from Firestore...");
                 const data = docSnap.data();
                 setProjects(data.projects || initialProjects);
                 setSkills(rehydrateSkills(data.skills) || rehydrateSkills(initialSkills));
@@ -85,7 +87,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setAbout(data.about || initialAbout);
                 setContactDetails(data.contactDetails || initialContactDetails);
             } else {
-                // Doc doesn't exist, use initial data
+                console.log("No data in Firestore, loading initial local data.");
                 setProjects(initialProjects);
                 setSkills(rehydrateSkills(initialSkills));
                 setServices(rehydrateServices(initialServices));
@@ -93,8 +95,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setContactDetails(initialContactDetails);
             }
         } catch (error) {
-            console.error("Error fetching data from Firestore:", error);
-            // On error, fall back to local data
+            console.error("Error fetching from Firestore, falling back to local data:", error);
             setProjects(initialProjects);
             setSkills(rehydrateSkills(initialSkills));
             setServices(rehydrateServices(initialServices));
@@ -163,8 +164,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
         description: "All your changes have been saved successfully.",
       });
     }).catch(async (serverError) => {
-        // The error will be thrown and caught by the FirebaseErrorListener
-        // which will display the rich error overlay in development.
         if (serverError.code === 'permission-denied') {
             const permissionError = new FirestorePermissionError({
                 path: docRef.path,
