@@ -49,15 +49,7 @@ export default function HeroSection() {
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
        <div className="absolute inset-0 w-full h-full z-0">
-        <Suspense fallback={<div className="w-full h-full bg-background" />}>
-           <Threads 
-              color={[0.6, 0.4, 1.0]}
-              amplitude={2.5}
-              distance={0.1}
-              enableMouseInteraction={true}
-           />
-        </Suspense>
-      </div>
+       </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-10"></div>
       <div className="container relative z-20 px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -91,14 +83,15 @@ export default function HeroSection() {
               </div>
               <div className="relative flex justify-center items-center order-1 md:order-2">
                 {hasValidImage ? (
-                  <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+                  <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
                     <Image
                       src={about.profileImageUrl}
                       alt={about.profileImageHint}
                       data-ai-hint={about.profileImageHint}
                       fill
                       priority
-                      className="rounded-full object-cover shadow-2xl shadow-primary/20"
+                      className="relative rounded-full object-cover shadow-2xl shadow-primary/20"
                     />
                   </div>
                 ) : (
@@ -112,4 +105,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
