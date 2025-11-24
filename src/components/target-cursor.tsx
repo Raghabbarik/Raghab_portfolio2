@@ -25,15 +25,22 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   parallaxMultiplier = 5,
   className,
 }) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const cursorRef = useRef<HTMLDivElement>(null);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isVisible) setIsVisible(true);
     setPosition({ x: e.clientX, y: e.clientY });
-  }, []);
+
+    if (spotlightRef.current) {
+        spotlightRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    }
+  }, [isVisible]);
 
   const handleMouseEnter = useCallback(() => {
     setIsHovering(true);
@@ -41,6 +48,10 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
 
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false);
+  }, []);
+  
+  const handlePageLeave = useCallback(() => {
+    setIsVisible(false);
   }, []);
 
   const handleMouseDown = useCallback(() => {
@@ -52,9 +63,10 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   }, []);
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mouseleave", handlePageLeave);
     
     if (hideDefaultCursor) {
         document.body.classList.add('hide-cursor');
@@ -67,9 +79,10 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     });
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseleave", handlePageLeave);
        if (hideDefaultCursor) {
         document.body.classList.remove('hide-cursor');
       }
@@ -78,11 +91,9 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
         target.removeEventListener("mouseleave", handleMouseLeave);
       });
     };
-  }, [handleMouseMove, handleMouseDown, handleMouseUp, handleMouseEnter, handleMouseLeave, hideDefaultCursor]);
+  }, [handleMouseMove, handleMouseDown, handleMouseUp, handleMouseEnter, handleMouseLeave, handlePageLeave, hideDefaultCursor]);
 
   useEffect(() => {
-    // This parallax effect was blocking button clicks.
-    // It is being disabled to restore site functionality.
     if (parallaxOn) {
       const parallaxTargets = document.querySelectorAll<HTMLElement>("[data-parallax]");
       const handleParallax = (e: MouseEvent) => {
@@ -102,6 +113,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     left: `${position.x}px`,
     top: `${position.y}px`,
     animationDuration: `${spinDuration}s`,
+    opacity: isVisible ? 1 : 0,
   };
 
   const cursorClasses = cn(
@@ -110,7 +122,12 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     className
   );
 
-  return <div ref={cursorRef} className={cursorClasses} style={cursorStyle}></div>;
+  return (
+    <>
+        <div ref={cursorRef} className={cursorClasses} style={cursorStyle}></div>
+        <div ref={spotlightRef} className="spotlight" style={{ opacity: isVisible ? 1 : 0 }}></div>
+    </>
+  );
 };
 
 export default TargetCursor;
