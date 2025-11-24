@@ -60,7 +60,7 @@ export default function HeroSection() {
       <div className="container relative z-20 px-4 md:px-6">
         <div className="flex flex-col items-center text-center gap-6">
           <div className="relative flex items-center justify-center mt-12">
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+            <div className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72">
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl transition-all duration-500 group-hover:blur-2xl" />
               <div className="absolute inset-4 rounded-full bg-primary/30 blur-3xl transition-all duration-500 group-hover:blur-2xl delay-100" />
               {hasValidImage ? (
