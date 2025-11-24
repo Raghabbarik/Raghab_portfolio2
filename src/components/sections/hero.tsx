@@ -48,7 +48,7 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
-       <div className="absolute inset-0 w-full h-full z-0 opacity-60 pointer-events-none">
+       <div className="absolute inset-0 w-full h-full z-0 opacity-100 pointer-events-none">
             <Threads
               color={[0.53, 0.2, 1.0]}
               amplitude={1.2}
