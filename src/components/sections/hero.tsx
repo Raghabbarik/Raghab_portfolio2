@@ -9,7 +9,7 @@ import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState, Suspense } from "react";
 import TextType from "../ui/text-type";
-import Threads from "../threads-background";
+import Lanyard from "../lanyard";
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -44,12 +44,7 @@ export default function HeroSection() {
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
       <div className="absolute inset-0 w-full h-full z-0">
           <Suspense fallback={<Skeleton className="w-full h-full" />}>
-            <Threads
-              color={[0.55, 0.22, 0.96]}
-              amplitude={2.5}
-              distance={0.2}
-              enableMouseInteraction={true}
-            />
+            <Lanyard />
           </Suspense>
       </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-0"></div>
@@ -84,25 +79,7 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="relative flex justify-center items-center order-1 md:order-2">
-                {hasValidImage ? (
-                  <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px]">
-                    <div className="absolute inset-[-25px] md:inset-[-50px] rounded-full bg-gradient-to-r from-blue-500/30 to-purple-600/30 blur-3xl animate-pulse" />
-                    <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-primary/20 shadow-2xl">
-                      <Image
-                        src={about.profileImageUrl}
-                        alt="Profile Picture"
-                        data-ai-hint={about.profileImageHint}
-                        fill
-                        className="object-cover"
-                        priority
-                      />
-                    </div>
-                  </div>
-                ) : (
-                   <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] flex items-center justify-center bg-muted rounded-full border-4 border-dashed border-primary/20">
-                     <p className="text-muted-foreground text-center">Invalid or<br/>No Image URL</p>
-                   </div>
-                )}
+                {/* This space is now occupied by the lanyard animation */}
               </div>
           </div>
       </div>
