@@ -81,7 +81,7 @@ export default function HeroSection() {
                 <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link href="#contact">Get In Touch</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto bg-transparent border-primary/50 hover:bg-primary/10 hover:text-primary-foreground">
+                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
                     <Link href="#portfolio">Browse Projects</Link>
                 </Button>
             </div>
