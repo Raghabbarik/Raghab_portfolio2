@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, {
@@ -31,15 +30,10 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   const cursorRef = useRef<HTMLDivElement>(null);
-  const spotlightRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isVisible) setIsVisible(true);
     setPosition({ x: e.clientX, y: e.clientY });
-
-    if (spotlightRef.current) {
-        spotlightRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    }
   }, [isVisible]);
 
   const handleMouseEnter = useCallback(() => {
@@ -123,10 +117,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   );
 
   return (
-    <>
-        <div ref={cursorRef} className={cursorClasses} style={cursorStyle}></div>
-        <div ref={spotlightRef} className="spotlight" style={{ opacity: isVisible ? 1 : 0 }}></div>
-    </>
+    <div ref={cursorRef} className={cursorClasses} style={cursorStyle}></div>
   );
 };
 
