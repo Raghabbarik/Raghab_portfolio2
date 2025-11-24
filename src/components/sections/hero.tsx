@@ -9,6 +9,12 @@ import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState, Suspense } from "react";
 import TextType from "../ui/text-type";
+import dynamic from "next/dynamic";
+
+const Threads = dynamic(() => import('@/components/threads-background'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 w-full h-full bg-background" />,
+});
 
 
 function isValidHttpUrl(string: string | undefined) {
@@ -42,6 +48,16 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
+       <div className="absolute inset-0 w-full h-full z-0">
+        <Suspense fallback={<div className="w-full h-full bg-background" />}>
+           <Threads 
+              color={[0.6, 0.4, 1.0]}
+              amplitude={2.5}
+              distance={0.1}
+              enableMouseInteraction={true}
+           />
+        </Suspense>
+      </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-10"></div>
       <div className="container relative z-20 px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -96,3 +112,4 @@ export default function HeroSection() {
     </section>
   );
 }
+
