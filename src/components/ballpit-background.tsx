@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   Clock,
   PerspectiveCamera,
@@ -745,8 +744,9 @@ class Z extends InstancedMesh {
         }
       }
 
-      if (!this.instanceColor) return;
-      this.instanceColor.needsUpdate = true;
+      if (this.instanceColor) {
+          this.instanceColor.needsUpdate = true;
+      }
     }
   }
 
