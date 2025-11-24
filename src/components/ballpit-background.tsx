@@ -866,10 +866,11 @@ const Ballpit: React.FC<BallpitProps> = ({ className = '', followCursor = true, 
         spheresInstanceRef.current.dispose();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [followCursor, props]);
 
-  return <canvas className={className} ref={canvasRef} />;
+  return <canvas style={{ mixBlendMode: 'difference' }} className={className} ref={canvasRef} />;
 };
 
 export default Ballpit;
+
+    
