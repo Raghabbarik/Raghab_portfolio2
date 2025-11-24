@@ -1,7 +1,14 @@
 
 "use client";
 
-import { LogoLoop } from "@/components/ui/logo-loop";
+import dynamic from 'next/dynamic';
+import { Skeleton } from '../ui/skeleton';
+
+const LogoLoop = dynamic(() => import('@/components/ui/logo-loop').then(mod => mod.LogoLoop), {
+    ssr: false,
+    loading: () => <Skeleton className="h-10 w-full" />
+});
+
 
 const logos = [
     { src: 'https://cdn.simpleicons.org/nextdotjs/white', alt: 'Next.js' },
