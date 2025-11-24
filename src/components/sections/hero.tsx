@@ -58,12 +58,13 @@ export default function HeroSection() {
        </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-background via-transparent to-background z-10"></div>
       <div className="container relative z-20 px-4 md:px-6">
-          <div className="flex flex-col items-center text-center gap-6">
+        <div className="grid lg:grid-cols-2 gap-10 xl:gap-20 items-center">
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
             <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
                 <Hand className="h-5 w-5 text-primary animate-bounce"/>
                 <span>Hey, I'm {firstName}</span>
             </div>
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter min-h-[144px] md:min-h-[240px] lg:min-h-[288px]">
                <TextType
                 as="span"
                 text={["Web Developer", "UI/UX Designer", "Creator"]}
@@ -81,11 +82,31 @@ export default function HeroSection() {
                 <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link href="#contact">Get In Touch</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
                     <Link href="#portfolio">Browse Projects</Link>
                 </Button>
             </div>
           </div>
+          <div className="relative flex items-center justify-center">
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+              <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl" />
+              <div className="absolute inset-4 rounded-full bg-primary/30 blur-3xl " />
+              {hasValidImage ? (
+                <Image
+                  src={about.profileImageUrl}
+                  alt="Raghab Barik"
+                  data-ai-hint={about.profileImageHint}
+                  width={400}
+                  height={400}
+                  className="relative z-10 rounded-full w-full h-full object-cover shadow-2xl"
+                  priority
+                />
+              ) : (
+                <Skeleton className="relative z-10 rounded-full w-full h-full" />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
