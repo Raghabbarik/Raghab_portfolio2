@@ -65,7 +65,8 @@
         "profileImageUrl": { "type": "string", "format": "uri" },
         "profileImageHint": { "type": "string" },
         "aboutImageUrl": { "type": "string", "format": "uri" },
-        "aboutImageHint": { "type": "string" }
+        "aboutImageHint": { "type": "string" },
+        "resumeUrl": { "type": "string", "format": "uri" }
       },
       "required": ["tagline", "title", "description", "education", "experience", "profileImageUrl", "profileImageHint", "aboutImageUrl", "aboutImageHint"]
     },

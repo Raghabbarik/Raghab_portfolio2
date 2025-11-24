@@ -25,6 +25,7 @@ import {
 import type { About } from "@/lib/definitions";
 import React from "react";
 import { ImageUploadField } from "./image-upload-field";
+import { ResumeUploadField } from "./resume-upload-field";
 
 
 const formSchema = z.object({
@@ -43,6 +44,7 @@ const formSchema = z.object({
   profileImageHint: z.string().min(1, "Profile image hint is required."),
   aboutImageUrl: z.string().url("Please enter a valid URL.").or(z.literal("")),
   aboutImageHint: z.string().min(1, "About image hint is required."),
+  resumeUrl: z.string().url("Please upload a resume.").or(z.literal("")),
 });
 
 type AboutFormData = z.infer<typeof formSchema>;
@@ -60,6 +62,7 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
       ...about,
       profileImageUrl: about.profileImageUrl || "",
       aboutImageUrl: about.aboutImageUrl || "",
+      resumeUrl: about.resumeUrl || "",
     },
   });
   
@@ -68,6 +71,7 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
       ...about,
       profileImageUrl: about.profileImageUrl || "",
       aboutImageUrl: about.aboutImageUrl || "",
+      resumeUrl: about.resumeUrl || "",
     });
   }, [about, form]);
 
@@ -125,7 +129,7 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                <div className="space-y-4">
-                  <h3 className="font-semibold text-lg">Images</h3>
+                  <h3 className="font-semibold text-lg">Images & Resume</h3>
                    <FormField
                     control={form.control}
                     name="profileImageUrl"
@@ -164,6 +168,13 @@ export function AboutForm({ about, onSave }: AboutFormProps) {
                         </FormControl>
                         <FormMessage />
                       </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="resumeUrl"
+                    render={() => (
+                      <ResumeUploadField name="resumeUrl" label="Your Resume (PDF)" />
                     )}
                   />
                 </div>

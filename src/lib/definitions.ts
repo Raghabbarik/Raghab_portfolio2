@@ -13,7 +13,7 @@ export type Skill = {
 };
 
 export type Service = {
-  id: string;
+  id:string;
   title: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -45,6 +45,7 @@ export type About = {
     profileImageHint: string;
     aboutImageUrl: string;
     aboutImageHint: string;
+    resumeUrl: string;
 };
 
 export type ContactDetail = {

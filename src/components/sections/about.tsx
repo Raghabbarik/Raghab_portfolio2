@@ -55,12 +55,19 @@ function AboutSectionContent() {
           </p>
         </div>
         <div className="flex gap-4">
+          {about.resumeUrl ? (
             <Button asChild>
-                <Link href="/resume.pdf" download>
+                <Link href={about.resumeUrl} target="_blank" rel="noopener noreferrer" download>
                     <Download className="mr-2 h-4 w-4" />
                     Download Resume
                 </Link>
             </Button>
+          ) : (
+             <Button disabled>
+                <Download className="mr-2 h-4 w-4" />
+                Resume Not Available
+             </Button>
+          )}
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
           <Card className="transition-all duration-300 hover:bg-muted/50 hover:shadow-lg hover:-translate-y-2 hover:shadow-primary/20">
