@@ -9,7 +9,6 @@ import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState, Suspense } from "react";
 import TextType from "../ui/text-type";
-import Threads from "../threads-background";
 
 
 function isValidHttpUrl(string: string | undefined) {
@@ -43,19 +42,8 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
-      <div className="absolute inset-0 w-full h-full z-0">
-          <Suspense fallback={<Skeleton className="w-full h-full" />}>
-            <Threads 
-              className="w-full h-full"
-              color={[132/255, 0/255, 255/255]}
-              amplitude={1.5}
-              distance={0.1}
-              enableMouseInteraction={true}
-            />
-          </Suspense>
-      </div>
-      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-0"></div>
-      <div className="container relative z-10 px-4 md:px-6">
+      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-10"></div>
+      <div className="container relative z-20 px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 order-2 md:order-1">
                 <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
@@ -108,4 +96,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
