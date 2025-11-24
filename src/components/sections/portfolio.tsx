@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -9,7 +8,8 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter
+  CardFooter,
+  CardDescription
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -127,4 +127,3 @@ export default function PortfolioSection() {
     </section>
   );
 }
-
