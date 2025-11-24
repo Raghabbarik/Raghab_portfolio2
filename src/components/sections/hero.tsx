@@ -48,7 +48,13 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
-       <div className="absolute inset-0 w-full h-full z-0">
+       <div className="absolute inset-0 w-full h-full z-0 opacity-20 pointer-events-none">
+            <Threads
+              color={[1, 1, 1]}
+              amplitude={0.5}
+              distance={0.2}
+              enableMouseInteraction
+            />
        </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-10"></div>
       <div className="container relative z-20 px-4 md:px-6">
@@ -84,7 +90,7 @@ export default function HeroSection() {
               <div className="relative flex justify-center items-center order-1 md:order-2">
                 {hasValidImage ? (
                   <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full blur-xl opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full blur-xl opacity-75 group-hover:opacity-100 group-hover:blur-2xl transition duration-500"></div>
                     <Image
                       src={about.profileImageUrl}
                       alt={about.profileImageHint}
