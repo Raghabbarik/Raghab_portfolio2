@@ -67,7 +67,7 @@ export default function PortfolioSection() {
               A selection of projects I've worked on. Click on a card to see details or view the live demo.
             </p>
         </div>
-        <div className="relative h-[400px] lg:h-[500px] w-full flex items-center justify-center">
+        <div className="relative min-h-[400px] lg:min-h-[500px] w-full flex items-center justify-center">
             {projects.length > 0 ? (
                 <CardSwap 
                     width={cardWidth} 
