@@ -88,7 +88,7 @@ export default function HeroSection() {
             </div>
           </div>
           <div className="relative flex items-center justify-center">
-            <div className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-96 lg:h-96">
+            <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl transition-all duration-500 group-hover:blur-2xl" />
               <div className="absolute inset-4 rounded-full bg-primary/30 blur-3xl transition-all duration-500 group-hover:blur-2xl delay-100" />
               {hasValidImage ? (
