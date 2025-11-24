@@ -25,7 +25,7 @@ export const navLinks: NavLink[] = [
 
 export const skills: Skill[] = [
   { id: "full-stack-dev", name: "Full-Stack Web Development", level: 90, icon: Code },
-  { id: "ui-ux-design", name: "UI/UX Design", level: 85, icon: Palette },
+  { id: "ui-ux-design", name: "UI/UX Design", level: 95, icon: Palette },
   { id: "web-design", name: "Web Design", level: 88, icon: Globe },
   { id: "template-design", name: "Template Design", level: 82, icon: LayoutTemplate },
 ];
