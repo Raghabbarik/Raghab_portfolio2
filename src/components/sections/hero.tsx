@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Hand } from "lucide-react";
 import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import TextType from "../ui/text-type";
+import Threads from "../threads-background";
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -41,6 +42,16 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
+      <div className="absolute inset-0 w-full h-full z-0">
+          <Suspense fallback={<Skeleton className="w-full h-full" />}>
+            <Threads
+              color={[0.55, 0.22, 0.96]}
+              amplitude={1.5}
+              distance={0.2}
+              enableMouseInteraction={true}
+            />
+          </Suspense>
+      </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-0"></div>
       <div className="container relative z-10 px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
