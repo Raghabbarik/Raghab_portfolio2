@@ -1,4 +1,5 @@
 
+@import "./gooey-button.css";
 @import "./utils.css";
 @tailwind base;
 @tailwind components;
