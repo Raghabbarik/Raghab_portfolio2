@@ -9,7 +9,8 @@ import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState, Suspense } from "react";
 import TextType from "../ui/text-type";
-import Lanyard from "../lanyard";
+import Threads from "../threads-background";
+
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -44,7 +45,13 @@ export default function HeroSection() {
     <section id="hero" className="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-background">
       <div className="absolute inset-0 w-full h-full z-0">
           <Suspense fallback={<Skeleton className="w-full h-full" />}>
-            <Lanyard />
+            <Threads 
+              className="w-full h-full"
+              color={[132/255, 0/255, 255/255]}
+              amplitude={1.5}
+              distance={0.1}
+              enableMouseInteraction={true}
+            />
           </Suspense>
       </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-0"></div>
@@ -79,10 +86,26 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="relative flex justify-center items-center order-1 md:order-2">
-                {/* This space is now occupied by the lanyard animation */}
+                {hasValidImage ? (
+                  <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+                    <Image
+                      src={about.profileImageUrl}
+                      alt={about.profileImageHint}
+                      data-ai-hint={about.profileImageHint}
+                      fill
+                      priority
+                      className="rounded-full object-cover shadow-2xl shadow-primary/20"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full bg-muted flex items-center justify-center border-2 border-dashed">
+                     <p className="text-muted-foreground">No Profile Image</p>
+                  </div>
+                )}
               </div>
           </div>
       </div>
     </section>
   );
 }
+
