@@ -93,6 +93,15 @@
         "about": { "$ref": "#/entities/About" },
         "contactDetails": { "type": "array", "items": { "$ref": "#/entities/ContactDetail" } }
       }
+    },
+    "SiteStats": {
+      "title": "Site Statistics",
+      "description": "Statistics for the website, such as visitor count.",
+      "type": "object",
+      "properties": {
+        "count": { "type": "number", "description": "The total number of visitors." }
+      },
+      "required": ["count"]
     }
   },
   "auth": {
@@ -102,6 +111,10 @@
     "/portfolioContent/{docId}": {
       "schema": { "$ref": "#/entities/PortfolioContent" },
       "description": "Stores all the content for the portfolio website in a single document."
+    },
+    "/siteStats/visitorCounter": {
+        "schema": { "$ref": "#/entities/SiteStats" },
+        "description": "Stores the visitor count for the website."
     }
   }
 }
