@@ -4,10 +4,10 @@
 import React, { useState, useEffect } from 'react';
 import Dock from './dock';
 import { navLinks } from '@/lib/data';
-import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Sun, Moon } from 'lucide-react';
+import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { DockItemData } from './dock';
-import { useTheme } from 'next-themes';
+import { ThemeToggle } from './theme-toggle';
 
 const iconMap: { [key: string]: React.ReactNode } = {
   About: <User />,
@@ -23,7 +23,6 @@ const iconMap: { [key: string]: React.ReactNode } = {
 
 export default function Header() {
     const router = useRouter();
-    const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -48,12 +47,14 @@ export default function Header() {
             label: link.label,
             onClick: () => scrollToSection(link.href),
         })),
-        {
-          icon: mounted ? (theme === 'light' ? <Moon /> : <Sun />) : <Sun />,
-          label: mounted ? (theme === 'light' ? 'Dark Mode' : 'Light Mode') : 'Toggle Theme',
-          onClick: () => setTheme(theme === 'light' ? 'dark' : 'light'),
-        }
-    ].filter(item => mounted || (item.label !== 'Dark Mode' && item.label !== 'Light Mode'));
+    ];
 
-  return <Dock items={items} />;
+  return (
+    <>
+      <Dock items={items} />
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+    </>
+  );
 }
