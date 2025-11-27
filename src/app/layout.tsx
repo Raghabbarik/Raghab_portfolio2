@@ -8,6 +8,7 @@ import { DataProvider } from "@/lib/data-context";
 import TargetCursor from "@/components/target-cursor";
 import { FirebaseProvider } from "@/firebase/provider";
 import Script from "next/script";
+import { ThemeProvider } from "@/components/theme-provider";
 
 
 const poppins = Poppins({
@@ -28,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -40,19 +41,26 @@ export default function RootLayout({
           poppins.variable
         )}
       >
-        <FirebaseProvider>
-          <DataProvider>
-            <div className="relative z-10 flex flex-col min-h-screen">
-              <TargetCursor 
-                spinDuration={2}
-                hideDefaultCursor={true}
-                parallaxOn={true}
-              />
-              {children}
-              <Toaster />
-            </div>
-          </DataProvider>
-        </FirebaseProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <FirebaseProvider>
+            <DataProvider>
+              <div className="relative z-10 flex flex-col min-h-screen">
+                <TargetCursor 
+                  spinDuration={2}
+                  hideDefaultCursor={true}
+                  parallaxOn={true}
+                />
+                {children}
+                <Toaster />
+              </div>
+            </DataProvider>
+          </FirebaseProvider>
+        </ThemeProvider>
         <Script src="//code.tidio.co/wv58an6khjegrz5udrqihepvbvhlhhs7.js" async />
       </body>
     </html>
