@@ -45,11 +45,13 @@ export default function Footer() {
     <footer className="w-full bg-card py-6">
       <div className="container relative mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Raghab Barik. All rights reserved.
-            </p>
             <div className="flex items-center gap-4">
                 <ThemeToggle />
+                <p className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} Raghab Barik. All rights reserved.
+                </p>
+            </div>
+            <div className="flex items-center gap-4">
             {contactDetails
                 .filter((detail) =>
                 ["Instagram", "Linkedin", "Github"].includes(detail.iconName)
