@@ -8,6 +8,7 @@ import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
 import { useVisitorCount } from "@/hooks/use-visitor-count";
 import { Eye } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 function VisitorCounter() {
     const visitorCount = useVisitorCount();
@@ -48,6 +49,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Raghab Barik. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
+                <ThemeToggle />
             {contactDetails
                 .filter((detail) =>
                 ["Instagram", "Linkedin", "Github"].includes(detail.iconName)
