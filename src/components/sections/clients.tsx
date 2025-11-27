@@ -4,25 +4,44 @@
 import dynamic from 'next/dynamic';
 import { Skeleton } from '../ui/skeleton';
 import TextType from '../ui/text-type';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 const LogoLoop = dynamic(() => import('@/components/ui/logo-loop').then(mod => mod.LogoLoop), {
     ssr: false,
     loading: () => <Skeleton className="h-10 w-full" />
 });
 
+const getLogos = (theme?: string) => {
+    const iconColor = theme === 'light' ? 'black' : 'white';
+    return [
+        { src: `https://cdn.simpleicons.org/nextdotjs/${iconColor}`, alt: 'Next.js' },
+        { src: `https://cdn.simpleicons.org/react/${iconColor}`, alt: 'React' },
+        { src: `https://cdn.simpleicons.org/tailwindcss/${iconColor}`, alt: 'Tailwind CSS' },
+        { src: `https://cdn.simpleicons.org/firebase/${iconColor}`, alt: 'Firebase' },
+        { src: `https://cdn.simpleicons.org/vercel/${iconColor}`, alt: 'Vercel' },
+        { src: `https://cdn.simpleicons.org/github/${iconColor}`, alt: 'GitHub' },
+        { src: `https://cdn.simpleicons.org/typescript/${iconColor}`, alt: 'TypeScript' },
+        { src: `https://cdn.simpleicons.org/nodedotjs/${iconColor}`, alt: 'Node.js' },
+    ];
+};
 
-const logos = [
-    { src: 'https://cdn.simpleicons.org/nextdotjs/white', alt: 'Next.js' },
-    { src: 'https://cdn.simpleicons.org/react/white', alt: 'React' },
-    { src: 'https://cdn.simpleicons.org/tailwindcss/white', alt: 'Tailwind CSS' },
-    { src: 'https://cdn.simpleicons.org/firebase/white', alt: 'Firebase' },
-    { src: 'https://cdn.simpleicons.org/vercel/white', alt: 'Vercel' },
-    { src: 'https://cdn.simpleicons.org/github/white', alt: 'GitHub' },
-    { src: 'https://cdn.simpleicons.org/typescript/white', alt: 'TypeScript' },
-    { src: 'https://cdn.simpleicons.org/nodedotjs/white', alt: 'Node.js' },
-];
 
 export default function ClientsSection() {
+    const { theme } = useTheme();
+    const [logos, setLogos] = useState(() => getLogos('dark'));
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (mounted) {
+            setLogos(getLogos(theme));
+        }
+    }, [theme, mounted]);
+    
     return (
         <section id="clients" className="w-full py-16 md:py-24 lg:py-32">
             <div className="container px-4 md:px-6">
@@ -47,14 +66,18 @@ export default function ClientsSection() {
                     </p>
                 </div>
                  <div className="py-12">
-                    <LogoLoop
-                        logos={logos}
-                        speed={80}
-                        direction="left"
-                        logoHeight={40}
-                        gap={60}
-                        fadeOut
-                    />
+                    {mounted ? (
+                        <LogoLoop
+                            logos={logos}
+                            speed={80}
+                            direction="left"
+                            logoHeight={40}
+                            gap={60}
+                            fadeOut
+                        />
+                    ) : (
+                         <Skeleton className="h-10 w-full" />
+                    )}
                 </div>
             </div>
         </section>
