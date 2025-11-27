@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { href: "/admin/dashboard", icon: Home, label: "Dashboard" },
@@ -89,13 +90,18 @@ export default function DashboardLayout({
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
               <nav className="grid gap-6 text-lg font-medium">
-                <Link
-                  href="#"
-                  className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-                >
-                  <Mountain className="h-5 w-5 transition-all group-hover:scale-110" />
-                  <span className="sr-only">PortfolioPro</span>
-                </Link>
+                <div className="flex justify-between items-center">
+                    <Link
+                    href="#"
+                    className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+                    >
+                        <Mountain className="h-5 w-5 transition-all group-hover:scale-110" />
+                        <span className="sr-only">PortfolioPro</span>
+                    </Link>
+                    <div className="sm:hidden">
+                        <ThemeToggle />
+                    </div>
+                </div>
                 {navItems.map((item) => (
                   <Link
                     key={item.label}
@@ -116,6 +122,9 @@ export default function DashboardLayout({
               </nav>
             </SheetContent>
           </Sheet>
+          <div className="ml-auto hidden sm:block">
+            <ThemeToggle />
+          </div>
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           {children}

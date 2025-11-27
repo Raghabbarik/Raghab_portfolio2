@@ -51,9 +51,6 @@ export default function Header() {
     <header className="fixed top-4 left-0 right-0 z-50 px-4">
       <div className="relative w-full max-w-7xl mx-auto flex justify-center">
         <Dock items={items} />
-        <div className="absolute top-0 right-0">
-          {mounted && <ThemeToggle />}
-        </div>
       </div>
     </header>
   );
