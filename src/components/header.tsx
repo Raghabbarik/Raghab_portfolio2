@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import Dock from './dock';
 import { navLinks } from '@/lib/data';
 import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import type { DockItemData } from './dock';
 import { ThemeToggle } from './theme-toggle';
 
@@ -22,7 +21,6 @@ const iconMap: { [key: string]: React.ReactNode } = {
 
 
 export default function Header() {
-    const router = useRouter();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -50,7 +48,7 @@ export default function Header() {
     ];
 
   return (
-    <header className="fixed top-4 left-0 right-0 z-50 px-4 flex items-start justify-center">
+    <header className="fixed top-4 left-0 right-0 z-50 px-4">
       <div className="relative w-full max-w-7xl mx-auto flex justify-center">
         <Dock items={items} />
         <div className="absolute top-0 right-0">
