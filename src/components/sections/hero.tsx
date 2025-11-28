@@ -10,6 +10,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import TextType from "../ui/text-type";
 import dynamic from "next/dynamic";
 import { Button } from '../ui/button';
+import { getIcon } from "@/lib/get-icon";
 
 const Threads = dynamic(() => import('@/components/threads-background'), {
   ssr: false,
@@ -28,7 +29,7 @@ function isValidHttpUrl(string: string | undefined) {
 
 
 export default function HeroSection() {
-  const { about, isDataLoaded } = useData();
+  const { about, contactDetails, isDataLoaded } = useData();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -45,6 +46,10 @@ export default function HeroSection() {
 
   const firstName = "Raghab";
   const hasValidImage = isValidHttpUrl(about.profileImageUrl);
+  
+  const socialLinks = contactDetails.filter(detail => 
+    ["Github", "Instagram", "Linkedin"].includes(detail.iconName)
+  );
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-background">
@@ -104,6 +109,27 @@ export default function HeroSection() {
               <Button asChild variant="outline" size="lg">
                 <Link href="#portfolio">Browse Projects</Link>
               </Button>
+            </div>
+
+            <div className="flex items-center gap-4 pt-4">
+                <p className="text-sm font-medium">Follow me:</p>
+                <div className="flex items-center gap-3">
+                  {socialLinks.map(detail => {
+                    const Icon = getIcon(detail.iconName);
+                    return (
+                      <Link
+                        key={detail.id}
+                        href={detail.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span className="sr-only">{detail.iconName}</span>
+                      </Link>
+                    )
+                  })}
+                </div>
             </div>
           </div>
         </div>
