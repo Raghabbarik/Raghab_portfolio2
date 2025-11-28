@@ -52,20 +52,22 @@ export default function ServicesSection() {
             your digital ideas to life.
           </p>
         </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 py-12 sm:grid-cols-2 md:grid-cols-4">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-stretch gap-6 py-12 sm:grid-cols-2 md:grid-cols-4">
           {services.map((service) => (
             <Card
               key={service.title}
-              className="group transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2 text-center"
+              className="group flex flex-col transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1 border-border/20"
             >
-              <CardHeader className="flex flex-col items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <service.icon className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors" />
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+                      <service.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">{service.title}</CardTitle>
                 </div>
-                <CardTitle>{service.title}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{service.description}</p>
+              <CardContent className="flex-grow">
+                <p className="text-sm text-muted-foreground">{service.description}</p>
               </CardContent>
             </Card>
           ))}
