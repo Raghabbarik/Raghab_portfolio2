@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode, Suspe
 import { FirebaseApp, initializeApp, getApps } from 'firebase/app';
 import { Auth, getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
-import { Firestore, getFirestore } from 'firebase/firestore';
+import { Firestore, getFirestore, initializeFirestore } from 'firebase/firestore';
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { firebaseConfig } from './config';
 import FirebaseErrorListener from '@/components/FirebaseErrorListener';
@@ -48,7 +48,9 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
 
         const auth = getAuth(app);
         const storage = getStorage(app);
-        const firestore = getFirestore(app);
+        const firestore = initializeFirestore(app, {
+          experimentalForceLongPolling: true,
+        });
 
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setFirebase({ app, auth, storage, firestore, user });
