@@ -27,17 +27,13 @@ export default function Header() {
     useEffect(() => {
         setMounted(true);
 
-        let lastScrollY = window.scrollY;
-
         const handleScroll = () => {
-            if (window.scrollY > 200 && window.scrollY > lastScrollY) {
-                // Scrolling down past the hero section
+            // Hide if scrolled more than 200px, show otherwise.
+            if (window.scrollY > 200) {
                 setIsVisible(false);
-            } else if (window.scrollY < lastScrollY || window.scrollY <= 200) {
-                // Scrolling up or in the hero section
+            } else {
                 setIsVisible(true);
             }
-            lastScrollY = window.scrollY;
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -84,4 +80,3 @@ export default function Header() {
     </AnimatePresence>
   );
 }
-
