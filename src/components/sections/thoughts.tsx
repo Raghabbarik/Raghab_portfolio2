@@ -31,15 +31,15 @@ const ThoughtCard = ({ thought }: { thought: Thought }) => {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                     <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white z-10">{thought.title}</h3>
+                     <h3 className="absolute bottom-4 left-4 text-lg font-bold text-white z-10">{thought.title}</h3>
                 </div>
             )}
            
-            <CardContent className="p-6 flex flex-col flex-grow">
+            <CardContent className="p-4 flex flex-col flex-grow">
                  {!hasValidImage && (
-                    <h3 className="text-xl font-bold mb-2">{thought.title}</h3>
+                    <h3 className="text-lg font-bold mb-2">{thought.title}</h3>
                  )}
-                <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
+                <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
                     <div className="flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5" />
                         <span>{new Date(thought.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -50,7 +50,7 @@ const ThoughtCard = ({ thought }: { thought: Thought }) => {
                     </div>
                 </div>
                  <p className="text-muted-foreground text-sm flex-grow">{thought.excerpt}</p>
-                 <Link href={thought.href} className="text-primary hover:underline mt-4 text-sm font-semibold self-start">
+                 <Link href={thought.href} className="text-primary hover:underline mt-3 text-sm font-semibold self-start">
                     Read More +
                 </Link>
             </CardContent>
@@ -74,9 +74,10 @@ export default function ThoughtsSection() {
                         <Skeleton className="h-10 w-2/3 mx-auto" />
                         <Skeleton className="h-6 w-full max-w-2xl mx-auto" />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-12">
-                        <Skeleton className="h-96 w-full" />
-                        <Skeleton className="h-96 w-full" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-12">
+                        <Skeleton className="h-80 w-full" />
+                        <Skeleton className="h-80 w-full" />
+                         <Skeleton className="h-80 w-full" />
                     </div>
                 </div>
             </section>
@@ -105,7 +106,7 @@ export default function ThoughtsSection() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-12">
                     {thoughts.length > 0 ? (
                         thoughts.map((thought) => (
                             <ThoughtCard key={thought.id} thought={thought} />
