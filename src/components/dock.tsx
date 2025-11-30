@@ -148,9 +148,9 @@ export default function Dock({
   const mouseX = useMotionValue(Infinity);
   const isMobile = useMediaQuery('(max-width: 640px)');
 
-  const baseItemSize = isMobile ? 32 : 44;
-  const magnification = isMobile ? 32 : 60;
-  const mobileGap = '4px';
+  const baseItemSize = isMobile ? 30 : 44;
+  const magnification = isMobile ? 30 : 60;
+  const mobileGap = '2px';
   const desktopGap = '12px';
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -169,7 +169,7 @@ export default function Dock({
     mouseX.set(e.touches[0].pageX);
   };
   
-  const containerClasses = "fixed top-4 left-1/2 -translate-x-1/2 w-auto flex justify-center z-50";
+  const containerClasses = "fixed top-4 left-1/2 -translate-x-1/2 w-max max-w-full flex justify-center z-50 px-2";
 
   return (
     <div className={containerClasses}>
@@ -179,7 +179,7 @@ export default function Dock({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMouseLeave}
-        className={`${className} flex items-end rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl`}
+        className={`${className} flex items-end rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl flex-wrap justify-center`}
         style={{gap: isMobile ? mobileGap : desktopGap}}
         role="toolbar"
         aria-label="Application dock"
