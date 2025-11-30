@@ -28,7 +28,7 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
 
   useMotionValueEvent(scrollY, 'change', latest => {
-    const previous = scrollY.getPrevious();
+    const previous = scrollY.getPrevious() ?? 0;
     if (latest > previous && latest > 150) {
       setHidden(true);
     } else {
@@ -64,10 +64,9 @@ export default function Header() {
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
     >
       <Dock items={items} />
     </motion.header>
   );
 }
-
