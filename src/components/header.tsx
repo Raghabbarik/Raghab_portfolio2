@@ -44,18 +44,20 @@ export default function Header() {
         }
     };
   
-    const items: DockItemData[] = [
-        {
-          icon: <Home />,
-          label: 'Home',
-          onClick: () => scrollToSection('#hero'),
-        },
-        ...navLinks.map(link => ({
-            icon: iconMap[link.label] || <Briefcase />,
-            label: link.label,
-            onClick: () => scrollToSection(link.href),
-        })),
-    ];
+    const items: DockItemData[] = navLinks.map(link => ({
+        icon: iconMap[link.label] || <Briefcase />,
+        label: link.label,
+        onClick: () => scrollToSection(link.href),
+    }));
+
+    if (isMobile) {
+        items.unshift({
+            icon: <Home />,
+            label: 'Home',
+            onClick: () => scrollToSection('#hero'),
+        });
+    }
+
 
   const baseItemSize = isMobile ? 25 : 20;
   const magnification = isMobile ? 35 : 30;
@@ -69,7 +71,7 @@ export default function Header() {
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-4 w-full px-4 z-50 flex justify-center lg:w-auto"
+      className="fixed top-4 w-full px-4 z-50 flex justify-center"
     >
       <Dock items={items} baseItemSize={baseItemSize} magnification={magnification} />
     </motion.header>
