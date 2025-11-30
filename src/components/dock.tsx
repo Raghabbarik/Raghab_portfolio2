@@ -148,8 +148,10 @@ export default function Dock({
   const mouseX = useMotionValue(Infinity);
   const isMobile = useMediaQuery('(max-width: 640px)');
 
-  const baseItemSize = isMobile ? 40 : 44;
-  const magnification = isMobile ? 48 : 60;
+  const baseItemSize = isMobile ? 32 : 44;
+  const magnification = isMobile ? 32 : 60;
+  const mobileGap = '4px';
+  const desktopGap = '12px';
 
   const handleMouseMove = (e: React.MouseEvent) => {
     mouseX.set(e.pageX);
@@ -167,51 +169,18 @@ export default function Dock({
     mouseX.set(e.touches[0].pageX);
   };
   
-  const containerClasses = "fixed top-4 left-0 right-0 w-full flex justify-center z-50";
-  const dockContainerClasses = "flex items-end rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl";
-  const mobileWrapperClasses = "w-full max-w-[90vw] overflow-x-auto px-4";
-
-  if (isMobile) {
-    return (
-      <div className={containerClasses}>
-          <div className={mobileWrapperClasses}>
-              <div
-                className={`${className} ${dockContainerClasses} justify-start w-max`}
-                style={{gap: '8px'}}
-                role="toolbar"
-                aria-label="Application dock"
-              >
-                  {items.map((item, index) => (
-                    <DockItem
-                      key={index}
-                      onClick={item.onClick}
-                      className={item.className}
-                      mouseX={mouseX}
-                      spring={spring}
-                      distance={distance}
-                      magnification={magnification}
-                      baseItemSize={baseItemSize}
-                    >
-                      <DockIcon>{item.icon}</DockIcon>
-                      <DockLabel>{item.label}</DockLabel>
-                    </DockItem>
-                  ))}
-              </div>
-          </div>
-      </div>
-    );
-  }
+  const containerClasses = "fixed top-4 left-1/2 -translate-x-1/2 w-auto flex justify-center z-50";
 
   return (
-    <div className={`${containerClasses} left-1/2 -translate-x-1/2 w-auto`}>
+    <div className={containerClasses}>
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMouseLeave}
-        className={`${className} ${dockContainerClasses}`}
-        style={{gap: '12px'}}
+        className={`${className} flex items-end rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl`}
+        style={{gap: isMobile ? mobileGap : desktopGap}}
         role="toolbar"
         aria-label="Application dock"
       >
