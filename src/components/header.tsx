@@ -6,6 +6,7 @@ import Dock from './dock';
 import { navLinks } from '@/lib/data';
 import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText } from 'lucide-react';
 import type { DockItemData } from './dock';
+import { cn } from '@/lib/utils';
 
 const iconMap: { [key: string]: React.ReactNode } = {
   About: <User />,
@@ -29,10 +30,9 @@ export default function Header() {
     useEffect(() => {
         setMounted(true);
         const handleScroll = () => {
-            if (window.scrollY > 100) {
-                setHidden(true);
-            } else {
-                setHidden(false);
+            const isScrolled = window.scrollY > 100;
+            if (isScrolled !== hidden) {
+                setHidden(isScrolled);
             }
         };
 
@@ -40,7 +40,7 @@ export default function Header() {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [hidden]);
 
     const scrollToSection = (id: string) => {
         const element = document.querySelector(id);
@@ -68,9 +68,13 @@ export default function Header() {
 
   return (
         <header
-          className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-transform duration-300 ease-in-out ${hidden ? '-translate-y-[120%]' : 'translate-y-0'}`}
+          className={cn(
+            "fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-opacity duration-300 ease-in-out",
+            { "opacity-0 pointer-events-none": hidden, "opacity-100": !hidden }
+          )}
         >
           <Dock items={items} />
         </header>
   );
 }
+
