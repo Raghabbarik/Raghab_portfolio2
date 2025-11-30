@@ -25,7 +25,7 @@ export type Project = {
   title: string;
   description: string;
   technologies: string[];
-  imageUrl: string;
+  imageUrl?: string;
   imageHint: string;
   liveDemoUrl: string;
 };
@@ -57,7 +57,7 @@ export type Companion = {
   name: string;
   role: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
   imageHint: string;
   profileUrl: string;
 };
