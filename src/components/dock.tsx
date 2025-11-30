@@ -53,9 +53,10 @@ function DockItem({
 }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isHovered = useMotionValue(0);
+  const isMobile = useMediaQuery('(max-width: 640px)');
 
   const mousePos = useTransform(mouseX, val => {
-    if (val === Infinity) return 0;
+    if (val === Infinity || isMobile) return 0;
     const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - rect.x - rect.width / 2;
   });
@@ -66,16 +67,19 @@ function DockItem({
   return (
     <motion.div
       ref={ref}
-      style={{
+      style={!isMobile ? {
         width: size,
         height: size
+      } : {
+        width: baseItemSize,
+        height: baseItemSize
       }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`relative inline-flex cursor-pointer items-center justify-center rounded-full bg-secondary-gradient shadow-lg cursor-target ${className}`}
+      className={`relative inline-flex flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-secondary-gradient shadow-lg cursor-target ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -97,14 +101,15 @@ type DockLabelProps = {
 
 function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 640px)');
 
   useEffect(() => {
-    if (!isHovered) return;
+    if (!isHovered || isMobile) return;
     const unsubscribe = isHovered.on('change', latest => {
       setIsVisible(latest === 1);
     });
     return () => unsubscribe();
-  }, [isHovered]);
+  }, [isHovered, isMobile]);
 
   return (
     <AnimatePresence>
@@ -143,8 +148,8 @@ export default function Dock({
   const mouseX = useMotionValue(Infinity);
   const isMobile = useMediaQuery('(max-width: 640px)');
 
-  const baseItemSize = isMobile ? 36 : 40;
-  const magnification = isMobile ? 48 : 55;
+  const baseItemSize = isMobile ? 40 : 44;
+  const magnification = isMobile ? 48 : 60;
 
   const handleMouseMove = (e: React.MouseEvent) => {
     mouseX.set(e.pageX);
@@ -162,18 +167,51 @@ export default function Dock({
     mouseX.set(e.touches[0].pageX);
   };
   
-  const containerClasses = "fixed top-4 left-1/2 -translate-x-1/2 z-50";
-  const dockClasses = "flex items-end gap-2 sm:gap-3 rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl";
+  const containerClasses = "fixed top-4 left-0 right-0 w-full flex justify-center z-50";
+  const dockContainerClasses = "flex items-end rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl";
+  const mobileWrapperClasses = "w-full max-w-[90vw] overflow-x-auto px-4";
+
+  if (isMobile) {
+    return (
+      <div className={containerClasses}>
+          <div className={mobileWrapperClasses}>
+              <div
+                className={`${className} ${dockContainerClasses} justify-start w-max`}
+                style={{gap: '8px'}}
+                role="toolbar"
+                aria-label="Application dock"
+              >
+                  {items.map((item, index) => (
+                    <DockItem
+                      key={index}
+                      onClick={item.onClick}
+                      className={item.className}
+                      mouseX={mouseX}
+                      spring={spring}
+                      distance={distance}
+                      magnification={magnification}
+                      baseItemSize={baseItemSize}
+                    >
+                      <DockIcon>{item.icon}</DockIcon>
+                      <DockLabel>{item.label}</DockLabel>
+                    </DockItem>
+                  ))}
+              </div>
+          </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={containerClasses}>
+    <div className={`${containerClasses} left-1/2 -translate-x-1/2 w-auto`}>
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMouseLeave}
-        className={`${className} ${dockClasses}`}
+        className={`${className} ${dockContainerClasses}`}
+        style={{gap: '12px'}}
         role="toolbar"
         aria-label="Application dock"
       >
