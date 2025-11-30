@@ -1,12 +1,13 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import Dock from './dock';
 import { navLinks } from '@/lib/data';
 import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText } from 'lucide-react';
 import type { DockItemData } from './dock';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 const iconMap: { [key: string]: React.ReactNode } = {
   About: <User />,
@@ -25,7 +26,8 @@ const iconMap: { [key: string]: React.ReactNode } = {
 
 export default function Header() {
   const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = React.useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useMotionValueEvent(scrollY, 'change', latest => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -56,6 +58,10 @@ export default function Header() {
         })),
     ];
 
+  const baseItemSize = isMobile ? 40 : 30;
+  const magnification = isMobile ? 55 : 45;
+
+
   return (
     <motion.header
       variants={{
@@ -66,7 +72,7 @@ export default function Header() {
       transition={{ duration: 0.35, ease: 'easeInOut' }}
       className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
     >
-      <Dock items={items} baseItemSize={30} magnification={45} />
+      <Dock items={items} baseItemSize={baseItemSize} magnification={magnification} />
     </motion.header>
   );
 }
