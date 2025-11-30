@@ -69,7 +69,7 @@ export default function Header() {
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-4 w-full px-4 z-50 flex justify-center lg:left-1/2 lg:-translate-x-1/2 lg:w-auto"
+      className="fixed top-4 w-full px-4 z-50 flex justify-center lg:w-auto"
     >
       <Dock items={items} baseItemSize={baseItemSize} magnification={magnification} />
     </motion.header>
