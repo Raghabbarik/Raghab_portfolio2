@@ -18,6 +18,7 @@ import { ServiceForm } from "@/components/admin/service-form";
 import { SkillForm } from "@/components/admin/skill-form";
 import { CertificateForm } from "@/components/admin/certificate-form";
 import { ThoughtForm } from "@/components/admin/thought-form";
+import { CompanionForm } from "@/components/admin/companion-form";
 import type {
     About,
     ContactDetail,
@@ -26,6 +27,7 @@ import type {
     Skill,
     Certificate,
     Thought,
+    Companion,
 } from "@/lib/definitions";
 import { useData } from "@/lib/data-context";
 import { PlusCircle, Save, Loader2, Trash2, Edit } from "lucide-react";
@@ -341,6 +343,77 @@ function ThoughtsTab() {
   );
 }
 
+function CompanionsTab() {
+  const { companions, setCompanions } = useData();
+  const { toast } = useToast();
+
+  const handleSave = (updatedCompanion: Companion) => {
+    setCompanions((prev) => {
+        const exists = prev.some(c => c.id === updatedCompanion.id);
+        if (exists) {
+            return prev.map((c) => (c.id === updatedCompanion.id ? updatedCompanion : c));
+        }
+        return [updatedCompanion, ...prev];
+    });
+    toast({
+      title: "Companion Saved!",
+      description: `The companion "${updatedCompanion.name}" has been saved.`,
+    });
+  };
+
+  const handleDelete = (companionId: string) => {
+    setCompanions((prev) => prev.filter((c) => c.id !== companionId));
+    toast({
+      variant: "destructive",
+      title: "Companion Deleted",
+      description: "The companion has been removed.",
+    });
+  };
+
+  const handleAdd = () => {
+    const newCompanion: Companion = {
+      id: `new-companion-${new Date().getTime()}`,
+      name: "New Companion",
+      role: "Collaborator",
+      description: "A brief description of your creative companion.",
+      imageUrl: "",
+      imageHint: "",
+      profileUrl: "#",
+    };
+    setCompanions((prev) => [newCompanion, ...prev]);
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Creative Companions</h2>
+          <p className="text-muted-foreground">
+            Manage your creative companions.
+          </p>
+        </div>
+         <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
+            <PlusCircle className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add Companion
+            </span>
+        </Button>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {companions.map((companion) => (
+              <CompanionForm
+                  key={companion.id} 
+                  companion={companion}
+                  onSave={handleSave}
+                  onDelete={() => handleDelete(companion.id)}
+              />
+          ))}
+      </div>
+    </div>
+  );
+}
+
 function SkillsTab() {
   const { skills, setSkills } = useData();
   const { toast } = useToast();
@@ -615,6 +688,7 @@ export default function DashboardPage() {
               <TabsTrigger value="projects">Projects</TabsTrigger>
               <TabsTrigger value="certificates">Certificates</TabsTrigger>
               <TabsTrigger value="thoughts">Thoughts</TabsTrigger>
+              <TabsTrigger value="companions">Companions</TabsTrigger>
               <TabsTrigger value="skills">Skills</TabsTrigger>
               <TabsTrigger value="services">Services</TabsTrigger>
               <TabsTrigger value="about">About</TabsTrigger>
@@ -630,6 +704,9 @@ export default function DashboardPage() {
         </TabsContent>
          <TabsContent value="thoughts" className="mt-4">
           <ThoughtsTab />
+        </TabsContent>
+        <TabsContent value="companions" className="mt-4">
+          <CompanionsTab />
         </TabsContent>
         <TabsContent value="skills" className="mt-4">
           <SkillsTab />

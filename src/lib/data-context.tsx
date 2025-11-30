@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import type { Project, Skill, Service, About, ContactDetail, Certificate, Thought } from '@/lib/definitions';
+import type { Project, Skill, Service, About, ContactDetail, Certificate, Thought, Companion } from '@/lib/definitions';
 import {
   projects as initialProjects,
   skills as initialSkills,
@@ -12,6 +12,7 @@ import {
   contactDetails as initialContactDetails,
   certificates as initialCertificates,
   thoughts as initialThoughts,
+  companions as initialCompanions
 } from '@/lib/data';
 import { getIcon } from '@/lib/get-icon';
 import { useFirebase } from '@/firebase/provider';
@@ -31,6 +32,8 @@ interface DataContextType {
   setCertificates: React.Dispatch<React.SetStateAction<Certificate[]>>;
   thoughts: Thought[];
   setThoughts: React.Dispatch<React.SetStateAction<Thought[]>>;
+  companions: Companion[];
+  setCompanions: React.Dispatch<React.SetStateAction<Companion[]>>;
   about: About;
   setAbout: React.Dispatch<React.SetStateAction<About>>;
   contactDetails: ContactDetail[];
@@ -64,6 +67,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [services, setServices] = useState<Service[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [thoughts, setThoughts] = useState<Thought[]>([]);
+  const [companions, setCompanions] = useState<Companion[]>([]);
   const [about, setAbout] = useState<About>(initialAbout);
   const [contactDetails, setContactDetails] = useState<ContactDetail[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -78,6 +82,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             setServices(rehydrateServices(initialServices));
             setCertificates(initialCertificates);
             setThoughts(initialThoughts);
+            setCompanions(initialCompanions);
             setAbout(initialAbout);
             setContactDetails(initialContactDetails);
             setIsDataLoaded(true);
@@ -96,6 +101,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setServices(rehydrateServices(data.services) || rehydrateServices(initialServices));
                 setCertificates(data.certificates || initialCertificates);
                 setThoughts(data.thoughts || initialThoughts);
+                setCompanions(data.companions || initialCompanions);
                 setAbout(data.about || initialAbout);
                 setContactDetails(data.contactDetails || initialContactDetails);
             } else {
@@ -105,6 +111,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setServices(rehydrateServices(initialServices));
                 setCertificates(initialCertificates);
                 setThoughts(initialThoughts);
+                setCompanions(initialCompanions);
                 setAbout(initialAbout);
                 setContactDetails(initialContactDetails);
             }
@@ -115,6 +122,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             setServices(rehydrateServices(initialServices));
             setCertificates(initialCertificates);
             setThoughts(initialThoughts);
+            setCompanions(initialCompanions);
             setAbout(initialAbout);
             setContactDetails(initialContactDetails);
         } finally {
@@ -170,6 +178,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         services: services.map(({ icon, ...rest }) => ({...rest, icon: (icon as any)?.displayName || 'Monitor'})),
         certificates,
         thoughts,
+        companions,
         about,
         contactDetails
     };
@@ -199,7 +208,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         }
     });
 
-  }, [projects, skills, services, certificates, about, contactDetails, firestore, toast, user, thoughts]);
+  }, [projects, skills, services, certificates, about, contactDetails, firestore, toast, user, thoughts, companions]);
 
   return (
     <DataContext.Provider
@@ -214,6 +223,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setCertificates,
         thoughts,
         setThoughts,
+        companions,
+        setCompanions,
         about,
         setAbout,
         contactDetails,

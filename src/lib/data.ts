@@ -1,5 +1,5 @@
 
-import type { NavLink, Service, Skill, Project, About, ContactDetail, Certificate, Thought } from "@/lib/definitions";
+import type { NavLink, Service, Skill, Project, About, ContactDetail, Certificate, Thought, Companion } from "@/lib/definitions";
 import {
   Code,
   PenTool,
@@ -31,6 +31,27 @@ export const skills: Skill[] = [
   { id: "ui-ux-design", name: "UI/UX Design", level: 95, icon: Palette },
   { id: "web-design", name: "Web Design", level: 88, icon: Globe },
   { id: "template-design", name: "Template Design", level: 82, icon: LayoutTemplate },
+];
+
+export const companions: Companion[] = [
+  {
+    id: "bhavya-bavisi",
+    name: "Bhavya Bavisi",
+    role: "AI | Backend Developer",
+    description: "AI-ML Engineer designing intelligent systems that solve real problems, efficiently and elegantly.",
+    imageUrl: "https://picsum.photos/seed/companion1/200/200",
+    imageHint: "man portrait",
+    profileUrl: "#"
+  },
+  {
+    id: "prapti-mehta",
+    name: "Prapti Mehta",
+    role: "Frontend + UI Designer",
+    description: "Crafting intelligent systems, decoding data, and solving real-world problems with purpose.",
+    imageUrl: "https://picsum.photos/seed/companion2/200/200",
+    imageHint: "woman portrait",
+    profileUrl: "#"
+  }
 ];
 
 export const services: Service[] = [

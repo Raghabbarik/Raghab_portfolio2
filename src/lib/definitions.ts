@@ -52,6 +52,16 @@ export type Thought = {
   href: string;
 };
 
+export type Companion = {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  imageUrl: string;
+  imageHint: string;
+  profileUrl: string;
+};
+
 export type About = {
     tagline: string;
     title: string;

@@ -72,6 +72,21 @@
       },
       "required": ["id", "title", "excerpt", "date", "readTime", "imageHint", "href"]
     },
+    "Companion": {
+      "title": "Companion",
+      "description": "Represents a creative companion or collaborator.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "profileUrl": { "type": "string", "format": "uri" }
+      },
+      "required": ["id", "name", "role", "description", "imageUrl", "imageHint", "profileUrl"]
+    },
     "About": {
       "title": "About",
       "description": "Content for the about section.",
@@ -122,6 +137,7 @@
         "projects": { "type": "array", "items": { "$ref": "#/entities/Project" } },
         "certificates": { "type": "array", "items": { "$ref": "#/entities/Certificate" } },
         "thoughts": { "type": "array", "items": { "$ref": "#/entities/Thought" } },
+        "companions": { "type": "array", "items": { "$ref": "#/entities/Companion" } },
         "skills": { "type": "array", "items": { "$ref": "#/entities/Skill" } },
         "services": { "type": "array", "items": { "$ref": "#/entities/Service" } },
         "about": { "$ref": "#/entities/About" },
