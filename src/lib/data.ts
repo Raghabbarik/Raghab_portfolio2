@@ -179,7 +179,7 @@ export const contactDetails: ContactDetail[] = [
     id: "linkedin",
     iconName: "Linkedin",
     text: "Raghab Barik",
-    href: "https://www.linkedin.com/in/raghab-barik-raghab-barik-b44692337",
+    href: "https://www.linkedin.com/in/raghab-barik-b44692337",
   },
   { id: "map-pin", iconName: "MapPin", text: "Chandaka, Bhubaneswar", href: "#" },
 ];
