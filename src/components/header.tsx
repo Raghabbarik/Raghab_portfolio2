@@ -33,7 +33,10 @@ export default function Header() {
     if (latest < 100) {
       setHidden(false);
     } else {
-      setHidden(true);
+      const isScrollingUp = scrollY.getPrevious() > latest;
+      if (!isScrollingUp) {
+        setHidden(true);
+      }
     }
   });
 
@@ -44,7 +47,7 @@ export default function Header() {
         }
     };
   
-    let items: DockItemData[] = [
+    const items: DockItemData[] = [
         {
           icon: <Home />,
           label: 'Home',
@@ -57,26 +60,8 @@ export default function Header() {
         })),
     ];
 
-    if (isMobile) {
-      const mobileLinks = ["About", "Skills", "Portfolio", "Contact"];
-      items = [
-        {
-          icon: <Home />,
-          label: 'Home',
-          onClick: () => scrollToSection('#hero'),
-        },
-        ...navLinks
-          .filter(link => mobileLinks.includes(link.label))
-          .map(link => ({
-              icon: iconMap[link.label] || <Briefcase />,
-              label: link.label,
-              onClick: () => scrollToSection(link.href),
-          })),
-      ];
-    }
-
-  const baseItemSize = isMobile ? 40 : 25;
-  const magnification = isMobile ? 55 : 35;
+  const baseItemSize = isMobile ? 25 : 20;
+  const magnification = isMobile ? 35 : 30;
 
 
   return (
@@ -87,7 +72,7 @@ export default function Header() {
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex justify-center px-4"
     >
       <Dock items={items} baseItemSize={baseItemSize} magnification={magnification} />
     </motion.header>
