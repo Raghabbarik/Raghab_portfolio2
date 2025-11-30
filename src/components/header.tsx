@@ -30,13 +30,10 @@ export default function Header() {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   useMotionValueEvent(scrollY, 'change', latest => {
-    if (latest < 100) {
-      setHidden(false);
+    if (latest > 100 && latest > scrollY.getPrevious()) {
+      setHidden(true);
     } else {
-      const isScrollingUp = scrollY.getPrevious() > latest;
-      if (!isScrollingUp) {
-        setHidden(true);
-      }
+      setHidden(false);
     }
   });
 
@@ -72,7 +69,7 @@ export default function Header() {
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex justify-center px-4"
+      className="fixed top-4 w-full px-4 z-50 flex justify-center lg:left-1/2 lg:-translate-x-1/2 lg:w-auto"
     >
       <Dock items={items} baseItemSize={baseItemSize} magnification={magnification} />
     </motion.header>
