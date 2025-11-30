@@ -32,7 +32,6 @@ import type {
 import { useData } from "@/lib/data-context";
 import { PlusCircle, Save, Loader2, Trash2, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProjectCardPreview } from "@/components/admin/project-card-preview";
 import {
   Dialog,
