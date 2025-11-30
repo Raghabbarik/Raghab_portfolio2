@@ -2,11 +2,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import Dock from './dock';
 import { navLinks } from '@/lib/data';
 import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText } from 'lucide-react';
 import type { DockItemData } from './dock';
-import { cn } from '@/lib/utils';
 
 const iconMap: { [key: string]: React.ReactNode } = {
   About: <User />,
@@ -24,23 +24,17 @@ const iconMap: { [key: string]: React.ReactNode } = {
 
 
 export default function Header() {
-    const [hidden, setHidden] = useState(false);
-    const [mounted, setMounted] = useState(false);
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-        const handleScroll = () => {
-            const isScrolled = window.scrollY > 100;
-            if (isScrolled !== hidden) {
-                setHidden(isScrolled);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [hidden]);
+  useMotionValueEvent(scrollY, 'change', latest => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
     const scrollToSection = (id: string) => {
         const element = document.querySelector(id);
@@ -62,19 +56,18 @@ export default function Header() {
         })),
     ];
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
-        <header
-          className={cn(
-            "fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-opacity duration-300 ease-in-out",
-            { "opacity-0 pointer-events-none": hidden, "opacity-100": !hidden }
-          )}
-        >
-          <Dock items={items} />
-        </header>
+    <motion.header
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: '-150%' },
+      }}
+      animate={hidden ? 'hidden' : 'visible'}
+      transition={{ duration: 0.35, ease: 'easeInOut' }}
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+    >
+      <Dock items={items} />
+    </motion.header>
   );
 }
 

@@ -11,6 +11,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AboutForm } from "@/components/admin/about-form";
 import { ContactForm as AdminContactForm } from "@/components/admin/contact-form";
 import { ProjectForm } from "@/components/admin/project-form";
@@ -681,7 +682,7 @@ export default function DashboardPage() {
       </div>
 
       <Tabs defaultValue="projects" className="w-full">
-        <div className="overflow-x-auto pb-2">
+        <ScrollArea>
           <TabsList className="grid w-max grid-flow-col gap-4">
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="certificates">Certificates</TabsTrigger>
@@ -692,7 +693,8 @@ export default function DashboardPage() {
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
-        </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
         <TabsContent value="projects" className="mt-4">
           <ProjectsTab />
         </TabsContent>

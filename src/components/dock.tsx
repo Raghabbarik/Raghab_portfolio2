@@ -11,7 +11,6 @@ import {
   AnimatePresence
 } from 'framer-motion';
 import React, { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
-import { useMediaQuery } from '@/hooks/use-media-query';
 
 export type DockItemData = {
   icon: React.ReactNode;
@@ -53,10 +52,9 @@ function DockItem({
 }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isHovered = useMotionValue(0);
-  const isMobile = useMediaQuery('(max-width: 640px)');
 
   const mousePos = useTransform(mouseX, val => {
-    if (val === Infinity || isMobile) return 0;
+    if (val === Infinity) return 0;
     const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - rect.x - rect.width / 2;
   });
@@ -67,12 +65,9 @@ function DockItem({
   return (
     <motion.div
       ref={ref}
-      style={!isMobile ? {
+      style={{
         width: size,
         height: size
-      } : {
-        width: baseItemSize,
-        height: baseItemSize
       }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
@@ -101,15 +96,14 @@ type DockLabelProps = {
 
 function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const isMobile = useMediaQuery('(max-width: 640px)');
 
   useEffect(() => {
-    if (!isHovered || isMobile) return;
+    if (!isHovered) return;
     const unsubscribe = isHovered.on('change', latest => {
       setIsVisible(latest === 1);
     });
     return () => unsubscribe();
-  }, [isHovered, isMobile]);
+  }, [isHovered]);
 
   return (
     <AnimatePresence>
@@ -142,16 +136,12 @@ function DockIcon({ children, className = '' }: DockIconProps) {
 export default function Dock({
   items,
   className = '',
-  spring = { mass: 0.1, stiffness: 150, damping: 12 },
+  magnification = 60,
+  baseItemSize = 44,
   distance = 80,
+  spring = { mass: 0.1, stiffness: 150, damping: 12 },
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
-  const isMobile = useMediaQuery('(max-width: 640px)');
-
-  const baseItemSize = isMobile ? 36 : 44;
-  const magnification = isMobile ? 36 : 60;
-  const mobileGap = '8px';
-  const desktopGap = '12px';
 
   const handleMouseMove = (e: React.MouseEvent) => {
     mouseX.set(e.pageX);
@@ -160,46 +150,30 @@ export default function Dock({
   const handleMouseLeave = () => {
     mouseX.set(Infinity);
   };
-  
-  const handleTouchStart = (e: React.TouchEvent) => {
-    mouseX.set(e.touches[0].pageX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    mouseX.set(e.touches[0].pageX);
-  };
-  
-  const containerClasses = "fixed top-4 left-1/2 -translate-x-1/2 w-max max-w-full flex justify-center z-50 px-2";
 
   return (
-    <div className={containerClasses}>
-      <motion.div
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleMouseLeave}
-        className={`${className} flex flex-row flex-nowrap items-end rounded-2xl bg-card/80 backdrop-blur-md p-1.5 border border-border/20 shadow-2xl overflow-x-auto`}
-        style={{gap: isMobile ? mobileGap : desktopGap}}
-        role="toolbar"
-        aria-label="Application dock"
-      >
-        {items.map((item, index) => (
-          <DockItem
-            key={index}
-            onClick={item.onClick}
-            className={item.className}
-            mouseX={mouseX}
-            spring={spring}
-            distance={distance}
-            magnification={magnification}
-            baseItemSize={baseItemSize}
-          >
-            <DockIcon>{item.icon}</DockIcon>
-            <DockLabel>{item.label}</DockLabel>
-          </DockItem>
-        ))}
-      </motion.div>
-    </div>
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`${className} flex items-end gap-3 rounded-2xl bg-card/80 backdrop-blur-md p-2 border border-border/20 shadow-2xl`}
+      role="toolbar"
+      aria-label="Application dock"
+    >
+      {items.map((item, index) => (
+        <DockItem
+          key={index}
+          onClick={item.onClick}
+          className={item.className}
+          mouseX={mouseX}
+          spring={spring}
+          distance={distance}
+          magnification={magnification}
+          baseItemSize={baseItemSize}
+        >
+          <DockIcon>{item.icon}</DockIcon>
+          <DockLabel>{item.label}</DockLabel>
+        </DockItem>
+      ))}
+    </motion.div>
   );
 }
