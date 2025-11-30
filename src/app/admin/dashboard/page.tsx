@@ -32,7 +32,7 @@ import type {
 import { useData } from "@/lib/data-context";
 import { PlusCircle, Save, Loader2, Trash2, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProjectCardPreview } from "@/components/admin/project-card-preview";
 import {
   Dialog,
@@ -694,7 +694,6 @@ export default function DashboardPage() {
               <TabsTrigger value="about">About</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
-          <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="projects" className="mt-4">
           <ProjectsTab />
