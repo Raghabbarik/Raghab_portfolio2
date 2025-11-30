@@ -30,11 +30,10 @@ export default function Header() {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   useMotionValueEvent(scrollY, 'change', latest => {
-    const previous = scrollY.getPrevious() ?? 0;
-    if (latest > previous && latest > 150) {
-      setHidden(true);
-    } else {
+    if (latest < 100) {
       setHidden(false);
+    } else {
+      setHidden(true);
     }
   });
 
@@ -45,7 +44,7 @@ export default function Header() {
         }
     };
   
-    const items: DockItemData[] = [
+    let items: DockItemData[] = [
         {
           icon: <Home />,
           label: 'Home',
@@ -58,15 +57,33 @@ export default function Header() {
         })),
     ];
 
-  const baseItemSize = isMobile ? 40 : 30;
-  const magnification = isMobile ? 55 : 45;
+    if (isMobile) {
+      const mobileLinks = ["About", "Skills", "Portfolio", "Contact"];
+      items = [
+        {
+          icon: <Home />,
+          label: 'Home',
+          onClick: () => scrollToSection('#hero'),
+        },
+        ...navLinks
+          .filter(link => mobileLinks.includes(link.label))
+          .map(link => ({
+              icon: iconMap[link.label] || <Briefcase />,
+              label: link.label,
+              onClick: () => scrollToSection(link.href),
+          })),
+      ];
+    }
+
+  const baseItemSize = isMobile ? 40 : 25;
+  const magnification = isMobile ? 55 : 35;
 
 
   return (
     <motion.header
       variants={{
-        visible: { y: 0 },
-        hidden: { y: '-150%' },
+        visible: { y: 0, opacity: 1 },
+        hidden: { y: '-150%', opacity: 0 },
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
