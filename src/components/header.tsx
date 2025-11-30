@@ -66,7 +66,7 @@ export default function Header() {
       transition={{ duration: 0.35, ease: 'easeInOut' }}
       className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
     >
-      <Dock items={items} baseItemSize={40} magnification={55} />
+      <Dock items={items} baseItemSize={30} magnification={45} />
     </motion.header>
   );
 }
