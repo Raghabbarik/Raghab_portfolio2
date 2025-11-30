@@ -35,7 +35,7 @@ export type Certificate = {
   title: string;
   issuer: string;
   year: string;
-  imageUrl: string;
+  imageUrl?: string;
   imageHint: string;
   category: "technical" | "other";
   href?: string;
@@ -43,7 +43,7 @@ export type Certificate = {
 
 export type Thought = {
   id: string;
-  title: string;
+  title:string;
   excerpt: string;
   date: string;
   readTime: number;
