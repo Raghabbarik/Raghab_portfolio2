@@ -29,8 +29,7 @@ export default function Header() {
     const [mounted, setMounted] = useState(false);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        const previous = scrollY.getPrevious() || 0;
-        if (latest > previous && latest > 150) {
+        if (latest > 100) {
             setHidden(true);
         } else {
             setHidden(false);
