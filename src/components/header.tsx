@@ -6,7 +6,7 @@ import Dock from './dock';
 import { navLinks } from '@/lib/data';
 import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText } from 'lucide-react';
 import type { DockItemData } from './dock';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'framer-motion';
 
 const iconMap: { [key: string]: React.ReactNode } = {
   About: <User />,
@@ -24,23 +24,21 @@ const iconMap: { [key: string]: React.ReactNode } = {
 
 
 export default function Header() {
+    const { scrollY } = useScroll();
+    const [hidden, setHidden] = useState(false);
     const [mounted, setMounted] = useState(false);
-    const [isVisible, setIsVisible] = useState(true);
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const previous = scrollY.getPrevious() || 0;
+        if (latest > previous && latest > 150) {
+            setHidden(true);
+        } else {
+            setHidden(false);
+        }
+    });
 
     useEffect(() => {
         setMounted(true);
-
-        const handleScroll = () => {
-            // Hide if scrolled more than 200px, show otherwise.
-            if (window.scrollY > 200) {
-                setIsVisible(false);
-            } else {
-                setIsVisible(true);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const scrollToSection = (id: string) => {
@@ -69,17 +67,17 @@ export default function Header() {
 
   return (
     <AnimatePresence>
-      {isVisible && (
         <motion.header
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          exit={{ y: -100 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          variants={{
+            visible: { y: 0 },
+            hidden: { y: "-120%" },
+          }}
+          animate={hidden ? "hidden" : "visible"}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
           className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
         >
           <Dock items={items} />
         </motion.header>
-      )}
     </AnimatePresence>
   );
 }
