@@ -39,7 +39,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -683,18 +682,18 @@ export default function DashboardPage() {
       </div>
 
       <Tabs defaultValue="projects" className="w-full">
-        <ScrollArea className="w-full">
-            <TabsList className="grid w-max grid-flow-col gap-4">
-              <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="certificates">Certificates</TabsTrigger>
-              <TabsTrigger value="thoughts">Thoughts</TabsTrigger>
-              <TabsTrigger value="companions">Companions</TabsTrigger>
-              <TabsTrigger value="skills">Skills</TabsTrigger>
-              <TabsTrigger value="services">Services</TabsTrigger>
-              <TabsTrigger value="about">About</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
-            </TabsList>
-        </ScrollArea>
+        <div className="overflow-x-auto pb-2">
+          <TabsList className="grid w-max grid-flow-col gap-4">
+            <TabsTrigger value="projects">Projects</TabsTrigger>
+            <TabsTrigger value="certificates">Certificates</TabsTrigger>
+            <TabsTrigger value="thoughts">Thoughts</TabsTrigger>
+            <TabsTrigger value="companions">Companions</TabsTrigger>
+            <TabsTrigger value="skills">Skills</TabsTrigger>
+            <TabsTrigger value="services">Services</TabsTrigger>
+            <TabsTrigger value="about">About</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="projects" className="mt-4">
           <ProjectsTab />
         </TabsContent>
@@ -723,3 +722,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
