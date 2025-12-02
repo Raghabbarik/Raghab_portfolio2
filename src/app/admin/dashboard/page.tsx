@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AboutForm } from "@/components/admin/about-form";
 import { ContactForm as AdminContactForm } from "@/components/admin/contact-form";
+import { ThemeForm } from "@/components/admin/theme-form";
 import { ProjectForm } from "@/components/admin/project-form";
 import { ServiceForm } from "@/components/admin/service-form";
 import { SkillForm } from "@/components/admin/skill-form";
@@ -610,32 +611,43 @@ function SettingsTab() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Contact Details</h2>
-          <p className="text-muted-foreground">
-            Manage your contact information.
-          </p>
-        </div>
-        <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
-          <PlusCircle className="h-3.5 w-3.5" />
-          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Add Contact
-          </span>
-        </Button>
-      </div>
-      <div className="space-y-4">
-        {contactDetails.map((contact) => (
-          <AdminContactForm
-            key={contact.id}
-            contact={contact}
-            onSave={handleSave}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
-    </div>
+    <Tabs defaultValue="contact">
+        <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="contact">Contact Details</TabsTrigger>
+            <TabsTrigger value="theme">Theme</TabsTrigger>
+        </TabsList>
+        <TabsContent value="contact" className="mt-4">
+            <div className="space-y-8">
+                <div className="flex items-center justify-between">
+                    <div>
+                    <h2 className="text-2xl font-bold">Contact Details</h2>
+                    <p className="text-muted-foreground">
+                        Manage your contact information.
+                    </p>
+                    </div>
+                    <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
+                    <PlusCircle className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Add Contact
+                    </span>
+                    </Button>
+                </div>
+                <div className="space-y-4">
+                    {contactDetails.map((contact) => (
+                    <AdminContactForm
+                        key={contact.id}
+                        contact={contact}
+                        onSave={handleSave}
+                        onDelete={handleDelete}
+                    />
+                    ))}
+                </div>
+            </div>
+        </TabsContent>
+        <TabsContent value="theme" className="mt-4">
+            <ThemeForm />
+        </TabsContent>
+    </Tabs>
   );
 }
 

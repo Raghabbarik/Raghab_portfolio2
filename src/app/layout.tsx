@@ -43,14 +43,14 @@ export default function RootLayout({
           poppins.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <FirebaseProvider>
-            <DataProvider>
+        <FirebaseProvider>
+          <DataProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
               <div className="relative z-10 flex flex-col min-h-screen">
                 <TargetCursor 
                   spinDuration={2}
@@ -61,9 +61,9 @@ export default function RootLayout({
                 {children}
                 <Toaster />
               </div>
-            </DataProvider>
-          </FirebaseProvider>
-        </ThemeProvider>
+            </ThemeProvider>
+          </DataProvider>
+        </FirebaseProvider>
         <Script src="//code.tidio.co/wv58an6khjegrz5udrqihepvbvhlhhs7.js" async />
       </body>
     </html>

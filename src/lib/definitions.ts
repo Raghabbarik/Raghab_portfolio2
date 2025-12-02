@@ -88,6 +88,21 @@ export type ContactDetail = {
   href: string;
 }
 
+export type ThemeSettings = {
+  light: {
+    background: string;
+    foreground: string;
+    primary: string;
+    accent: string;
+  };
+  dark: {
+    background: string;
+    foreground: string;
+    primary: string;
+    accent: string;
+  };
+};
+
 export type IconMap = {
   [key: string]: LucideIcon;
 };

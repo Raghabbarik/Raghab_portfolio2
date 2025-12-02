@@ -129,6 +129,31 @@
       },
       "required": ["id", "iconName", "text", "href"]
     },
+    "ThemeSettings": {
+      "title": "Theme Settings",
+      "description": "Stores the HSL color values for the website theme.",
+      "type": "object",
+      "properties": {
+        "light": {
+          "type": "object",
+          "properties": {
+            "background": { "type": "string", "description": "e.g., 0 0% 100%" },
+            "foreground": { "type": "string", "description": "e.g., 240 10% 3.9%" },
+            "primary": { "type": "string", "description": "e.g., 271 76% 53%" },
+            "accent": { "type": "string", "description": "e.g., 240 4.8% 95.9%" }
+          }
+        },
+        "dark": {
+          "type": "object",
+          "properties": {
+            "background": { "type": "string", "description": "e.g., 240 10% 3.9%" },
+            "foreground": { "type": "string", "description": "e.g., 0 0% 98%" },
+            "primary": { "type": "string", "description": "e.g., 271 76% 53%" },
+            "accent": { "type": "string", "description": "e.g., 240 3.7% 15.9%" }
+          }
+        }
+      }
+    },
     "PortfolioContent": {
       "title": "Portfolio Content",
       "description": "A single document containing all content for the portfolio.",
@@ -141,7 +166,8 @@
         "skills": { "type": "array", "items": { "$ref": "#/entities/Skill" } },
         "services": { "type": "array", "items": { "$ref": "#/entities/Service" } },
         "about": { "$ref": "#/entities/About" },
-        "contactDetails": { "type": "array", "items": { "$ref": "#/entities/ContactDetail" } }
+        "contactDetails": { "type": "array", "items": { "$ref": "#/entities/ContactDetail" } },
+        "theme": { "$ref": "#/entities/ThemeSettings" }
       }
     },
     "SiteStats": {

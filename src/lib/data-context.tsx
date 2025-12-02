@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import type { Project, Skill, Service, About, ContactDetail, Certificate, Thought, Companion } from '@/lib/definitions';
+import type { Project, Skill, Service, About, ContactDetail, Certificate, Thought, Companion, ThemeSettings } from '@/lib/definitions';
 import {
   projects as initialProjects,
   skills as initialSkills,
@@ -12,7 +12,8 @@ import {
   contactDetails as initialContactDetails,
   certificates as initialCertificates,
   thoughts as initialThoughts,
-  companions as initialCompanions
+  companions as initialCompanions,
+  theme as initialTheme,
 } from '@/lib/data';
 import { getIcon } from '@/lib/get-icon';
 import { useFirebase } from '@/firebase/provider';
@@ -38,6 +39,8 @@ interface DataContextType {
   setAbout: React.Dispatch<React.SetStateAction<About>>;
   contactDetails: ContactDetail[];
   setContactDetails: React.Dispatch<React.SetStateAction<ContactDetail[]>>;
+  theme: ThemeSettings;
+  setTheme: React.Dispatch<React.SetStateAction<ThemeSettings>>;
   saveAllData: () => Promise<void>;
   isDataLoaded: boolean;
   uploadFile: (file: File, path: string, onProgress: (progress: number) => void) => Promise<string | null>;
@@ -70,6 +73,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [companions, setCompanions] = useState<Companion[]>([]);
   const [about, setAbout] = useState<About>(initialAbout);
   const [contactDetails, setContactDetails] = useState<ContactDetail[]>([]);
+  const [theme, setTheme] = useState<ThemeSettings>(initialTheme);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   
   useEffect(() => {
@@ -85,6 +89,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             setCompanions(initialCompanions);
             setAbout(initialAbout);
             setContactDetails(initialContactDetails);
+            setTheme(initialTheme);
             setIsDataLoaded(true);
             return;
         }
@@ -104,6 +109,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setCompanions(data.companions || initialCompanions);
                 setAbout(data.about || initialAbout);
                 setContactDetails(data.contactDetails || initialContactDetails);
+                setTheme(data.theme || initialTheme);
             } else {
                 console.log("No data in Firestore, loading initial local data.");
                 setProjects(initialProjects);
@@ -114,6 +120,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setCompanions(initialCompanions);
                 setAbout(initialAbout);
                 setContactDetails(initialContactDetails);
+                setTheme(initialTheme);
             }
         } catch (error) {
             console.error("Error fetching from Firestore, falling back to local data:", error);
@@ -125,6 +132,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             setCompanions(initialCompanions);
             setAbout(initialAbout);
             setContactDetails(initialContactDetails);
+            setTheme(initialTheme);
         } finally {
             setIsDataLoaded(true);
         }
@@ -180,7 +188,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         thoughts,
         companions,
         about,
-        contactDetails
+        contactDetails,
+        theme
     };
 
     const docRef = doc(firestore, 'portfolioContent', PORTFOLIO_DOC_ID);
@@ -208,7 +217,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         }
     });
 
-  }, [projects, skills, services, certificates, about, contactDetails, firestore, toast, user, thoughts, companions]);
+  }, [projects, skills, services, certificates, about, contactDetails, firestore, toast, user, thoughts, companions, theme]);
 
   return (
     <DataContext.Provider
@@ -229,6 +238,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setAbout,
         contactDetails,
         setContactDetails,
+        theme, 
+        setTheme,
         saveAllData,
         isDataLoaded,
         uploadFile,

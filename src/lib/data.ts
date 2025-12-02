@@ -1,5 +1,5 @@
 
-import type { NavLink, Service, Skill, Project, About, ContactDetail, Certificate, Thought, Companion } from "@/lib/definitions";
+import type { NavLink, Service, Skill, Project, About, ContactDetail, Certificate, Thought, Companion, ThemeSettings } from "@/lib/definitions";
 import {
   Code,
   PenTool,
@@ -187,3 +187,18 @@ export const contactDetails: ContactDetail[] = [
   },
   { id: "map-pin", iconName: "MapPin", text: "Chandaka, Bhubaneswar", href: "#" },
 ];
+
+export const theme: ThemeSettings = {
+  light: {
+    background: "0 0% 100%",
+    foreground: "240 10% 3.9%",
+    primary: "271 76% 53%",
+    accent: "240 4.8% 95.9%",
+  },
+  dark: {
+    background: "240 10% 3.9%",
+    foreground: "0 0% 98%",
+    primary: "271 76% 53%",
+    accent: "240 3.7% 15.9%",
+  }
+};
