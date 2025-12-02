@@ -19,7 +19,6 @@ import {
   Users,
   Github,
   Heart,
-  Quote,
   FileText,
   LucideIcon
 } from "lucide-react";
@@ -45,7 +44,6 @@ const iconMap: IconMap = {
   Users,
   Github,
   Heart,
-  Quote,
   FileText,
   // Add skill names to map to icons
   "Full-Stack Web Development": Code,
@@ -61,3 +59,5 @@ export const getIcon = (name: string): LucideIcon => {
 };
 
 export const iconNames = Object.keys(iconMap);
+
+    

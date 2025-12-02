@@ -1,5 +1,5 @@
 
-import type { NavLink, Service, Skill, Project, About, ContactDetail, Certificate, Thought, Companion, ThemeSettings, Testimonial } from "@/lib/definitions";
+import type { NavLink, Service, Skill, Project, About, ContactDetail, Certificate, Thought, Companion, ThemeSettings } from "@/lib/definitions";
 import {
   Code,
   PenTool,
@@ -18,7 +18,6 @@ import {
   Heart,
   MessageSquare,
   FileText,
-  Quote
 } from "lucide-react";
 
 export const navLinks: NavLink[] = [
@@ -26,7 +25,6 @@ export const navLinks: NavLink[] = [
   { href: "#skills", label: "Skills" },
   { href: "#companions", label: "Companions" },
   { href: "#services", label: "Services" },
-  { href: "#testimonials", label: "Testimonials" },
   { href: "#portfolio", label: "Portfolio" },
   { href: "#certificates", label: "Certificates" },
   { href: "#thoughts", label: "Thoughts" },
@@ -143,25 +141,6 @@ export const thoughts: Thought[] = [
     }
 ];
 
-export const testimonials: Testimonial[] = [
-    {
-        id: "testimonial-1",
-        name: "John Doe",
-        role: "CEO, Tech Solutions",
-        quote: "Working with Raghab was an absolute pleasure. His attention to detail and commitment to quality is unparalleled. He delivered a product that exceeded our expectations.",
-        imageUrl: "https://picsum.photos/seed/testimonial1/100/100",
-        imageHint: "man face"
-    },
-    {
-        id: "testimonial-2",
-        name: "Jane Smith",
-        role: "Marketing Manager, Creative Inc.",
-        quote: "The website Raghab designed for us is not only beautiful but also incredibly functional. Our user engagement has skyrocketed since the launch. Highly recommended!",
-        imageUrl: "https://picsum.photos/seed/testimonial2/100/100",
-        imageHint: "woman face"
-    }
-];
-
 export const about: About = {
   tagline: "About Me",
   title: "A little bit about me",
@@ -224,3 +203,5 @@ export const theme: ThemeSettings = {
     accent: "240 3.7% 15.9%",
   }
 };
+
+    

@@ -5,7 +5,7 @@ import React from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import Dock from './dock';
 import { navLinks } from '@/lib/data';
-import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText, Quote } from 'lucide-react';
+import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText } from 'lucide-react';
 import type { DockItemData } from './dock';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
@@ -15,7 +15,6 @@ const iconMap: { [key: string]: React.ReactNode } = {
   Services: <Briefcase />,
   Companions: <Heart />,
   Portfolio: <Briefcase />,
-  Testimonials: <Quote />,
   Contact: <MessageSquare />,
   Admin: <UserCog />,
   Home: <Home />,
@@ -68,3 +67,5 @@ export default function Header() {
     </motion.header>
   );
 }
+
+    

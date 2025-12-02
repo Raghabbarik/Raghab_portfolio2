@@ -10,7 +10,6 @@ import AboutSection from "@/components/sections/about";
 import SkillsSection from "@/components/sections/skills";
 import ServicesSection from "@/components/sections/services";
 import PortfolioSection from "@/components/sections/portfolio";
-import TestimonialsSection from "@/components/sections/testimonials";
 import ContactSection from "@/components/sections/contact";
 import CertificatesSection from "@/components/sections/certificates";
 import ThoughtsSection from "@/components/sections/thoughts";
@@ -40,7 +39,6 @@ export default function Home() {
                         <ClientsSection />
                         <CompanionsSection />
                         <ServicesSection />
-                        <TestimonialsSection />
                         <PortfolioSection />
                         <CertificatesSection />
                         <ThoughtsSection />
@@ -58,7 +56,6 @@ export default function Home() {
                         <SectionSkeleton />
                         <SectionSkeleton />
                         <SectionSkeleton />
-                        <SectionSkeleton />
                     </>
                 )}
             </main>
@@ -66,3 +63,5 @@ export default function Home() {
         </div>
     );
 }
+
+    
