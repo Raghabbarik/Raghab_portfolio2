@@ -58,7 +58,7 @@ export default function HeroSection() {
               color={[0.53, 0.2, 1.0]}
               amplitude={1.2}
               distance={0.3}
-              enableMouseInteraction
+              enableMouseInteraction={false}
             />
        </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-background via-transparent to-background z-10"></div>
