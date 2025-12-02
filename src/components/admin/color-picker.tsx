@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { solidColors } from "@/lib/colors";
 import { hexToHslString, hslStringToHex } from "@/lib/colors";
 import { Paintbrush } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface ColorPickerProps {
   hslColor: string;
