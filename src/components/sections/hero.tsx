@@ -82,7 +82,7 @@ export default function HeroSection() {
       </div>
       <div className="relative z-20 container px-4 md:px-6 h-full">
          <div className="w-full h-full flex items-center justify-center">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 items-center w-full max-w-6xl mx-auto">
             <div className="relative flex items-center justify-end lg:order-last">
                 <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
                 <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
@@ -107,7 +107,7 @@ export default function HeroSection() {
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
                     <span>Hey, I'm {firstName}</span>
                 </div>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter h-24 md:h-36 pt-4">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter h-24 md:h-28 pt-2">
                     <TextType as="span" text={titles} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
                 </h1>
                 <p className="max-w-xl text-muted-foreground md:text-lg">
