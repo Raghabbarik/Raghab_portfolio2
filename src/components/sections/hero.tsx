@@ -80,10 +80,10 @@ export default function HeroSection() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </div>
-      <div className="relative z-20 container px-4 md:px-6 h-full">
+      <div className="relative z-20 px-4 md:px-6 h-full">
          <div className="w-full h-full flex items-center">
             <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
-            <div className="relative flex items-center justify-center lg:justify-end">
+            <div className="lg:order-last relative flex items-center justify-center lg:justify-start">
                 <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
                 <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="absolute inset-8 rounded-full bg-secondary/30 blur-3xl [animation-delay:1s] group-hover:blur-2xl transition-all duration-500"></div>
@@ -94,7 +94,7 @@ export default function HeroSection() {
                     data-ai-hint={about.profileImageHint}
                     width={400}
                     height={400}
-                    className="relative z-10 rounded-full w-full h-full object-cover shadow-2xl"
+                    className="relative z-10 rounded-full w-full h-full object-cover shadow-2xl transform rotate-3 group-hover:rotate-2 transition-transform duration-500"
                     priority
                     />
                 ) : (
@@ -107,7 +107,7 @@ export default function HeroSection() {
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
                     <span>Hey, I'm {firstName}</span>
                 </div>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter pt-2 h-24 md:h-28">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter h-24 md:h-28">
                     <TextType as="span" text={titles} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
                 </h1>
                 <p className="max-w-xl text-muted-foreground md:text-lg">
