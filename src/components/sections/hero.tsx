@@ -83,7 +83,7 @@ export default function HeroSection() {
       <div className="relative z-20 container px-4 md:px-6 h-full">
          <div className="w-full h-full flex items-center justify-center">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative flex items-center justify-center lg:justify-start lg:order-last">
+            <div className="relative flex items-center justify-center lg:justify-end lg:order-last">
                 <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
                 <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="absolute inset-8 rounded-full bg-secondary/30 blur-3xl [animation-delay:1s] group-hover:blur-2xl transition-all duration-500"></div>
