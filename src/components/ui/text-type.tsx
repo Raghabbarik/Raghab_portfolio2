@@ -184,7 +184,7 @@ const TextType = ({
     showCursor && (
       <span
         ref={cursorRef}
-        className={`inline-block opacity-100 ${shouldHideCursor ? 'hidden' : ''} ${cursorClassName}`}
+        className={`ml-0.5 inline-block opacity-100 ${shouldHideCursor ? 'hidden' : ''} ${cursorClassName}`}
       >
         {cursorCharacter}
       </span>
