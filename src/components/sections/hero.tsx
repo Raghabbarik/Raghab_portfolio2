@@ -6,15 +6,9 @@ import Link from "next/link";
 import { Hand } from "lucide-react";
 import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
-import React, { useEffect, useState, Suspense } from "react";
-import dynamic from "next/dynamic";
+import React, { useEffect, useState } from "react";
 import { Button } from '../ui/button';
 import { getIcon } from "@/lib/get-icon";
-
-const Threads = dynamic(() => import('@/components/threads-background'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 w-full h-full bg-background" />,
-});
 
 
 function isValidHttpUrl(string: string | undefined) {
@@ -52,14 +46,6 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-background">
-       <div className="absolute inset-0 w-full h-full z-0 opacity-100 pointer-events-none">
-            <Threads
-              color={[0.53, 0.2, 1.0]}
-              amplitude={1.2}
-              distance={0.3}
-              enableMouseInteraction={false}
-            />
-       </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-background via-transparent to-background z-10"></div>
       <div className="container relative z-20 px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
