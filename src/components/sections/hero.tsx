@@ -10,6 +10,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from '../ui/button';
 import { getIcon } from "@/lib/get-icon";
 import FloatingLines from '../floating-lines-background';
+import { hslStringToHex } from "@/lib/colors";
+import { useTheme } from "next-themes";
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -22,12 +24,32 @@ function isValidHttpUrl(string: string | undefined) {
 
 
 export default function HeroSection() {
-  const { about, contactDetails, isDataLoaded } = useData();
+  const { about, contactDetails, isDataLoaded, theme: appTheme } = useData();
+  const { resolvedTheme } = useTheme();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+  
+  const [gradientColors, setGradientColors] = useState<[string, string]>(['#8A2BE2', '#4169E1']);
+
+  useEffect(() => {
+    if (isDataLoaded && resolvedTheme) {
+      const themeMode = resolvedTheme as 'light' | 'dark';
+      const primaryHsl = appTheme[themeMode].primary;
+      const accentHsl = appTheme[themeMode].accent;
+      
+      const primaryHex = hslStringToHex(primaryHsl);
+      
+      const accentHslParts = accentHsl.split(' ');
+      const accentL = parseFloat(accentHslParts[2]);
+      const adjustedAccentHsl = `${accentHslParts[0]} ${accentHslParts[1]} ${Math.min(accentL + 15, 100)}%`;
+      const accentHex = hslStringToHex(adjustedAccentHsl);
+
+      setGradientColors([primaryHex, accentHex]);
+    }
+  }, [isDataLoaded, resolvedTheme, appTheme]);
 
   if (!isClient || !isDataLoaded) {
     return (
@@ -48,8 +70,8 @@ export default function HeroSection() {
     <section id="hero" className="relative w-full h-screen min-h-[700px] overflow-hidden">
        <div className="absolute inset-0 z-0">
         <FloatingLines
-          linesGradient={['#64B5F6', '#BB86FC']}
-          mixBlendMode="screen"
+          linesGradient={gradientColors}
+          mixBlendMode="plus-lighter"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </div>
