@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from '../ui/button';
 import { getIcon } from "@/lib/get-icon";
 import dynamic from "next/dynamic";
+import Squares from '../squares-background';
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -45,8 +46,17 @@ export default function HeroSection() {
   );
 
   return (
-    <section id="hero" className="relative w-full h-screen min-h-[700px] overflow-hidden bg-background">
-       <div className="absolute inset-0 z-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+    <section id="hero" className="relative w-full h-screen min-h-[700px] overflow-hidden">
+       <div className="absolute inset-0 z-0">
+        <Squares 
+            borderColor="hsla(var(--primary-hsl), 0.2)"
+            hoverFillColor="hsla(var(--primary-hsl), 0.1)"
+            squareSize={30}
+            speed={0.3}
+            direction="diagonal"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+      </div>
       <div className="relative z-20 container px-4 md:px-6 h-full">
          <div className="w-full h-full flex items-center justify-center">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
