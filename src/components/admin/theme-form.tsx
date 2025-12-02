@@ -26,6 +26,7 @@ import type { ThemeSettings } from "@/lib/definitions";
 import React from "react";
 import { useData } from "@/lib/data-context";
 import { useToast } from "@/hooks/use-toast";
+import { ColorPicker } from "./color-picker";
 
 const colorSchema = z.object({
   background: z.string().regex(/^\d{1,3} \d{1,3}% \d{1,3}%$/, "Invalid HSL format (e.g., '0 0% 100%')"),
@@ -49,9 +50,9 @@ const ColorInput = ({ form, name, label }: { form: any, name: any, label: string
             <FormItem>
                 <FormLabel>{label}</FormLabel>
                 <div className="flex items-center gap-2">
-                     <div 
-                        className="w-8 h-8 rounded-md border" 
-                        style={{ backgroundColor: `hsl(${field.value})`}}
+                    <ColorPicker
+                      hslColor={field.value}
+                      onChange={(newHsl) => form.setValue(name, newHsl, { shouldValidate: true, shouldDirty: true })}
                     />
                     <FormControl>
                         <Input placeholder="e.g., 240 10% 3.9%" {...field} />
@@ -92,7 +93,7 @@ export function ThemeForm() {
                 <CardHeader>
                     <CardTitle>Theme Settings</CardTitle>
                     <CardDescription>
-                        Customize the color scheme of your website. Enter HSL values without the 'hsl()' wrapper (e.g., '271 76% 53%').
+                        Customize the color scheme of your website. Click the color swatch to open the picker or enter HSL values directly.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8">
