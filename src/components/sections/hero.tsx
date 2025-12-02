@@ -88,8 +88,8 @@ export default function HeroSection() {
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
                     <span>Hey, I'm {firstName}</span>
                 </div>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter h-24 md:h-28">
-                    <TextType as="span" text={titles} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
+                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter pt-4 md:pt-6 h-[10.5rem] md:h-[13.5rem]">
+                    <TextType as="span" text={titles} loop={false} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
                 </h1>
                 <p className="max-w-xl text-muted-foreground md:text-lg">
                     Crafting modern digital experiences with clean design and powerful functionality.
@@ -124,7 +124,7 @@ export default function HeroSection() {
                     </div>
                 </div>
             </div>
-            <div className="relative flex items-center justify-center">
+            <div className="relative flex items-center justify-center lg:ml-12">
                 <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
                 <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="absolute inset-8 rounded-full bg-secondary/30 blur-3xl [animation-delay:1s] group-hover:blur-2xl transition-all duration-500"></div>
