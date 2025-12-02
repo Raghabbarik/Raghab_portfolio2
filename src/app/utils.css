@@ -10,8 +10,8 @@
   border: 2px solid #BB86FC; 
   border-radius: 50%;
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, border-width 0.2s;
+  /* Remove transform from here, it will be handled by inline style */
+  transition: width 0.2s, height 0.2s, border-width 0.2s, opacity 0.3s;
   z-index: 9999;
   mix-blend-mode: difference;
 }
@@ -30,9 +30,10 @@
 
 @keyframes spin {
   from {
-    transform: translate(-50%, -50%) rotate(0deg);
+    /* transform is now only for rotation */
+    transform: rotate(0deg);
   }
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }

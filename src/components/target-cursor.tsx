@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, {
@@ -20,20 +21,20 @@ interface TargetCursorProps {
 const TargetCursor: React.FC<TargetCursorProps> = ({
   spinDuration = 1,
   hideDefaultCursor = false,
-  parallaxOn = false,
-  parallaxMultiplier = 5,
   className,
 }) => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const cursorRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef({ x: -100, y: -100, dx: -100, dy: -100 });
+  const animationFrameRef = useRef<number>();
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isVisible) setIsVisible(true);
-    setPosition({ x: e.clientX, y: e.clientY });
+    positionRef.current.x = e.clientX;
+    positionRef.current.y = e.clientY;
   }, [isVisible]);
 
   const handleMouseEnter = useCallback(() => {
@@ -71,6 +72,16 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
       target.addEventListener("mouseenter", handleMouseEnter);
       target.addEventListener("mouseleave", handleMouseLeave);
     });
+    
+    const animate = () => {
+        if (cursorRef.current) {
+            positionRef.current.dx += (positionRef.current.x - positionRef.current.dx) * 0.2;
+            positionRef.current.dy += (positionRef.current.y - positionRef.current.dy) * 0.2;
+            cursorRef.current.style.transform = `translate(${positionRef.current.dx}px, ${positionRef.current.dy}px)`;
+        }
+        animationFrameRef.current = requestAnimationFrame(animate);
+    }
+    animationFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
@@ -84,14 +95,21 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
         target.removeEventListener("mouseenter", handleMouseEnter);
         target.removeEventListener("mouseleave", handleMouseLeave);
       });
+      if(animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, [handleMouseMove, handleMouseDown, handleMouseUp, handleMouseEnter, handleMouseLeave, handlePageLeave, hideDefaultCursor]);
 
   const cursorStyle: CSSProperties = {
-    left: `${position.x}px`,
-    top: `${position.y}px`,
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    transform: `translate(${positionRef.current.dx}px, ${positionRef.current.dy}px)`,
     animationDuration: `${spinDuration}s`,
     opacity: isVisible ? 1 : 0,
+    willChange: 'transform',
+    pointerEvents: 'none',
   };
 
   const cursorClasses = cn(
