@@ -12,6 +12,8 @@ import { getIcon } from "@/lib/get-icon";
 import FloatingLines from '../floating-lines-background';
 import { hslStringToHex } from "@/lib/colors";
 import { useTheme } from "next-themes";
+import TextType from '../ui/text-type';
+
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -38,6 +40,7 @@ export default function HeroSection() {
     if (isDataLoaded && resolvedTheme) {
       const themeMode = resolvedTheme as 'light' | 'dark';
       const primaryHsl = appTheme[themeMode].primary;
+      
       const accentHsl = appTheme[themeMode].accent;
       
       const primaryHex = hslStringToHex(primaryHsl);
@@ -65,6 +68,8 @@ export default function HeroSection() {
   const socialLinks = contactDetails.filter(detail => 
     ["Github", "Instagram", "Linkedin"].includes(detail.iconName)
   );
+  
+  const titles = ["Web Developer", "UI/UX Designer", "Full-Stack Engineer"];
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[700px] overflow-hidden">
@@ -102,10 +107,10 @@ export default function HeroSection() {
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
                     <span>Hey, I'm {firstName}</span>
                 </div>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-                    Web Developer
-                </span>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter h-24 md:h-36">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+                      <TextType texts={titles} />
+                  </span>
                 </h1>
                 <p className="max-w-xl text-muted-foreground md:text-lg">
                     Crafting modern digital experiences with clean design and powerful functionality.
