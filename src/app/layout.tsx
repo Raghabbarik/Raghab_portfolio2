@@ -5,7 +5,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { DataProvider } from "@/lib/data-context";
-import TargetCursor from "@/components/target-cursor";
 import { FirebaseProvider } from "@/firebase/provider";
 import Script from "next/script";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -52,11 +51,6 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <div className="relative z-10 flex flex-col min-h-screen">
-                <TargetCursor 
-                  spinDuration={2}
-                  hideDefaultCursor={true}
-                  parallaxOn={false}
-                />
                 <ThemeToggle />
                 {children}
                 <Toaster />
