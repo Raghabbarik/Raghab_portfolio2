@@ -28,7 +28,7 @@ function AboutSectionContent() {
   const hasValidImage = isValidHttpUrl(about.aboutImageUrl);
 
   return (
-    <div className="container grid items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20">
+    <div className="container grid items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20 relative z-10">
       <div className="relative h-full min-h-[400px] lg:min-h-[500px]">
         {hasValidImage ? (
           <Image
@@ -46,7 +46,7 @@ function AboutSectionContent() {
       </div>
       <div className="space-y-6">
         <div className="space-y-3">
-          <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">{about.tagline}</div>
+          <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">{about.tagline}</div>
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
              {about.title}
           </h2>
