@@ -45,7 +45,6 @@
     "meshline": "^3.3.0",
     "next": "15.3.3",
     "next-themes": "^0.3.0",
-    "ogl": "^1.0.2",
     "patch-package": "^8.0.0",
     "postprocessing": "^6.35.4",
     "react": "^18.3.1",

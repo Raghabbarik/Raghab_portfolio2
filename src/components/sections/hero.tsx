@@ -9,7 +9,6 @@ import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState } from "react";
 import { Button } from '../ui/button';
 import { getIcon } from "@/lib/get-icon";
-import Threads from "@/components/threads-background";
 
 
 function isValidHttpUrl(string: string | undefined) {
@@ -47,14 +46,6 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative w-full h-screen min-h-[700px] overflow-hidden bg-background">
-      <div className="absolute inset-0 w-full h-full z-0">
-          <Threads
-              color={[0.65, 0.05, 0.9]}
-              amplitude={1.2}
-              distance={0.9}
-              enableMouseInteraction={false}
-            />
-      </div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-background via-transparent to-background z-10"></div>
       <div className="relative z-20 container px-4 md:px-6 h-full flex items-center justify-center">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
