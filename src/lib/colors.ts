@@ -1,16 +1,78 @@
 
-export const solidColors = [
-  "#000000", "#000080", "#0000FF", "#4169E1", "#87CEFA", "#ADD8E6", "#E0FFFF",
-  "#191970", "#483D8B", "#6A5ACD", "#7B68EE", "#9370DB", "#BA55D3", "#DA70D6",
-  "#4B0082", "#8A2BE2", "#9400D3", "#9932CC", "#8B008B", "#A020F0", "#DDA0DD",
-  "#800080", "#C71585", "#FF1493", "#FF69B4", "#FFB6C1", "#FFC0CB", "#FFE4E1",
-  "#8B0000", "#A52A2A", "#B22222", "#CD5C5C", "#F08080", "#FA8072", "#FFA07A",
-  "#DC143C", "#FF0000", "#FF4500", "#FF6347", "#FF7F50", "#FF8C00", "#FFA500",
-  "#A0522D", "#D2691E", "#CD853F", "#F4A460", "#DEB887", "#FFD700", "#FFFF00",
-  "#808000", "#BDB76B", "#ADFF2F", "#7FFF00", "#7CFC00", "#00FF00", "#32CD32",
-  "#008000", "#006400", "#2E8B57", "#3CB371", "#66CDAA", "#20B2AA", "#008B8B",
-  "#00FFFF", "#00CED1", "#4682B4", "#5F9EA0", "#B0C4DE", "#FFFFFF", "#F5F5F5"
+export const colorPalette = [
+  // Blues
+  { name: "Navy", hex: "#000080" },
+  { name: "Dark Blue", hex: "#00008B" },
+  { name: "Medium Blue", hex: "#0000CD" },
+  { name: "Blue", hex: "#0000FF" },
+  { name: "Royal Blue", hex: "#4169E1" },
+  { name: "Light Sky Blue", hex: "#87CEFA" },
+
+  // Purples
+  { name: "Indigo", hex: "#4B0082" },
+  { name: "Blue Violet", hex: "#8A2BE2" },
+  { name: "Dark Violet", hex: "#9400D3" },
+  { name: "Medium Orchid", hex: "#BA55D3" },
+  { name: "Purple", hex: "#A020F0" },
+  { name: "Plum", hex: "#DDA0DD" },
+
+  // Pinks & Magentas
+  { name: "Medium Violet Red", hex: "#C71585" },
+  { name: "Deep Pink", hex: "#FF1493" },
+  { name: "Hot Pink", hex: "#FF69B4" },
+  { name: "Light Pink", hex: "#FFB6C1" },
+  { name: "Pink", hex: "#FFC0CB" },
+  { name: "Misty Rose", hex: "#FFE4E1" },
+
+  // Reds
+  { name: "Dark Red", hex: "#8B0000" },
+  { name: "Firebrick", hex: "#B22222" },
+  { name: "Crimson", hex: "#DC143C" },
+  { name: "Red", hex: "#FF0000" },
+  { name: "Tomato", hex: "#FF6347" },
+  { name: "Salmon", hex: "#FA8072" },
+
+  // Oranges
+  { name: "Orange Red", hex: "#FF4500" },
+  { name: "Coral", hex: "#FF7F50" },
+  { name: "Dark Orange", hex: "#FF8C00" },
+  { name: "Orange", hex: "#FFA500" },
+  { name: "Sandy Brown", hex: "#F4A460" },
+  { name: "Light Salmon", hex: "#FFA07A" },
+  
+  // Yellows
+  { name: "Gold", hex: "#FFD700" },
+  { name: "Yellow", hex: "#FFFF00" },
+  { name: "Light Yellow", hex: "#FFFFE0" },
+  { name: "Khaki", hex: "#F0E68C" },
+  { name: "Pale Goldenrod", hex: "#EEE8AA" },
+  { name: "Moccasin", hex: "#FFE4B5" },
+
+  // Greens
+  { name: "Dark Olive Green", hex: "#556B2F" },
+  { name: "Olive Drab", hex: "#6B8E23" },
+  { name: "Yellow Green", hex: "#9ACD32" },
+  { name: "Lime Green", hex: "#32CD32" },
+  { name: "Spring Green", hex: "#00FF7F" },
+  { name: "Light Green", hex: "#90EE90" },
+  
+  // Cyans
+  { name: "Teal", hex: "#008080" },
+  { name: "Dark Cyan", hex: "#008B8B" },
+  { name: "Light Sea Green", hex: "#20B2AA" },
+  { name: "Cyan", hex: "#00FFFF" },
+  { name: "Aquamarine", hex: "#7FFFD4" },
+  { name: "Pale Turquoise", hex: "#AFEEEE" },
+  
+  // Grays
+  { name: "Black", hex: "#000000" },
+  { name: "Dim Gray", hex: "#696969" },
+  { name: "Gray", hex: "#808080" },
+  { name: "Dark Gray", hex: "#A9A9A9" },
+  { name: "Silver", hex: "#C0C0C0" },
+  { name: "White", hex: "#FFFFFF" },
 ];
+
 
 /**
  * Converts an HSL color value to HEX. Conversion formula
