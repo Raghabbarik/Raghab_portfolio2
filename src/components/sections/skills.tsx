@@ -5,6 +5,7 @@ import { useData } from "@/lib/data-context";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "../ui/skeleton";
+import TextType from "../ui/text-type";
 
 export default function SkillsSection() {
   const { skills, isDataLoaded } = useData();
@@ -33,7 +34,7 @@ export default function SkillsSection() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-3">
              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-                My Skills
+                <TextType as="span" text="My Skills" loop={false} startOnVisible={true} />
             </h2>
             <div className="mx-auto w-[100px] h-1.5 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full" />
           </div>

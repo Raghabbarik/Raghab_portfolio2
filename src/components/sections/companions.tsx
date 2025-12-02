@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "../ui/skeleton";
 import { ArrowRight } from "lucide-react";
 import type { Companion } from "@/lib/definitions";
+import TextType from "../ui/text-type";
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -72,7 +73,7 @@ export default function CompanionsSection() {
             <div className="container px-4 md:px-6">
                 <div className="space-y-3 text-center">
                      <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-                        My Creative Companions
+                        <TextType as="span" text="My Creative Companions" loop={false} startOnVisible={true} />
                     </h2>
                     <div className="mx-auto w-[100px] h-1.5 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full" />
                 </div>

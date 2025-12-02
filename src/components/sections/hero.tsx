@@ -108,7 +108,7 @@ export default function HeroSection() {
                     <span>Hey, I'm {firstName}</span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter h-24 md:h-36">
-                    <TextType texts={titles} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
+                    <TextType as="span" text={titles} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
                 </h1>
                 <p className="max-w-xl text-muted-foreground md:text-lg">
                     Crafting modern digital experiences with clean design and powerful functionality.

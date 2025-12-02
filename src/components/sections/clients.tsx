@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { Skeleton } from '../ui/skeleton';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import TextType from '../ui/text-type';
 
 const LogoLoop = dynamic(() => import('@/components/ui/logo-loop').then(mod => mod.LogoLoop), {
     ssr: false,
@@ -48,7 +49,7 @@ export default function ClientsSection() {
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-3">
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-                            Technologies I Use
+                           <TextType as="span" text="Technologies I Use" loop={false} startOnVisible={true} />
                         </h2>
                          <div className="mx-auto w-[100px] h-1.5 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full" />
                     </div>
