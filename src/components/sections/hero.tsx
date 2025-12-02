@@ -83,6 +83,25 @@ export default function HeroSection() {
       <div className="container relative z-20 px-4 md:px-6 h-full flex items-center">
          <div className="w-full h-full flex items-center">
             <div className="grid lg:grid-cols-2 gap-16 items-center w-full max-w-6xl mx-auto">
+            <div className="relative flex items-center justify-center lg:order-last">
+                <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
+                <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="absolute inset-8 rounded-full bg-secondary/30 blur-3xl [animation-delay:1s] group-hover:blur-2xl transition-all duration-500"></div>
+                {hasValidImage ? (
+                    <Image
+                    src={about.profileImageUrl}
+                    alt="Raghab Barik"
+                    data-ai-hint={about.profileImageHint}
+                    width={400}
+                    height={400}
+                    className="relative z-10 rounded-full w-full h-full object-cover shadow-2xl"
+                    priority
+                    />
+                ) : (
+                    <Skeleton className="relative z-10 rounded-full w-full h-full" />
+                )}
+                </div>
+            </div>
             <div className="relative flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
                 <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
@@ -122,25 +141,6 @@ export default function HeroSection() {
                         )
                     })}
                     </div>
-                </div>
-            </div>
-            <div className="relative flex items-center justify-center">
-                <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
-                <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="absolute inset-8 rounded-full bg-secondary/30 blur-3xl [animation-delay:1s] group-hover:blur-2xl transition-all duration-500"></div>
-                {hasValidImage ? (
-                    <Image
-                    src={about.profileImageUrl}
-                    alt="Raghab Barik"
-                    data-ai-hint={about.profileImageHint}
-                    width={400}
-                    height={400}
-                    className="relative z-10 rounded-full w-full h-full object-cover shadow-2xl"
-                    priority
-                    />
-                ) : (
-                    <Skeleton className="relative z-10 rounded-full w-full h-full" />
-                )}
                 </div>
             </div>
             </div>
