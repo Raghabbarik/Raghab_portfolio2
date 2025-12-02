@@ -10,7 +10,7 @@ import AboutSection from "@/components/sections/about";
 import SkillsSection from "@/components/sections/skills";
 import ServicesSection from "@/components/sections/services";
 import PortfolioSection from "@/components/sections/portfolio";
-import ClientsSection from "@/components/sections/clients";
+import TestimonialsSection from "@/components/sections/testimonials";
 import ContactSection from "@/components/sections/contact";
 import CertificatesSection from "@/components/sections/certificates";
 import ThoughtsSection from "@/components/sections/thoughts";
@@ -38,7 +38,7 @@ export default function Home() {
                         <SkillsSection />
                         <CompanionsSection />
                         <ServicesSection />
-                        <ClientsSection />
+                        <TestimonialsSection />
                         <PortfolioSection />
                         <CertificatesSection />
                         <ThoughtsSection />

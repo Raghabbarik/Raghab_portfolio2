@@ -87,6 +87,20 @@
       },
       "required": ["id", "name", "role", "description", "imageUrl", "imageHint", "profileUrl"]
     },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Represents a testimonial from a client.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "quote": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" }
+      },
+      "required": ["id", "name", "role", "quote", "imageHint"]
+    },
     "About": {
       "title": "About",
       "description": "Content for the about section.",
@@ -163,6 +177,7 @@
         "certificates": { "type": "array", "items": { "$ref": "#/entities/Certificate" } },
         "thoughts": { "type": "array", "items": { "$ref": "#/entities/Thought" } },
         "companions": { "type": "array", "items": { "$ref": "#/entities/Companion" } },
+        "testimonials": { "type": "array", "items": { "$ref": "#/entities/Testimonial" } },
         "skills": { "type": "array", "items": { "$ref": "#/entities/Skill" } },
         "services": { "type": "array", "items": { "$ref": "#/entities/Service" } },
         "about": { "$ref": "#/entities/About" },

@@ -62,6 +62,15 @@ export type Companion = {
   profileUrl: string;
 };
 
+export type Testimonial = {
+  id: string;
+  name: string;
+  role: string;
+  quote: string;
+  imageUrl?: string;
+  imageHint: string;
+};
+
 export type About = {
     tagline: string;
     title: string;

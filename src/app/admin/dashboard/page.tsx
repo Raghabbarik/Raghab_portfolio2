@@ -21,6 +21,7 @@ import { SkillForm } from "@/components/admin/skill-form";
 import { CertificateForm } from "@/components/admin/certificate-form";
 import { ThoughtForm } from "@/components/admin/thought-form";
 import { CompanionForm } from "@/components/admin/companion-form";
+import { TestimonialForm } from "@/components/admin/testimonial-form";
 import type {
     About,
     ContactDetail,
@@ -30,6 +31,7 @@ import type {
     Certificate,
     Thought,
     Companion,
+    Testimonial,
 } from "@/lib/definitions";
 import { useData } from "@/lib/data-context";
 import { PlusCircle, Save, Loader2, Trash2, Edit } from "lucide-react";
@@ -414,6 +416,76 @@ function CompanionsTab() {
   );
 }
 
+function TestimonialsTab() {
+  const { testimonials, setTestimonials } = useData();
+  const { toast } = useToast();
+
+  const handleSave = (updatedTestimonial: Testimonial) => {
+    setTestimonials((prev) => {
+      const exists = prev.some(t => t.id === updatedTestimonial.id);
+      if (exists) {
+        return prev.map((t) => (t.id === updatedTestimonial.id ? updatedTestimonial : t));
+      }
+      return [updatedTestimonial, ...prev];
+    });
+    toast({
+      title: "Testimonial Saved!",
+      description: `The testimonial from "${updatedTestimonial.name}" has been saved.`,
+    });
+  };
+
+  const handleDelete = (testimonialId: string) => {
+    setTestimonials((prev) => prev.filter((t) => t.id !== testimonialId));
+    toast({
+      variant: "destructive",
+      title: "Testimonial Deleted",
+      description: "The testimonial has been removed.",
+    });
+  };
+
+  const handleAdd = () => {
+    const newTestimonial: Testimonial = {
+      id: `new-testimonial-${new Date().getTime()}`,
+      name: "New Client",
+      role: "CEO, Example Inc.",
+      quote: "A brief but powerful testimonial about your work.",
+      imageUrl: "",
+      imageHint: "person face",
+    };
+    setTestimonials((prev) => [newTestimonial, ...prev]);
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Testimonials</h2>
+          <p className="text-muted-foreground">
+            Manage client testimonials.
+          </p>
+        </div>
+        <Button size="sm" className="h-8 gap-1" onClick={handleAdd}>
+          <PlusCircle className="h-3.5 w-3.5" />
+          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+            Add Testimonial
+          </span>
+        </Button>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {testimonials.map((testimonial) => (
+          <TestimonialForm
+            key={testimonial.id}
+            testimonial={testimonial}
+            onSave={handleSave}
+            onDelete={() => handleDelete(testimonial.id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SkillsTab() {
   const { skills, setSkills } = useData();
   const { toast } = useToast();
@@ -700,6 +772,7 @@ export default function DashboardPage() {
             <TabsTrigger value="certificates">Certificates</TabsTrigger>
             <TabsTrigger value="thoughts">Thoughts</TabsTrigger>
             <TabsTrigger value="companions">Companions</TabsTrigger>
+            <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
             <TabsTrigger value="skills">Skills</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -718,6 +791,9 @@ export default function DashboardPage() {
         </TabsContent>
         <TabsContent value="companions" className="mt-4">
           <CompanionsTab />
+        </TabsContent>
+        <TabsContent value="testimonials" className="mt-4">
+          <TestimonialsTab />
         </TabsContent>
         <TabsContent value="skills" className="mt-4">
           <SkillsTab />

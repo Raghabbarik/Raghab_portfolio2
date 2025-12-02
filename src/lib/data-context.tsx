@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import type { Project, Skill, Service, About, ContactDetail, Certificate, Thought, Companion, ThemeSettings } from '@/lib/definitions';
+import type { Project, Skill, Service, About, ContactDetail, Certificate, Thought, Companion, Testimonial, ThemeSettings } from '@/lib/definitions';
 import {
   projects as initialProjects,
   skills as initialSkills,
@@ -13,6 +13,7 @@ import {
   certificates as initialCertificates,
   thoughts as initialThoughts,
   companions as initialCompanions,
+  testimonials as initialTestimonials,
   theme as initialTheme,
 } from '@/lib/data';
 import { getIcon } from '@/lib/get-icon';
@@ -35,6 +36,8 @@ interface DataContextType {
   setThoughts: React.Dispatch<React.SetStateAction<Thought[]>>;
   companions: Companion[];
   setCompanions: React.Dispatch<React.SetStateAction<Companion[]>>;
+  testimonials: Testimonial[];
+  setTestimonials: React.Dispatch<React.SetStateAction<Testimonial[]>>;
   about: About;
   setAbout: React.Dispatch<React.SetStateAction<About>>;
   contactDetails: ContactDetail[];
@@ -71,6 +74,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [companions, setCompanions] = useState<Companion[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [about, setAbout] = useState<About>(initialAbout);
   const [contactDetails, setContactDetails] = useState<ContactDetail[]>([]);
   const [theme, setTheme] = useState<ThemeSettings>(initialTheme);
@@ -87,6 +91,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             setCertificates(initialCertificates);
             setThoughts(initialThoughts);
             setCompanions(initialCompanions);
+            setTestimonials(initialTestimonials);
             setAbout(initialAbout);
             setContactDetails(initialContactDetails);
             setTheme(initialTheme);
@@ -107,6 +112,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setCertificates(data.certificates || initialCertificates);
                 setThoughts(data.thoughts || initialThoughts);
                 setCompanions(data.companions || initialCompanions);
+                setTestimonials(data.testimonials || initialTestimonials);
                 setAbout(data.about || initialAbout);
                 setContactDetails(data.contactDetails || initialContactDetails);
                 setTheme(data.theme || initialTheme);
@@ -118,6 +124,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
                 setCertificates(initialCertificates);
                 setThoughts(initialThoughts);
                 setCompanions(initialCompanions);
+                setTestimonials(initialTestimonials);
                 setAbout(initialAbout);
                 setContactDetails(initialContactDetails);
                 setTheme(initialTheme);
@@ -130,6 +137,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
             setCertificates(initialCertificates);
             setThoughts(initialThoughts);
             setCompanions(initialCompanions);
+            setTestimonials(initialTestimonials);
             setAbout(initialAbout);
             setContactDetails(initialContactDetails);
             setTheme(initialTheme);
@@ -187,6 +195,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         certificates,
         thoughts,
         companions,
+        testimonials,
         about,
         contactDetails,
         theme
@@ -217,7 +226,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         }
     });
 
-  }, [projects, skills, services, certificates, about, contactDetails, firestore, toast, user, thoughts, companions, theme]);
+  }, [projects, skills, services, certificates, about, contactDetails, firestore, toast, user, thoughts, companions, testimonials, theme]);
 
   return (
     <DataContext.Provider
@@ -234,6 +243,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setThoughts,
         companions,
         setCompanions,
+        testimonials,
+        setTestimonials,
         about,
         setAbout,
         contactDetails,

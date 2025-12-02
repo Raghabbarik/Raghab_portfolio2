@@ -5,7 +5,7 @@ import React from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import Dock from './dock';
 import { navLinks } from '@/lib/data';
-import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText } from 'lucide-react';
+import { Home, User, Briefcase, Star, MessageSquare, UserCog, Users, Heart, Award, FileText, Quote } from 'lucide-react';
 import type { DockItemData } from './dock';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
@@ -15,7 +15,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   Services: <Briefcase />,
   Companions: <Heart />,
   Portfolio: <Briefcase />,
-  Clients: <Users />,
+  Testimonials: <Quote />,
   Contact: <MessageSquare />,
   Admin: <UserCog />,
   Home: <Home />,
@@ -50,17 +50,8 @@ export default function Header() {
         onClick: () => scrollToSection(link.href),
     }));
 
-    if (isMobile) {
-        items.unshift({
-            icon: <Home />,
-            label: 'Home',
-            onClick: () => scrollToSection('#hero'),
-        });
-    }
-
-
-  const baseItemSize = isMobile ? 25 : 20;
-  const magnification = isMobile ? 35 : 30;
+  const baseItemSize = isMobile ? 36 : 44;
+  const magnification = isMobile ? 50 : 60;
 
 
   return (
