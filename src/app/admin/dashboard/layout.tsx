@@ -6,8 +6,6 @@ import {
   PanelLeft,
   Mountain,
   LogOut,
-  ArrowLeft,
-  Save,
 } from "lucide-react";
 
 import {
@@ -19,6 +17,9 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -89,19 +90,22 @@ export default function DashboardLayout({
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
-              <nav className="grid gap-6 text-lg font-medium">
-                <div className="flex justify-between items-center">
-                    <Link
+              <SheetHeader>
+                <SheetTitle>
+                  <Link
                     href="#"
                     className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                     >
                         <Mountain className="h-5 w-5 transition-all group-hover:scale-110" />
                         <span className="sr-only">PortfolioPro</span>
                     </Link>
-                    <div className="sm:hidden">
-                        <ThemeToggle />
-                    </div>
-                </div>
+                </SheetTitle>
+                <SheetDescription>
+                  Navigate through your admin dashboard.
+                </SheetDescription>
+              </SheetHeader>
+              <nav className="grid gap-6 text-lg font-medium mt-4">
+                
                 {navItems.map((item) => (
                   <Link
                     key={item.label}
@@ -119,6 +123,9 @@ export default function DashboardLayout({
                   <LogOut className="h-5 w-5" />
                   Back to Home
                 </Link>
+                 <div className="sm:hidden absolute bottom-4 left-4">
+                    <ThemeToggle />
+                </div>
               </nav>
             </SheetContent>
           </Sheet>
