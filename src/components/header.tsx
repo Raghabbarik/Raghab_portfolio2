@@ -49,8 +49,8 @@ export default function Header() {
         onClick: () => scrollToSection(link.href),
     }));
 
-  const baseItemSize = isMobile ? 32 : 40;
-  const magnification = isMobile ? 48 : 56;
+  const baseItemSize = isMobile ? 28 : 36;
+  const magnification = isMobile ? 40 : 48;
 
 
   return (
