@@ -7,7 +7,6 @@ import { Hand } from "lucide-react";
 import { useData } from "@/lib/data-context";
 import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState, Suspense } from "react";
-import TextType from "../ui/text-type";
 import dynamic from "next/dynamic";
 import { Button } from '../ui/button';
 import { getIcon } from "@/lib/get-icon";
@@ -89,15 +88,9 @@ export default function HeroSection() {
                 <span>Hey, I'm {firstName}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">
-               <TextType
-                as="span"
-                text={["Web Developer", "UI/UX Designer", "Creator"]}
-                typingSpeed={100}
-                deletingSpeed={50}
-                pauseDuration={2000}
-                className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600"
-                cursorClassName="text-primary"
-              />
+               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+                Web Developer
+               </span>
             </h1>
             <p className="max-w-xl text-muted-foreground md:text-lg">
                 Crafting modern digital experiences with clean design and powerful functionality.
