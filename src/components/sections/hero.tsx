@@ -80,8 +80,8 @@ export default function HeroSection() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </div>
-      <div className="container relative z-20 px-4 md:px-6 h-full flex items-center justify-center mx-auto">
-         <div className="w-full h-full flex items-center justify-center">
+      <div className="container relative z-20 px-4 md:px-6 h-full flex items-center">
+         <div className="w-full h-full flex items-center">
             <div className="grid lg:grid-cols-2 gap-12 items-center w-full max-w-6xl">
             <div className="relative flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
                 <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
@@ -124,7 +124,7 @@ export default function HeroSection() {
                     </div>
                 </div>
             </div>
-            <div className="relative flex items-center justify-center lg:ml-12">
+            <div className="relative flex items-center justify-center ml-12">
                 <div className="relative w-80 h-80 sm:w-96 sm:h-96 group">
                 <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="absolute inset-8 rounded-full bg-secondary/30 blur-3xl [animation-delay:1s] group-hover:blur-2xl transition-all duration-500"></div>
