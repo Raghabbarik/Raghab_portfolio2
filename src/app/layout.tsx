@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import "./utils.css";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { DataProvider } from "@/lib/data-context";
@@ -9,6 +10,7 @@ import { FirebaseProvider } from "@/firebase/provider";
 import Script from "next/script";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import TargetCursor from "@/components/target-cursor";
 
 
 const poppins = Poppins({
@@ -38,7 +40,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-body antialiased",
+          "min-h-screen bg-background font-body antialiased hide-cursor",
           poppins.variable
         )}
       >
@@ -51,6 +53,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <div className="relative z-10 flex flex-col min-h-screen">
+                <TargetCursor />
                 <ThemeToggle />
                 {children}
                 <Toaster />
