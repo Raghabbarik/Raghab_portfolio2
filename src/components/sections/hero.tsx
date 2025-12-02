@@ -9,8 +9,7 @@ import { Skeleton } from "../ui/skeleton";
 import React, { useEffect, useState } from "react";
 import { Button } from '../ui/button';
 import { getIcon } from "@/lib/get-icon";
-import dynamic from "next/dynamic";
-import Squares from '../squares-background';
+import FloatingLines from '../floating-lines-background';
 
 function isValidHttpUrl(string: string | undefined) {
     if (!string || string.length === 0) return false;
@@ -48,12 +47,9 @@ export default function HeroSection() {
   return (
     <section id="hero" className="relative w-full h-screen min-h-[700px] overflow-hidden">
        <div className="absolute inset-0 z-0">
-        <Squares 
-            borderColor="hsla(var(--primary-hsl), 0.2)"
-            hoverFillColor="hsla(var(--primary-hsl), 0.1)"
-            squareSize={30}
-            speed={0.3}
-            direction="diagonal"
+        <FloatingLines
+          linesGradient={['#64B5F6', '#BB86FC']}
+          mixBlendMode="screen"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </div>
