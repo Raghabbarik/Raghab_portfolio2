@@ -48,6 +48,11 @@ const Squares: React.FC<SquaresProps> = ({
       if (!ctx) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Add glow effect
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = borderColor.toString();
+
 
       const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
       const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
