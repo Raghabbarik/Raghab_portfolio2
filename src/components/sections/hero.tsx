@@ -107,7 +107,7 @@ export default function HeroSection() {
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
                     <span>Hey, I'm {firstName}</span>
                 </div>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter h-24 md:h-36 pt-4">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter h-24 md:h-36 pt-4">
                     <TextType as="span" text={titles} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600" />
                 </h1>
                 <p className="max-w-xl text-muted-foreground md:text-lg">
