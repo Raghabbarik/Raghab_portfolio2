@@ -82,7 +82,7 @@ export default function HeroSection() {
       </div>
       <div className="relative z-20 px-4 md:px-6 h-full flex items-center">
          <div className="w-full h-full flex items-center">
-            <div className="grid lg:grid-cols-2 gap-28 items-center w-full max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8 items-center w-full">
             <div className="relative flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
                 <div className="flex items-center gap-2 bg-accent/50 border border-border rounded-full px-4 py-1.5 text-sm">
                     <Hand className="h-5 w-5 text-primary animate-bounce"/>
