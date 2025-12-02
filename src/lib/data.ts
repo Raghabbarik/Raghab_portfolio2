@@ -16,7 +16,9 @@ import {
   Users,
   Award,
   Heart,
-  MessageSquare
+  MessageSquare,
+  FileText,
+  Quote
 } from "lucide-react";
 
 export const navLinks: NavLink[] = [
