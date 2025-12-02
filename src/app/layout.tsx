@@ -55,7 +55,7 @@ export default function RootLayout({
                 <TargetCursor 
                   spinDuration={2}
                   hideDefaultCursor={true}
-                  parallaxOn={true}
+                  parallaxOn={false}
                 />
                 <ThemeToggle />
                 {children}
