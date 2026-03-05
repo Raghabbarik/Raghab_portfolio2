@@ -23,6 +23,12 @@ export const metadata: Metadata = {
   title: "PortfolioPro | Raghab Barik",
   description:
     "Raghab Barik - Full-Stack Web Developer, UI/UX Designer, and Template Designer.",
+  icons: {
+    // Primary favicon for browsers (copy your hero/brand image here if needed)
+    icon: "/favicon.ico",
+    // Additional sizes/variants can be added as needed
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
