@@ -1,0 +1,110 @@
+
+import type { LucideIcon } from "lucide-react";
+
+export type NavLink = {
+  href: string;
+  label: string;
+};
+
+export type Skill = {
+  id: string;
+  name: string;
+  level: number;
+  icon: React.ComponentType<{ className?: string }>;
+};
+
+export type Service = {
+  id:string;
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+};
+
+export type Project = {
+  id: string;
+  title: string;
+  description: string;
+  technologies: string[];
+  imageUrl?: string;
+  imageHint: string;
+  liveDemoUrl: string;
+};
+
+export type Certificate = {
+  id: string;
+  title: string;
+  issuer: string;
+  year: string;
+  imageUrl?: string;
+  imageHint: string;
+  category: "technical" | "other";
+  href?: string;
+};
+
+export type Thought = {
+  id: string;
+  title:string;
+  excerpt: string;
+  date: string;
+  readTime: number;
+  imageUrl?: string;
+  imageHint: string;
+  href: string;
+};
+
+export type Companion = {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  imageUrl?: string;
+  imageHint: string;
+  profileUrl: string;
+};
+
+export type About = {
+    tagline: string;
+    title: string;
+    description: string;
+    education: {
+        degree: string;
+        institution: string;
+    };
+    experience: {
+        role: string;
+        company: string;
+    };
+    profileImageUrl?: string;
+    profileImageHint: string;
+    aboutImageUrl?: string;
+    aboutImageHint: string;
+    resumeUrl: string;
+};
+
+export type ContactDetail = {
+  id: string;
+  iconName: string;
+  text: string;
+  href: string;
+}
+
+export type ThemeSettings = {
+  light: {
+    background: string;
+    foreground: string;
+    primary: string;
+    accent: string;
+  };
+  dark: {
+    background: string;
+    foreground: string;
+    primary: string;
+    accent: string;
+  };
+};
+
+export type IconMap = {
+  [key: string]: LucideIcon;
+};
+
+    

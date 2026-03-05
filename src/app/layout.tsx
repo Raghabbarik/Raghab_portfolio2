@@ -1,0 +1,68 @@
+
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import "./globals.css";
+import "./utils.css";
+import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
+import { DataProvider } from "@/lib/data-context";
+import { FirebaseProvider } from "@/firebase/provider";
+import Script from "next/script";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
+import TargetCursor from "@/components/target-cursor";
+
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
+
+export const metadata: Metadata = {
+  title: "PortfolioPro | Raghab Barik",
+  description:
+    "Raghab Barik - Full-Stack Web Developer, UI/UX Designer, and Template Designer.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      </head>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-body antialiased hide-cursor",
+          poppins.variable
+        )}
+      >
+        <FirebaseProvider>
+          <DataProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="relative z-10 flex flex-col min-h-screen">
+                <TargetCursor />
+                <ThemeToggle />
+                {children}
+                <Toaster />
+              </div>
+            </ThemeProvider>
+          </DataProvider>
+        </FirebaseProvider>
+        <Script src="//code.tidio.co/wv58an6khjegrz5udrqihepvbvhlhhs7.js" async />
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,198 @@
+
+{
+  "entities": {
+    "Skill": {
+      "title": "Skill",
+      "description": "Represents a skill with its proficiency level.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "level": { "type": "number" },
+        "icon": { "type": "string" }
+      },
+      "required": ["id", "name", "level", "icon"]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "Represents a service offered.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "icon"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Represents a portfolio project.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "technologies": { "type": "array", "items": { "type": "string" } },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "liveDemoUrl": { "type": "string", "format": "uri" }
+      },
+      "required": ["id", "title", "description", "technologies", "imageHint"]
+    },
+    "Certificate": {
+      "title": "Certificate",
+      "description": "Represents a certificate of achievement or participation.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "issuer": { "type": "string" },
+        "year": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "category": { "type": "string", "enum": ["technical", "other"] },
+        "href": { "type": "string", "format": "uri" }
+      },
+      "required": ["id", "title", "issuer", "year", "imageUrl", "imageHint", "category"]
+    },
+    "Thought": {
+      "title": "Thought",
+      "description": "Represents a blog post or article.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "readTime": { "type": "number" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "href": { "type": "string", "format": "uri" }
+      },
+      "required": ["id", "title", "excerpt", "date", "readTime", "imageHint", "href"]
+    },
+    "Companion": {
+      "title": "Companion",
+      "description": "Represents a creative companion or collaborator.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "imageHint": { "type": "string" },
+        "profileUrl": { "type": "string", "format": "uri" }
+      },
+      "required": ["id", "name", "role", "description", "imageUrl", "imageHint", "profileUrl"]
+    },
+    "About": {
+      "title": "About",
+      "description": "Content for the about section.",
+      "type": "object",
+      "properties": {
+        "tagline": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "education": {
+          "type": "object",
+          "properties": {
+            "degree": { "type": "string" },
+            "institution": { "type": "string" }
+          }
+        },
+        "experience": {
+          "type": "object",
+          "properties": {
+            "role": { "type": "string" },
+            "company": { "type": "string" }
+          }
+        },
+        "profileImageUrl": { "type": "string", "format": "uri" },
+        "profileImageHint": { "type": "string" },
+        "aboutImageUrl": { "type": "string", "format": "uri" },
+        "aboutImageHint": { "type": "string" },
+        "resumeUrl": { "type": "string", "format": "uri" }
+      },
+      "required": ["tagline", "title", "description", "education", "experience", "profileImageUrl", "profileImageHint", "aboutImageUrl", "aboutImageHint"]
+    },
+    "ContactDetail": {
+      "title": "Contact Detail",
+      "description": "Represents a single piece of contact information.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "iconName": { "type": "string" },
+        "text": { "type": "string" },
+        "href": { "type": "string" }
+      },
+      "required": ["id", "iconName", "text", "href"]
+    },
+    "ThemeSettings": {
+      "title": "Theme Settings",
+      "description": "Stores the HSL color values for the website theme.",
+      "type": "object",
+      "properties": {
+        "light": {
+          "type": "object",
+          "properties": {
+            "background": { "type": "string", "description": "e.g., 0 0% 100%" },
+            "foreground": { "type": "string", "description": "e.g., 240 10% 3.9%" },
+            "primary": { "type": "string", "description": "e.g., 271 76% 53%" },
+            "accent": { "type": "string", "description": "e.g., 240 4.8% 95.9%" }
+          }
+        },
+        "dark": {
+          "type": "object",
+          "properties": {
+            "background": { "type": "string", "description": "e.g., 240 10% 3.9%" },
+            "foreground": { "type": "string", "description": "e.g., 0 0% 98%" },
+            "primary": { "type": "string", "description": "e.g., 271 76% 53%" },
+            "accent": { "type": "string", "description": "e.g., 240 3.7% 15.9%" }
+          }
+        }
+      }
+    },
+    "PortfolioContent": {
+      "title": "Portfolio Content",
+      "description": "A single document containing all content for the portfolio.",
+      "type": "object",
+      "properties": {
+        "projects": { "type": "array", "items": { "$ref": "#/entities/Project" } },
+        "certificates": { "type": "array", "items": { "$ref": "#/entities/Certificate" } },
+        "thoughts": { "type": "array", "items": { "$ref": "#/entities/Thought" } },
+        "companions": { "type": "array", "items": { "$ref": "#/entities/Companion" } },
+        "skills": { "type": "array", "items": { "$ref": "#/entities/Skill" } },
+        "services": { "type": "array", "items": { "$ref": "#/entities/Service" } },
+        "about": { "$ref": "#/entities/About" },
+        "contactDetails": { "type": "array", "items": { "$ref": "#/entities/ContactDetail" } },
+        "theme": { "$ref": "#/entities/ThemeSettings" }
+      }
+    },
+    "SiteStats": {
+      "title": "Site Statistics",
+      "description": "Statistics for the website, such as visitor count.",
+      "type": "object",
+      "properties": {
+        "count": { "type": "number", "description": "The total number of visitors." }
+      },
+      "required": ["count"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/portfolioContent/{docId}": {
+      "schema": { "$ref": "#/entities/PortfolioContent" },
+      "description": "Stores all the content for the portfolio website in a single document."
+    },
+    "/siteStats/visitorCounter": {
+        "schema": { "$ref": "#/entities/SiteStats" },
+        "description": "Stores the visitor count for the website."
+    }
+  }
+}
+
+    

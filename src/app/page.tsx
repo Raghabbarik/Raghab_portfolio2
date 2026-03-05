@@ -1,0 +1,67 @@
+
+"use client";
+
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import { useData } from "@/lib/data-context";
+import { Skeleton } from "@/components/ui/skeleton";
+import HeroSection from "@/components/sections/hero";
+import AboutSection from "@/components/sections/about";
+import SkillsSection from "@/components/sections/skills";
+import ServicesSection from "@/components/sections/services";
+import PortfolioSection from "@/components/sections/portfolio";
+import ContactSection from "@/components/sections/contact";
+import CertificatesSection from "@/components/sections/certificates";
+import ThoughtsSection from "@/components/sections/thoughts";
+import CompanionsSection from "@/components/sections/companions";
+import ClientsSection from "@/components/sections/clients";
+
+const SectionSkeleton = () => (
+  <section className="w-full py-8 md:py-10 lg:py-12">
+    <div className="container px-4 md:px-6">
+      <Skeleton className="h-[400px] w-full" />
+    </div>
+  </section>
+);
+
+export default function Home() {
+    const { isDataLoaded } = useData();
+
+    return (
+        <div className="flex min-h-[100dvh] flex-col bg-transparent">
+            <Header />
+            <main className="flex-1">
+                {isDataLoaded ? (
+                    <>
+                        <HeroSection />
+                        <AboutSection />
+                        <SkillsSection />
+                        <ClientsSection />
+                        <CompanionsSection />
+                        <ServicesSection />
+                        <PortfolioSection />
+                        <CertificatesSection />
+                        <ThoughtsSection />
+                        <ContactSection />
+                    </>
+                ) : (
+                    <>
+                        <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden"><Skeleton className="h-full w-full" /></section>
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                        <SectionSkeleton />
+                    </>
+                )}
+            </main>
+            <Footer />
+        </div>
+    );
+}
+
+    
